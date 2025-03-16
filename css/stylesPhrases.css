@@ -1,0 +1,368 @@
+/* RESET GLOBAL */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* VARIABLES */
+:root {
+  --bg-dark: rgba(44, 44, 64, 0.7);
+  --bg-dark-90: rgba(44, 44, 64, 0.9);
+  --text-light: #e0e0e0;
+  --border-light: rgba(255, 255, 255, 0.1);
+  --accent: #ff6f61;
+  --accent-hover: #e64a19;
+  --secondary-text: #bdc3c7;
+  --shadow-1: #1a1a2e;
+  --shadow-2: #2c2c40;
+  --gradient-dark-1: #1e1e2f;
+  --gradient-dark-2: #2c2c40;
+  --radial-overlay: rgba(255, 255, 255, 0.05);
+  --border-dashed: rgba(255, 255, 255, 0.2);
+}
+
+/* GLOBAL ESTILOS (antes en styles.css) */
+body {
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, var(--gradient-dark-1), var(--gradient-dark-2));
+  color: var(--text-light);
+  text-align: center;
+  overflow-x: hidden;
+  animation: gradientShift 15s infinite alternate ease-in-out;
+}
+@keyframes gradientShift {
+  0% {
+    background: linear-gradient(135deg, var(--gradient-dark-1), var(--gradient-dark-2));
+  }
+  100% {
+    background: linear-gradient(135deg, var(--gradient-dark-2), var(--gradient-dark-1));
+  }
+}
+
+header {
+  background: var(--bg-dark);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-light);
+  border-radius: 15px;
+  box-shadow: 8px 8px 15px var(--shadow-1), -8px -8px 15px var(--shadow-2);
+  padding: 20px;
+  margin-bottom: 20px;
+  position: relative;
+  overflow: hidden;
+}
+header::before {
+  content: '';
+  position: abosulte;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--radial-overlay), transparent);
+  transform: rotate(45deg);
+  animation: rotateLight 10s infinite linear;
+  z-index: -1;
+}
+@keyframes rotateLight {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+header h1 {
+  font-size: 2.5rem;
+  color: var(--text-light);
+  text-shadow: 1px 1px var(--shadow-1), 2px 2px var(--accent);
+  animation: glow 2s infinite alternate ease-in-out;
+}
+@keyframes glow {
+  0% {
+    text-shadow: 1px 1px var(--shadow-1), 2px 2px var(--accent);
+  }
+  100% {
+    text-shadow: 2px 2px var(--shadow-1), 4px 4px var(--accent);
+  }
+}
+
+/* FOOTER */
+footer {
+  background: var(--bg-dark);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-light);
+  border-radius: 15px;
+  padding: 30px 20px;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 0.9rem;
+  box-shadow: 8px 8px 15px var(--shadow-1), -8px -8px 15px var(--shadow-2);
+  position: relative;
+  overflow: hidden;
+  margin-top: 40px;
+}
+footer::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--radial-overlay), transparent);
+  transform: rotate(45deg);
+  animation: rotateLightFooter 10s infinite linear;
+  z-index: -1;
+}
+@keyframes rotateLightFooter {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+footer p {
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  margin-bottom: 15px;
+  animation: fadeIn 2s ease-in-out;
+}
+footer .social-links {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 10px;
+}
+footer .social-links a {
+  color: var(--text-light);
+  font-size: 1.5rem;
+  text-decoration: none;
+  transition: transform 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  position: relative;
+  padding: 10px;
+  border-radius: 50%;
+  background: var(--bg-dark);
+  box-shadow: 4px 4px 10px var(--shadow-1), -4px -4px 10px var(--shadow-2);
+}
+footer .social-links a:hover {
+  color: var(--accent);
+  transform: scale(1.2);
+  box-shadow: 6px 6px 15px var(--shadow-1), -6px -6px 15px var(--shadow-2);
+}
+footer .social-links a::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  z-index: -1;
+}
+footer .social-links a:hover::before {
+  opacity: 1;
+}
+
+/* ---------------------------- */
+/* ESTILOS ESPECÍFICOS PARA PHRASES (antes en stylesPhrases.css) */
+/* Botón "Back to Menu" */
+#back-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background: var(--bg-dark);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-light);
+  border-radius: 50px;
+  color: var(--text-light);
+  text-decoration: none;
+  font-size: 1rem;
+  transition: transform 0.3s ease, background 0.3s ease;
+  box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.2);
+  margin-top: 10px;
+}
+#back-button:hover {
+  background: var(--accent);
+  transform: scale(1.05);
+}
+
+/* Main e Instrucciones */
+main {
+  padding: 20px;
+}
+#instructions {
+  margin: 20px 0;
+  font-size: 1.5rem;
+}
+
+/* Área de Juego para frases */
+#game-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-top: 30px;
+  padding: 20px;
+  background: var(--bg-dark);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  overflow: visible; /* Permite que overlays se muestren sin recortes */
+}
+#game-area::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, var(--border-dashed), transparent);
+  z-index: -1;
+}
+
+/* Espacio para la Frase y Banco de Palabras */
+#sentence-space {
+  width: 90%;
+  min-height: 60px;
+  border: 2px dashed var(--border-dashed);
+  margin-bottom: 20px;
+  padding: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  gap: 15px;
+  border-radius: 10px;
+  background-color: var(--bg-dark);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  flex-wrap: wrap;
+  position: relative;
+}
+#sentence-space:hover {
+  border-color: var(--accent);
+}
+#word-bank {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: center;
+  background-color: var(--bg-dark);
+  backdrop-filter: blur(10px);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: inset 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+/* Estilos para Palabras y Espacios Vacíos */
+.word {
+  padding: 12px 25px;
+  background-color: var(--bg-dark);
+  color: var(--text-light);
+  border-radius: 25px;
+  cursor: grab;
+  font-size: 1rem;
+  font-weight: bold;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s, background-color 0.3s;
+  position: relative;
+}
+.word:active {
+  transform: scale(1.1);
+  background-color: var(--accent);
+}
+.word-placeholder {
+  flex: 0 1 auto;
+  width: 120px;
+  min-width: 120px;
+  min-height: 50px;
+  border: 2px dashed var(--border-dashed);
+  border-radius: 10px;
+  text-align: center;
+  line-height: 50px;
+  color: var(--secondary-text);
+  font-style: italic;
+  background-color: var(--bg-dark);
+  backdrop-filter: blur(10px);
+  transition: background-color 0.3s, border-color 0.3s;
+  position: relative;
+}
+.word-placeholder:hover {
+  background-color: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Overlays para Resultados y Reintentos */
+#retry-overlay,
+#result-overlay {
+  position: fixed !important;
+  top: 50% !important;
+  left: 50% !important;
+  transform: translate(-50%, -50%) !important;
+  background-color: var(--bg-dark);
+  backdrop-filter: blur(10px);
+  border: 2px solid var(--border-dashed);
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  z-index: 2000;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  animation: fadeInOverlay 0.3s ease-out;
+  max-width: 90%;
+  max-height: 70vh;
+  overflow-y: auto;
+}
+@keyframes fadeInOverlay {
+  from { opacity: 0; transform: translate(-50%, -60%); }
+  to { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* Estilo para el mensaje principal del modal */
+.result-message {
+  font-size: 1.5rem;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: var(--accent);
+}
+
+/* Botón "Next" (o "Finish/Continue") dentro del modal */
+#next-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background: var(--accent);
+  color: var(--text-light);
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+  margin-top: 20px;
+}
+
+#next-button:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+}
+
+/* Si deseas ajustar el botón de reinicio, puedes usar: */
+#restart-button {
+  display: inline-block;
+  padding: 10px 20px;
+  background: var(--accent);
+  color: var(--text-light);
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.3s ease, transform 0.3s ease;
+  margin-top: 20px;
+}
+
+#restart-button:hover {
+  background: var(--accent-hover);
+  transform: scale(1.05);
+}

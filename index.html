@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>LWS - LearnWithSena</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/index.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  </head>
+  <body>
+    <!-- Barra de navegación flotante -->
+    <header class="navbar">
+      <h1>LearnWithSena</h1>
+      <nav>
+        <ul>
+          <li><a href="#home">Inicio</a></li>
+          <li><a href="#about">Acerca de</a></li>
+          <li><a href="#games">Juegos</a></li>
+          <li><a href="#contact">Redes Sociales</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+      <h2>¡Aprende inglés jugando!</h2>
+      <p>
+        Descubre una nueva forma de aprender inglés de manera interactiva y
+        divertida.
+      </p>
+      <a href="#games" class="cta-button">Explora los juegos</a>
+    </section>
+
+    <main>
+      <!-- Acerca de -->
+      <section id="about">
+        <h2>Acerca de LearnWithSena</h2>
+        <p>
+          LearnWithSena es una plataforma interactiva diseñada para ayudarte a
+          aprender inglés a través de juegos y ejercicios prácticos. Nuestro
+          objetivo es combinar el aprendizaje con el entretenimiento, ofreciendo
+          una experiencia única y motivadora para estudiantes de todos los
+          niveles.
+        </p>
+      </section>
+
+      <!-- Juegos -->
+      <section id="games">
+        <h2>Nuestros Juegos y Recursos</h2>
+        <div class="game-buttons">
+          <button class="game-button" id="phrases">
+            <i class="fas fa-comment-alt"></i> Phrases
+          </button>
+          <button class="game-button" id="vocabulary">
+            <i class="fas fa-book"></i> Vocabulary
+          </button>
+          <button class="game-button" id="organizeSentence">
+            <i class="fas fa-pencil-alt"></i> Write The Sentence
+          </button>
+          <button class="game-button" id="documentation">
+            <i class="fas fa-folder"></i> Resources
+          </button>
+        </div>
+      </section>
+
+      <!-- Características -->
+      <section id="features">
+        <h2>Características Principales</h2>
+        <div class="features-grid">
+          <div class="feature">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <h3>Aprendizaje Interactivo</h3>
+            <p>
+              Juegos diseñados para hacer el aprendizaje divertido y dinámico,
+              fomentando la práctica constante.
+            </p>
+          </div>
+          <div class="feature">
+            <i class="fas fa-laptop-code"></i>
+            <h3>Tecnología Innovadora</h3>
+            <p>
+              Plataforma web moderna y responsive, desarrollada con las últimas
+              tecnologías para ofrecer la mejor experiencia.
+            </p>
+          </div>
+          <div class="feature">
+            <i class="fas fa-book-open"></i>
+            <h3>Recursos Educativos</h3>
+            <p>
+              Materiales y guías didácticas que complementan el aprendizaje y
+              refuerzan tus conocimientos.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal de Dificultad -->
+    <div class="modal" id="difficulty-modal" style="display: none">
+      <div class="modal-content">
+        <h2>Selecciona la Dificultad</h2>
+        <button class="difficulty-button" data-level="A1">A1 (Basic)</button>
+        <button class="difficulty-button" data-level="A2">A2 (Medium)</button>
+        <button class="difficulty-button" data-level="B1">B1 (Hard)</button>
+        <button class="close-modal">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- Modal de Información -->
+    <div class="modal" id="info-modal" style="display: none">
+      <div class="modal-content">
+        <h2 id="info-title">Temas a Considerar</h2>
+        <div id="info-content"></div>
+        <button id="start-game">Comenzar el Juego</button>
+        <button class="close-modal">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- Footer-->
+    <footer id="contact">
+      <div class="container">
+        <p>&copy; 2024 LWS. Todos los derechos reservados.</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/sena.caqueta" title="Sena Caquetá"
+            ><i class="fab fa-facebook"></i
+          ></a>
+          <a href="https://x.com/SENAComunica" title="Sena Comunica(X)"
+            ><i class="fa-brands fa-x-twitter"></i
+          ></a>
+          <a href="https://www.facebook.com/SENA" title="Sena Comunica"
+            ><i class="fab fa-facebook"></i
+          ></a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+  </body>
+</html>

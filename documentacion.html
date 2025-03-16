@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <title>LWS - Documentación y Recursos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- Estilos globales -->
+    <link rel="stylesheet" href="css/styles.css" />
+    <!-- Estilos específicos para documentación (tarjetas y modal) -->
+    <link rel="stylesheet" href="css/documentacion.css" />
+    <!-- Íconos de Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  </head>
+  <body>
+    <!-- Barra de navegación -->
+    <header class="navbar">
+      <h1>Documentación y Recursos</h1>
+      <a href="index.html" id="back-button">Volver al Menú</a>
+    </header>
+
+    <main>
+      <!-- Contenedor de tarjetas -->
+      <section class="card-container">
+        <!-- Tarjeta: Verbo To Be (A1) -->
+        <div class="resource-card" data-topic="toBe">
+          <div class="card-header">
+            <h2>Verbo To Be (A1)</h2>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="card-body">
+            <p>
+              Conceptos fundamentales sobre el uso del verbo "to be" en inglés.
+            </p>
+            <button class="view-more">Ver más</button>
+          </div>
+        </div>
+
+        <!-- Tarjeta: Tiempos Verbales Básicos (A2) -->
+        <div class="resource-card" data-topic="tiempos">
+          <div class="card-header">
+            <h2>Tiempos Verbales Básicos (A2)</h2>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="card-body">
+            <p>Explicación de los principales tiempos verbales y su uso.</p>
+            <button class="view-more">Ver más</button>
+          </div>
+        </div>
+
+        <!-- Tarjeta: Construcción de Oraciones (A1/A2) -->
+        <div class="resource-card" data-topic="oraciones">
+          <div class="card-header">
+            <h2>Construcción de Oraciones</h2>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="card-body">
+            <p>Guía para formar oraciones correctas y coherentes en inglés.</p>
+            <button class="view-more">Ver más</button>
+          </div>
+        </div>
+
+        <!-- Tarjeta: Modal Verbs y Expresiones (A2/B1) -->
+        <div class="resource-card" data-topic="modalverbs">
+          <div class="card-header">
+            <h2>Modal Verbs y Expresiones</h2>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="card-body">
+            <p>
+              Uso de verbos modales para expresar habilidad, posibilidad y
+              obligación.
+            </p>
+            <button class="view-more">Ver más</button>
+          </div>
+        </div>
+
+        <!-- Tarjeta: Preposiciones y Adverbios (A2) -->
+        <div class="resource-card" data-topic="prepositions">
+          <div class="card-header">
+            <h2>Preposiciones y Adverbios</h2>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="card-body">
+            <p>Claves para comprender relaciones de lugar, tiempo y modo.</p>
+            <button class="view-more">Ver más</button>
+          </div>
+        </div>
+
+        <!-- Tarjeta: Expresiones Idiomáticas (B1) -->
+        <div class="resource-card" data-topic="idioms">
+          <div class="card-header">
+            <h2>Expresiones Idiomáticas</h2>
+            <i class="fas fa-chevron-down"></i>
+          </div>
+          <div class="card-body">
+            <p>
+              Modismos y expresiones comunes para comunicarse de forma natural.
+            </p>
+            <button class="view-more">Ver más</button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal de detalle -->
+    <div class="modal" id="detail-modal">
+      <div class="modal-content">
+        <span class="close-modal">&times;</span>
+        <h2 class="modal-title"></h2>
+        <div class="modal-body"></div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div class="container">
+        <p>&copy; 2024 LWS. Todos los derechos reservados.</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/sena.caqueta" title="Sena Caquetá">
+            <i class="fab fa-facebook"></i>
+          </a>
+          <a href="https://x.com/SENAComunica" title="Sena Comunica (X)">
+            <i class="fab fa-x-twitter"></i>
+          </a>
+          <a href="https://www.facebook.com/SENA" title="Sena Comunica">
+            <i class="fab fa-facebook"></i>
+          </a>
+        </div>
+      </div>
+    </footer>
+
+    <script src="js/documentacion.js"></script>
+  </body>
+</html>
