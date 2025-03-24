@@ -167,7 +167,7 @@
   /* Responsive para index.css */
   @media (max-width: 600px) {
     .navbar h1 { font-size: 1.8rem; }
-    .navbar nav ul li a { font-size: 0.1rem; }
+    .navbar nav ul li a { font-size: 0.8rem; }
     .hero h2 { font-size: 2rem; }
     .hero p { font-size: 1rem; }
     #about, #features { padding: 40px 20px; }
