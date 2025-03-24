@@ -2,23 +2,23 @@
 
 /* Variables de colores */
 :root {
-  --bg-dark: #640D5F;
-  --bg-dark-90: #640D5F;
-  --gradient-dark-1: #640D5F;
-  --gradient-dark-2: #D91656;
-  --text-light: #FFFFFF;
-  --border-light: rgba(255, 255, 255, 0.1);
-  --secondary-text: #D91656;
-  --accent: #FFB200;
-  --accent-hover: #EB5B00;
-  --shadow-1: #640D5F;
-  --shadow-2: #D91656;
-  --radial-overlay: rgba(255, 255, 255, 0.05);
-  --border-dashed: rgba(255, 255, 255, 0.2);
-}
-
-/* Barra de navegación flotante */
-.navbar {
+    --bg-dark: #640D5F;
+    --bg-dark-90: #640D5F;
+    --gradient-dark-1: #640D5F;
+    --gradient-dark-2: #D91656;
+    --text-light: #FFFFFF;
+    --border-light: rgba(255, 255, 255, 0.1);
+    --secondary-text: #D91656;
+    --accent: #FFB200;
+    --accent-hover: #EB5B00;
+    --shadow-1: #640D5F;
+    --shadow-2: #D91656;
+    --radial-overlay: rgba(255, 255, 255, 0.05);
+    --border-dashed: rgba(255, 255, 255, 0.2);
+  }
+  
+  /* Barra de navegación flotante */
+  .navbar {
     position: fixed;
     top: 0;
     width: 97%;
@@ -30,51 +30,51 @@
     z-index: 1000;
     backdrop-filter: blur(10px);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
-}
-.navbar h1 {
+  }
+  .navbar h1 {
     color: var(--text-light);
     font-size: 2rem;
-}
-.navbar nav ul {
+  }
+  .navbar nav ul {
     display: flex;
     list-style: none;
     gap: 20px;
-}
-.navbar nav ul li {
+  }
+  .navbar nav ul li {
     position: relative;
-}
-.navbar nav ul li a {
+  }
+  .navbar nav ul li a {
     text-decoration: none;
     color: var(--text-light);
     font-size: 1rem;
     padding: 8px 15px;
     border-radius: 5px;
     transition: all 0.3s ease;
-}
-.navbar nav ul li a:hover {
+  }
+  .navbar nav ul li a:hover {
     background: var(--accent);
     box-shadow: 0px 0px 10px var(--accent-hover);
     color: var(--text-light);
     border-radius: 20px;
-}
-
-/* Hero Section */
-.hero {
+  }
+  
+  /* Hero Section */
+  .hero {
     padding: 100px 20px 80px;
     text-align: center;
     background: linear-gradient(135deg, var(--gradient-dark-1), var(--gradient-dark-2));
     color: var(--text-light);
     margin-top: 70px;
-}
-.hero h2 {
+  }
+  .hero h2 {
     font-size: 2.5rem;
     margin-bottom: 20px;
-}
-.hero p {
+  }
+  .hero p {
     font-size: 1.2rem;
     margin-bottom: 40px;
-}
-.cta-button {
+  }
+  .cta-button {
     background: var(--accent);
     color: var(--text-light);
     padding: 15px 30px;
@@ -82,160 +82,105 @@
     text-decoration: none;
     font-size: 1.1rem;
     transition: background 0.3s ease, transform 0.3s ease;
-}
-.cta-button:hover {
+  }
+  .cta-button:hover {
     background: var(--accent-hover);
     transform: scale(1.05);
-}
-
-/* About Section */
-#about {
+  }
+  
+  /* About Section */
+  #about {
     padding: 60px 20px;
     background: rgba(255, 255, 255, 0.05);
     margin: 20px auto;
     border-radius: 10px;
     max-width: 800px;
     box-shadow: 0 4px 8px var(--shadow-1);
-}
-#about h2 {
+  }
+  #about h2 {
     font-size: 2rem;
     margin-bottom: 20px;
-}
-#about p {
+  }
+  #about p {
     font-size: 1.1rem;
     line-height: 1.6;
-}
-
-/* Games Section */
-#games {
+  }
+  
+  /* Games Section */
+  #games {
     padding: 60px 20px;
-}
-#games h2 {
+  }
+  #games h2 {
     font-size: 2rem;
     margin-bottom: 20px;
-}
-.game-buttons {
+  }
+  .game-buttons {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
-}
-
-/* Features Section */
-#features {
+  }
+  
+  /* Features Section */
+  #features {
     padding: 60px 20px;
     background: rgba(255, 255, 255, 0.05);
     margin: 20px auto;
     border-radius: 10px;
     max-width: 800px;
     box-shadow: 0 4px 8px var(--shadow-1);
-}
-#features h2 {
+  }
+  #features h2 {
     font-size: 2rem;
     margin-bottom: 20px;
-}
-.features-grid {
+  }
+  .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 20px;
-}
-.feature {
+  }
+  .feature {
     background: var(--bg-dark);
     padding: 20px;
     border-radius: 10px;
     text-align: center;
     transition: transform 0.3s ease;
     box-shadow: 4px 4px 10px var(--shadow-1);
-}
-.feature:hover {
+  }
+  .feature:hover {
     transform: translateY(-5px);
-}
-.feature i {
+  }
+  .feature i {
     font-size: 2.5rem;
     margin-bottom: 10px;
     color: var(--accent);
-}
-.feature h3 {
+  }
+  .feature h3 {
     font-size: 1.5rem;
     margin-bottom: 10px;
-}
-.feature p {
+  }
+  .feature p {
     font-size: 1rem;
     line-height: 1.4;
-}
-
-/* Responsive adjustments */
-
-/* Móviles pequeños (hasta 600px) */
-@media (max-width: 600px) {
-    .navbar h1 {
-        font-size: 1.8rem;
-    }
-    .navbar nav ul li a {
-        font-size: 0.9rem;
-    }
-    .hero h2 {
-        font-size: 2rem;
-    }
-    .hero p {
-        font-size: 1rem;
-    }
-    #about, #features {
-        padding: 40px 20px;
-    }
-    .game-button {
-        width: 180px;
-        padding: 12px 20px;
-        font-size: 1rem;
-    }
   }
   
-  /* Tablets y pantallas medianas (601px a 1024px) */
-  @media (min-width: 601px) and (max-width: 1024px) {
-    .navbar h1 {
-        font-size: 2rem;
-    }
-    .navbar nav ul li a {
-        font-size: 1rem;
-    }
-    .hero h2 {
-        font-size: 2.5rem;
-    }
-    .hero p {
-        font-size: 1.1rem;
-    }
-    #about, #features {
-        padding: 50px 30px;
-    }
-    .game-button {
-        width: 200px;
-        padding: 14px 24px;
-        font-size: 1.1rem;
-    }
+  /* Responsive para index.css */
+  @media (max-width: 600px) {
+    .navbar h1 { font-size: 1.8rem; }
+    .navbar nav ul li a { font-size: 0.9rem; }
+    .hero h2 { font-size: 2rem; }
+    .hero p { font-size: 1rem; }
+    #about, #features { padding: 40px 20px; }
+    .game-buttons { gap: 15px; }
   }
-  
-  /* Escritorio y pantallas grandes (1025px en adelante) */
-  /* Se mantienen los estilos por defecto, pero se pueden ajustar márgenes y tamaños si es necesario */
+  @media (min-width: 600px) and (max-width: 1024px) {
+    .navbar h1 { font-size: 2rem; }
+    .navbar nav ul li a { font-size: 1rem; }
+    .hero h2 { font-size: 2.5rem; }
+    .hero p { font-size: 1.1rem; }
+    #about, #features { padding: 50px 30px; }
+  }
   @media (min-width: 1025px) {
-    .navbar h1 {
-        font-size: 2.5rem;
-    }
-    .navbar nav ul li a {
-        font-size: 1.1rem;
-    }
-    .hero h2 {
-        font-size: 3rem;
-    }
-    .hero p {
-        font-size: 1.2rem;
-    }
-    #about, #features {
-        padding: 60px 40px;
-    }
-    .game-button {
-        width: 220px;
-        padding: 15px 30px;
-        font-size: 1.2rem;
-    }
+    /* Valores por defecto para escritorio */
   }
   

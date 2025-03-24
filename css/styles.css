@@ -30,12 +30,8 @@ body {
   animation: gradientShift 15s infinite alternate ease-in-out;
 }
 @keyframes gradientShift {
-  0% {
-    background: linear-gradient(135deg, var(--gradient-dark-1), var(--gradient-dark-2));
-  }
-  100% {
-    background: linear-gradient(135deg, var(--gradient-dark-2), var(--gradient-dark-1));
-  }
+  0% { background: linear-gradient(135deg, var(--gradient-dark-1), var(--gradient-dark-2)); }
+  100% { background: linear-gradient(135deg, var(--gradient-dark-2), var(--gradient-dark-1)); }
 }
 
 /* Estilos del header (usado en otras páginas también) */
@@ -169,7 +165,7 @@ header p {
 }
 .modal-content p {
   font-size: 1rem;
-  color: var(--text-light);
+  color: var(--secondary-text);
   line-height: 1.5;
   animation: fadeInText 1s ease-in-out;
 }
@@ -308,7 +304,7 @@ footer .social-links a::before {
   left: -10%;
   width: 120%;
   height: 120%;
-  background: radial-gradient(circle, rgba(255, 255, 255, 0.2), transparent);
+  background: radial-gradient(circle, var(--radial-overlay), transparent);
   transform: rotate(45deg);
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -316,4 +312,31 @@ footer .social-links a::before {
 }
 footer .social-links a:hover::before {
   opacity: 1;
+}
+
+/* Responsive para styles.css */
+@media (max-width: 600px) {
+  body { padding: 10px; }
+  header { padding: 15px; margin-bottom: 15px; }
+  header h1 { font-size: 2rem; }
+  header p { font-size: 1rem; }
+  .menu-container { padding: 15px; gap: 15px; }
+  .modal-content { padding: 20px; }
+  .game-button { width: 180px; padding: 12px 20px; font-size: 1rem; }
+  footer { padding: 20px 15px; font-size: 0.8rem; }
+  footer .social-links a { font-size: 1.3rem; padding: 8px; }
+}
+@media (min-width: 600px) and (max-width: 1024px) {
+  body { padding: 15px; }
+  header { padding: 18px; margin-bottom: 18px; }
+  header h1 { font-size: 2.2rem; }
+  header p { font-size: 1.1rem; }
+  .menu-container { padding: 18px; gap: 18px; }
+  .modal-content { padding: 25px; }
+  .game-button { width: 200px; padding: 14px 24px; font-size: 1.1rem; }
+  footer { padding: 25px 18px; font-size: 0.85rem; }
+  footer .social-links a { font-size: 1.4rem; padding: 9px; }
+}
+@media (min-width: 1025px) {
+  /* Valores por defecto para escritorio */
 }
