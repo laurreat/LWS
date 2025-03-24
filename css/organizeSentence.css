@@ -1,3 +1,5 @@
+/* organizeSentence.css */
+
 /* RESET */
 * {
   margin: 0;
@@ -7,16 +9,16 @@
 
 /* VARIABLES */
 :root {
-  --bg-dark: rgba(44, 44, 64, 0.7);
-  --text-light: #e0e0e0;
+  --bg-dark: #640D5F;
+  --text-light: #FFFFFF;
   --border-light: rgba(255, 255, 255, 0.1);
-  --accent: #ff6f61;
-  --accent-hover: #e64a19;
-  --secondary-text: #bdc3c7;
-  --shadow-1: #1a1a2e;
-  --shadow-2: #2c2c40;
-  --gradient-dark-1: #1e1e2f;
-  --gradient-dark-2: #2c2c40;
+  --accent: #FFB200;
+  --accent-hover: #EB5B00;
+  --secondary-text: #D91656;
+  --shadow-1: #640D5F;
+  --shadow-2: #D91656;
+  --gradient-dark-1: #640D5F;
+  --gradient-dark-2: #D91656;
   --radial-overlay: rgba(255, 255, 255, 0.05);
   --border-dashed: rgba(255, 255, 255, 0.2);
 }
@@ -125,15 +127,15 @@ header::before {
 /* MODO ESCRIBIR */
 #word-hints {
   margin-bottom: 10px;
-  color: #1a1a2e;
+  color: var(--text-light);
   font-family: 'Helvetica Neue', Arial, sans-serif;
   text-align: center;
 }
 
 .word-box {
   display: inline-block;
-  border: 1px solid #ccc;
-  background-color: #f9f9f9;
+  border: 1px solid var(--border-light);
+  background-color: var(--bg-dark);
   padding: 8px 14px;
   margin: 5px;
   border-radius: 6px;
@@ -145,8 +147,8 @@ header::before {
 
 .word-box:hover {
   transform: translateY(-3px);
-  background-color: #e0f7fa;
-  border-color: #80deea;
+  background-color: var(--accent);
+  border-color: var(--accent-hover);
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
 }
 
@@ -191,7 +193,7 @@ header::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(44, 44, 64, 0.9);
+  background: var(--bg-dark);
   backdrop-filter: blur(10px);
   border-radius: 20px;
   display: flex;
@@ -297,10 +299,10 @@ footer p {
   font-weight: 500;
   letter-spacing: 1px;
   margin-bottom: 15px;
-  animation: fadeInText 2s ease-in-out;
+  animation: fadeIn 2s ease-in-out;
 }
 
-@keyframes fadeInText {
+@keyframes fadeIn {
   from {
     opacity: 0;
     transform: translateY(-10px);
@@ -352,27 +354,4 @@ footer .social-links a::before {
 
 footer .social-links a:hover::before {
   opacity: 1;
-}
-
-footer hr {
-  border: none;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
-  margin: 20px auto;
-  width: 80%;
-}
-
-footer .credits {
-  font-size: 0.8rem;
-  color: var(--secondary-text);
-  margin-top: 15px;
-  animation: fadeInCredits 3s ease-in-out;
-}
-
-@keyframes fadeInCredits {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
 }

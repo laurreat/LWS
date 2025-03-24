@@ -1,3 +1,5 @@
+/* stylesVocabulary.css */
+
 /* RESET GLOBAL */
 * {
   margin: 0;
@@ -7,17 +9,17 @@
 
 /* VARIABLES DE COLOR Y OTRAS */
 :root {
-  --bg-dark: rgba(44, 44, 64, 0.7);
-  --bg-dark-90: rgba(44, 44, 64, 0.9);
-  --text-light: #e0e0e0;
+  --bg-dark: #640D5F;
+  --bg-dark-90: #640D5F;
+  --text-light: #FFFFFF;
   --border-light: rgba(255, 255, 255, 0.1);
-  --accent: #ff6f61;
-  --accent-hover: #e64a19;
-  --secondary-text: #bdc3c7;
-  --shadow-1: #1a1a2e;
-  --shadow-2: #2c2c40;
-  --gradient-dark-1: #1e1e2f;
-  --gradient-dark-2: #2c2c40;
+  --accent: #FFB200;
+  --accent-hover: #EB5B00;
+  --secondary-text: #D91656;
+  --shadow-1: #640D5F;
+  --shadow-2: #D91656;
+  --gradient-dark-1: #640D5F;
+  --gradient-dark-2: #D91656;
   --radial-overlay: rgba(255, 255, 255, 0.05);
   --border-dashed: rgba(255, 255, 255, 0.2);
 }
@@ -87,7 +89,7 @@ header h1 {
   }
 }
 
-/* BOTÓN "BACK TO MENU" (PROVENIENTE DE stylesPhrases.css) */
+/* BOTÓN "BACK TO MENU" */
 #back-button {
   display: inline-block;
   padding: 10px 20px;
@@ -220,7 +222,7 @@ header h1 {
   border-radius: 5px;
   text-decoration: none;
   cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.3s ease;
+  transition: background 0.3s ease, transform 0.3s ease;
   position: relative;
 }
 #restart-button:hover {
@@ -294,6 +296,16 @@ footer p {
   letter-spacing: 1px;
   margin-bottom: 15px;
   animation: fadeIn 2s ease-in-out;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 footer .social-links {
   display: flex;

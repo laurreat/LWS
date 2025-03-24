@@ -1,14 +1,33 @@
+/* documentacion.css */
+
+/* Variables de colores */
+:root {
+  --bg-dark: #640D5F;
+  --bg-dark-90: #640D5F;
+  --gradient-dark-1: #640D5F;
+  --gradient-dark-2: #D91656;
+  --text-light: #FFFFFF;
+  --border-light: rgba(255, 255, 255, 0.1);
+  --secondary-text: #D91656;
+  --accent: #FFB200;
+  --accent-hover: #EB5B00;
+  --shadow-1: #640D5F;
+  --shadow-2: #D91656;
+  --radial-overlay: rgba(255, 255, 255, 0.05);
+  --border-dashed: rgba(255, 255, 255, 0.2);
+}
+
 body {
   font-family: "Poppins", sans-serif;
-  background: #1e1e2f;
-  color: #e0e0e0;
+  background: linear-gradient(135deg, var(--gradient-dark-1), var(--gradient-dark-2));
+  color: var(--text-light);
 }
 
 .navbar {
   position: relative;
   top: 0;
   width: 100%;
-  background: rgba(44, 44, 64, 0.9);
+  background: var(--bg-dark-90);
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
@@ -23,15 +42,15 @@ body {
 
 #back-button {
   text-decoration: none;
-  color: #fff;
+  color: var(--text-light);
   padding: 10px 15px;
-  background: #ff6f61;
+  background: var(--accent);
   border-radius: 5px;
   transition: 0.3s;
 }
 
 #back-button:hover {
-  background: #e64a19;
+  background: var(--accent-hover);
 }
 
 .card-container {
@@ -44,7 +63,7 @@ body {
 }
 
 .resource-card {
-  background: #2c2c40;
+  background: var(--bg-dark);
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
   transition: transform 0.3s ease;
@@ -59,7 +78,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #3c3c50;
+  background: var(--bg-dark-90);
   padding: 15px;
   font-size: 1.2rem;
   cursor: pointer;
@@ -80,7 +99,7 @@ body {
 .card-body {
   display: none;
   padding: 15px;
-  background: #2c2c40;
+  background: var(--bg-dark);
   opacity: 0;
   transition: opacity 0.3s ease;
 }
@@ -91,8 +110,8 @@ body {
 }
 
 .view-more {
-  background: #ff6f61;
-  color: #e0e0e0;
+  background: var(--accent);
+  color: var(--text-light);
   padding: 8px 16px;
   border: none;
   border-radius: 5px;
@@ -101,7 +120,7 @@ body {
 }
 
 .view-more:hover {
-  background: #e64a19;
+  background: var(--accent-hover);
 }
 
 .modal {
@@ -116,7 +135,7 @@ body {
 }
 
 .modal-content {
-  background: #2c2c40;
+  background: var(--bg-dark);
   margin: 10% auto;
   padding: 25px;
   width: 80%;
@@ -129,13 +148,13 @@ body {
   position: absolute;
   top: 15px;
   right: 20px;
-  color: #e0e0e0;
+  color: var(--text-light);
   font-size: 28px;
   cursor: pointer;
 }
 
 .close-modal:hover {
-  color: #ff6f61;
+  color: var(--accent);
 }
 
 .modal-title {

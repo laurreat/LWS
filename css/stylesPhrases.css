@@ -7,22 +7,22 @@
 
 /* VARIABLES */
 :root {
-  --bg-dark: rgba(44, 44, 64, 0.7);
-  --bg-dark-90: rgba(44, 44, 64, 0.9);
-  --text-light: #e0e0e0;
+  --bg-dark: #640D5F;
+  --bg-dark-90: #640D5F;
+  --text-light: #FFFFFF;
   --border-light: rgba(255, 255, 255, 0.1);
-  --accent: #ff6f61;
-  --accent-hover: #e64a19;
-  --secondary-text: #bdc3c7;
-  --shadow-1: #1a1a2e;
-  --shadow-2: #2c2c40;
-  --gradient-dark-1: #1e1e2f;
-  --gradient-dark-2: #2c2c40;
+  --accent: #FFB200;
+  --accent-hover: #EB5B00;
+  --secondary-text: #D91656;
+  --shadow-1: #640D5F;
+  --shadow-2: #D91656;
+  --gradient-dark-1: #640D5F;
+  --gradient-dark-2: #D91656;
   --radial-overlay: rgba(255, 255, 255, 0.05);
   --border-dashed: rgba(255, 255, 255, 0.2);
 }
 
-/* GLOBAL ESTILOS (antes en styles.css) */
+/* GLOBAL ESTILOS */
 body {
   font-family: "Poppins", sans-serif;
   background: linear-gradient(135deg, var(--gradient-dark-1), var(--gradient-dark-2));
@@ -128,6 +128,16 @@ footer p {
   margin-bottom: 15px;
   animation: fadeIn 2s ease-in-out;
 }
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
 footer .social-links {
   display: flex;
   justify-content: center;
@@ -168,7 +178,7 @@ footer .social-links a:hover::before {
 }
 
 /* ---------------------------- */
-/* ESTILOS ESPECÍFICOS PARA PHRASES (antes en stylesPhrases.css) */
+/* ESTILOS ESPECÍFICOS PARA PHRASES */
 /* Botón "Back to Menu" */
 #back-button {
   display: inline-block;
@@ -211,7 +221,7 @@ main {
   border-radius: 20px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
   position: relative;
-  overflow: visible; /* Permite que overlays se muestren sin recortes */
+  overflow: visible;
 }
 #game-area::before {
   content: '';
@@ -329,7 +339,7 @@ main {
   color: var(--accent);
 }
 
-/* Botón "Next" (o "Finish/Continue") dentro del modal */
+/* Botón "Next" */
 #next-button {
   display: inline-block;
   padding: 10px 20px;
@@ -342,13 +352,12 @@ main {
   transition: background 0.3s ease, transform 0.3s ease;
   margin-top: 20px;
 }
-
 #next-button:hover {
   background: var(--accent-hover);
   transform: scale(1.05);
 }
 
-/* Si deseas ajustar el botón de reinicio, puedes usar: */
+/* Botón de reinicio */
 #restart-button {
   display: inline-block;
   padding: 10px 20px;
@@ -361,7 +370,6 @@ main {
   transition: background 0.3s ease, transform 0.3s ease;
   margin-top: 20px;
 }
-
 #restart-button:hover {
   background: var(--accent-hover);
   transform: scale(1.05);
