@@ -16,6 +16,13 @@
     --radial-overlay: rgba(255, 255, 255, 0.05);
     --border-dashed: rgba(255, 255, 255, 0.2);
   }
+
+  .modal-content p {
+    font-size: 1rem;
+    color: var(--text-light); /* Cambiado de var(--secondary-text) a var(--text-light) */
+    line-height: 1.5;
+    animation: fadeInText 1s ease-in-out;
+  }  
   
   /* Barra de navegación flotante */
   .navbar {

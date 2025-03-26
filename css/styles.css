@@ -157,6 +157,12 @@ header p {
   animation: rotateModalLight 10s infinite linear;
   z-index: -1;
 }
+.modal-content p {
+  font-size: 1rem;
+  color: var(--text-light); /* Cambiado de var(--secondary-text) a var(--text-light) */
+  line-height: 1.5;
+  animation: fadeInText 1s ease-in-out;
+}
 @keyframes rotateModalLight {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
