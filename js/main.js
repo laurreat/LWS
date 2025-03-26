@@ -13,7 +13,8 @@ document.addEventListener("DOMContentLoaded", () => {
     infoContent: document.getElementById("info-content"),
     menuToggle: document.querySelector('.menu-toggle'),
     navbarNav: document.querySelector('.navbar nav'),
-    homeButton: document.querySelector("a[href='#home']")
+    homeButton: document.querySelector("a[href='#home']"),
+    navLinks: document.querySelectorAll('.navbar nav ul li a')
   };
 
   let state = {
@@ -21,29 +22,38 @@ document.addEventListener("DOMContentLoaded", () => {
     selectedLevel: ""
   };
 
+  // ======================
+  // 2. VALIDACIÓN INICIAL
+  // ======================
   if (!validateEssentialElements(elements)) {
     console.error("Elementos esenciales no encontrados");
     return;
   }
 
-  setupResponsiveMenu(elements.menuToggle, elements.navbarNav);
+  // ======================
+  // 3. CONFIGURACIÓN RESPONSIVE
+  // ======================
+  setupResponsiveMenu(elements.menuToggle, elements.navbarNav, elements.navLinks);
   setupModalHandlers(elements, state);
   setupGameHandlers(elements, state);
   setupAdditionalBehaviors(elements);
 
+  // ======================
+  // FUNCIONES DE APOYO
+  // ======================
   function validateEssentialElements({ modal, infoModal, gameButtons, startGameButton }) {
     return modal && infoModal && gameButtons.length > 0 && startGameButton;
   }
 
-  function setupResponsiveMenu(menuToggle, navbarNav) {
+  function setupResponsiveMenu(menuToggle, navbarNav, navLinks) {
     // Toggle del menú móvil
     menuToggle.addEventListener('click', () => {
       navbarNav.classList.toggle('active');
       menuToggle.querySelector('i').classList.toggle('fa-times');
     });
 
-    // Cerrar menú al hacer click en enlaces (mobile)
-    document.querySelectorAll('.navbar nav ul li a').forEach(link => {
+    // Cerrar menú al seleccionar opción (mobile)
+    navLinks.forEach(link => {
       link.addEventListener('click', () => {
         if (window.innerWidth <= 768) {
           navbarNav.classList.remove('active');
@@ -52,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     });
 
-    // Cerrar menú al redimensionar ventana
+    // Resetear menú al redimensionar
     window.addEventListener('resize', () => {
       if (window.innerWidth > 768 && navbarNav.classList.contains('active')) {
         navbarNav.classList.remove('active');
@@ -67,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
       hide: (element) => element.style.display = "none"
     };
 
-    // Manejo de cierre de modales
     closeModalButtons.forEach(button => {
       button.addEventListener("click", () => {
         modalActions.hide(modal);
@@ -79,30 +88,27 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function setupGameHandlers({ gameButtons, difficultyButtons, startGameButton, infoTitle, infoContent }, state) {
-    // Configurar botones de juego
     gameButtons.forEach(button => {
       button.addEventListener("click", () => {
         if (button.id === "documentation") {
           window.location.href = "documentacion.html";
         } else {
           state.selectedGame = button.id;
-          modalActions.show(elements.modal);
+          elements.modal.style.display = "flex";
         }
       });
     });
 
-    // Configurar niveles de dificultad
     difficultyButtons.forEach(button => {
       button.addEventListener("click", () => {
         state.selectedLevel = button.dataset.level;
         if (state.selectedGame && state.selectedLevel) {
-          modalActions.hide(elements.modal);
+          elements.modal.style.display = "none";
           showInfoModal(state.selectedGame, state.selectedLevel);
         }
       });
     });
 
-    // Iniciar juego
     startGameButton.addEventListener("click", () => {
       if (state.selectedGame && state.selectedLevel) {
         window.location.href = `${state.selectedGame}.html?level=${state.selectedLevel}`;
@@ -116,7 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>${topics.description}</p>
         ${topics.video ? `<video controls src="${topics.video}" width="100%"></video>` : ""}
       `;
-      modalActions.show(elements.infoModal);
+      elements.infoModal.style.display = "flex";
     }
 
   // Función para obtener temas según juego y nivel
@@ -179,12 +185,10 @@ document.addEventListener("DOMContentLoaded", () => {
 }
 
 function setupAdditionalBehaviors({ homeButton, navbarNav }) {
-  // Comportamiento del botón Home
   if (homeButton) {
     homeButton.addEventListener("click", (e) => {
       e.preventDefault();
       window.scrollTo({ top: 0, behavior: "smooth" });
-      
       if (window.innerWidth <= 768) {
         navbarNav.classList.add('active');
       }
