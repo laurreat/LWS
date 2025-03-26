@@ -159,7 +159,7 @@ header p {
 }
 .modal-content p {
   font-size: 1rem;
-  color: var(--text-light); /* Cambiado de var(--secondary-text) a var(--text-light) */
+  color: var(--text-light);
   line-height: 1.5;
   animation: fadeInText 1s ease-in-out;
 }
@@ -175,7 +175,7 @@ header p {
 }
 .modal-content p {
   font-size: 1rem;
-  color: var(--secondary-text);
+  color: var(--text-light);
   line-height: 1.5;
   animation: fadeInText 1s ease-in-out;
 }
