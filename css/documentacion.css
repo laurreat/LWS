@@ -172,3 +172,8 @@ body {
   padding: 10px;
   color: var(--text-light); /* Agregado: forzar texto blanco */
 }
+
+.modal-body ul,
+.modal-body li {
+  color: var(--text-light);
+}
