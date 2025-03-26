@@ -1,75 +1,127 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const modal = document.getElementById("difficulty-modal");
-  const infoModal = document.getElementById("info-modal");
-  const gameButtons = document.querySelectorAll(".game-button");
-  const difficultyButtons = document.querySelectorAll(".difficulty-button");
-  const closeModalButtons = document.querySelectorAll(".close-modal");
-  const startGameButton = document.getElementById("start-game");
-  const infoTitle = document.getElementById("info-title");
-  const infoContent = document.getElementById("info-content");
+  // ======================
+  // 1. DECLARACIÓN DE VARIABLES
+  // ======================
+  const elements = {
+    modal: document.getElementById("difficulty-modal"),
+    infoModal: document.getElementById("info-modal"),
+    gameButtons: document.querySelectorAll(".game-button"),
+    difficultyButtons: document.querySelectorAll(".difficulty-button"),
+    closeModalButtons: document.querySelectorAll(".close-modal"),
+    startGameButton: document.getElementById("start-game"),
+    infoTitle: document.getElementById("info-title"),
+    infoContent: document.getElementById("info-content"),
+    menuToggle: document.querySelector('.menu-toggle'),
+    navbarNav: document.querySelector('.navbar nav'),
+    homeButton: document.querySelector("a[href='#home']")
+  };
 
-  let selectedGame = "";
-  let selectedLevel = "";
+  let state = {
+    selectedGame: "",
+    selectedLevel: ""
+  };
 
-  // Verificar que existan todos los elementos necesarios
-  if (
-    !modal ||
-    !infoModal ||
-    gameButtons.length === 0 ||
-    difficultyButtons.length === 0 ||
-    closeModalButtons.length === 0 ||
-    !startGameButton ||
-    !infoTitle ||
-    !infoContent
-  ) {
-    console.error("Uno o más elementos del DOM no existen. Verifica el HTML.");
+  if (!validateEssentialElements(elements)) {
+    console.error("Elementos esenciales no encontrados");
     return;
   }
 
-  // Función auxiliar para mostrar/ocultar modales
-  const setModalDisplay = (modalElement, displayValue) => {
-    modalElement.style.display = displayValue;
-  };
+  setupResponsiveMenu(elements.menuToggle, elements.navbarNav);
+  setupModalHandlers(elements, state);
+  setupGameHandlers(elements, state);
+  setupAdditionalBehaviors(elements);
 
-  // Asignar eventos a los botones de juego
-  gameButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      if (button.id === "documentation") {
-        window.location.href = "documentacion.html";
-      } else {
-        selectedGame = button.id;
-        setModalDisplay(modal, "flex");
-      }
-    });
-  });
-
-  // Manejar selección de dificultad
-  difficultyButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      selectedLevel = button.dataset.level;
-      if (selectedGame && selectedLevel) {
-        setModalDisplay(modal, "none");
-        showInfoModal(selectedGame, selectedLevel);
-      } else {
-        console.error("Error: Nivel o juego no seleccionados.");
-      }
-    });
-  });
-
-  // Función para mostrar modal de información
-  function showInfoModal(game, level) {
-    const topics = getTopics(game, level);
-    infoTitle.textContent = `Temas a considerar (${level})`;
-    infoContent.innerHTML = `
-      <p>${topics.description}</p>
-      ${topics.video ? `<video controls src="${topics.video}" width="100%"></video>` : ""}
-    `;
-    setModalDisplay(infoModal, "flex");
+  function validateEssentialElements({ modal, infoModal, gameButtons, startGameButton }) {
+    return modal && infoModal && gameButtons.length > 0 && startGameButton;
   }
 
+  function setupResponsiveMenu(menuToggle, navbarNav) {
+    // Toggle del menú móvil
+    menuToggle.addEventListener('click', () => {
+      navbarNav.classList.toggle('active');
+      menuToggle.querySelector('i').classList.toggle('fa-times');
+    });
+
+    // Cerrar menú al hacer click en enlaces (mobile)
+    document.querySelectorAll('.navbar nav ul li a').forEach(link => {
+      link.addEventListener('click', () => {
+        if (window.innerWidth <= 768) {
+          navbarNav.classList.remove('active');
+          menuToggle.querySelector('i').classList.remove('fa-times');
+        }
+      });
+    });
+
+    // Cerrar menú al redimensionar ventana
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768 && navbarNav.classList.contains('active')) {
+        navbarNav.classList.remove('active');
+        menuToggle.querySelector('i').classList.remove('fa-times');
+      }
+    });
+  }
+
+  function setupModalHandlers({ modal, infoModal, closeModalButtons }, state) {
+    const modalActions = {
+      show: (element) => element.style.display = "flex",
+      hide: (element) => element.style.display = "none"
+    };
+
+    // Manejo de cierre de modales
+    closeModalButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        modalActions.hide(modal);
+        modalActions.hide(infoModal);
+      });
+    });
+
+    return { modalActions };
+  }
+
+  function setupGameHandlers({ gameButtons, difficultyButtons, startGameButton, infoTitle, infoContent }, state) {
+    // Configurar botones de juego
+    gameButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        if (button.id === "documentation") {
+          window.location.href = "documentacion.html";
+        } else {
+          state.selectedGame = button.id;
+          modalActions.show(elements.modal);
+        }
+      });
+    });
+
+    // Configurar niveles de dificultad
+    difficultyButtons.forEach(button => {
+      button.addEventListener("click", () => {
+        state.selectedLevel = button.dataset.level;
+        if (state.selectedGame && state.selectedLevel) {
+          modalActions.hide(elements.modal);
+          showInfoModal(state.selectedGame, state.selectedLevel);
+        }
+      });
+    });
+
+    // Iniciar juego
+    startGameButton.addEventListener("click", () => {
+      if (state.selectedGame && state.selectedLevel) {
+        window.location.href = `${state.selectedGame}.html?level=${state.selectedLevel}`;
+      }
+    });
+
+    function showInfoModal(game, level) {
+      const topics = getGameTopics(game, level);
+      infoTitle.textContent = `Temas a considerar (${level})`;
+      infoContent.innerHTML = `
+        <p>${topics.description}</p>
+        ${topics.video ? `<video controls src="${topics.video}" width="100%"></video>` : ""}
+      `;
+      modalActions.show(elements.infoModal);
+    }
+
   // Función para obtener temas según juego y nivel
-  function getTopics(game, level) {
-    const data = {
+  function getGameTopics(game, level) {
+    const gameData  = {
       phrases: {
         A1: {
           description:
@@ -122,33 +174,21 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     };
 
-    return (data[game] && data[game][level]) || {
-      description: "Información no disponible.",
-    };
+    return gameData[game]?.[level] || { description: "Información no disponible." };
   }
+}
 
-  // Iniciar juego
-  startGameButton.addEventListener("click", () => {
-    if (selectedGame && selectedLevel) {
-      window.location.href = `${selectedGame}.html?level=${selectedLevel}`;
-    } else {
-      console.error("Error: Juego o nivel no seleccionados.");
-    }
-  });
-
-  // Cerrar modales
-  closeModalButtons.forEach((button) => {
-    button.addEventListener("click", () => {
-      setModalDisplay(modal, "none");
-      setModalDisplay(infoModal, "none");
+function setupAdditionalBehaviors({ homeButton, navbarNav }) {
+  // Comportamiento del botón Home
+  if (homeButton) {
+    homeButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      
+      if (window.innerWidth <= 768) {
+        navbarNav.classList.add('active');
+      }
     });
-  });
-
-  // Al hacer clic en "Inicio" se desplaza suavemente hacia el top y se asegura que la navbar se muestre
-  const homeButton = document.querySelector("a[href='#home']");
-  homeButton.addEventListener("click", (e) => {
-    e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
-    document.querySelector(".navbar").style.display = "flex";
-  });
+  }
+}
 });
