@@ -1,5 +1,12 @@
 /* index.css */
 
+/* Reset de estilos */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 /* Variables de colores */
 :root {
   --bg-dark: #640d5f;
@@ -19,20 +26,19 @@
 
 .modal-content p {
   font-size: 1rem;
-  color: var(
-    --text-light
-  ); /* Cambiado de var(--secondary-text) a var(--text-light) */
+  color: var(--text-light);
   line-height: 1.5;
   animation: fadeInText 1s ease-in-out;
 }
 
 /* NAVBAR UNIFICADA */
 .navbar {
-  position: fixed;
   top: 0;
-  width: 100%;
+  left: 9px;
+  width: 99%;
+  position: fixed;
   background: var(--bg-dark);
-  padding: 15px 20px;
+  padding: 20px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
