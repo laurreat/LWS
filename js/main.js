@@ -104,6 +104,11 @@ document.addEventListener("DOMContentLoaded", () => {
         },
       },
       organizeSentence: {
+        A1: {
+          description:
+            "Organiza las palabras para formar la oración correcta. / Arrange the words to form the correct sentence.",
+          video: "assets/videos/organize-a1.mp4",
+        },
         A2: {
           description:
             "Escribe la oración correcta a partir de las palabras desordenadas. / Type the correct sentence based on the scrambled words.",
@@ -117,11 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     };
 
-    return (
-      (data[game] && data[game][level]) || {
-        description: "Información no disponible.",
-      }
-    );
+    return (data[game] && data[game][level]) || {
+      description: "Información no disponible.",
+    };
   }
 
   // Iniciar juego

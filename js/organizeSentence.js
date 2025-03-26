@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     generateSentences() {
-      // Selecciona aleatoriamente 7 oraciones del nivel actual
+      // Selecciona aleatoriamente 20 oraciones del nivel actual
       const allSentences = this.sentencesByLevel[this.currentLevel];
       const numberToPick = 20;
       this.currentSentences = allSentences
@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
           this.checkSentence(userSentence, correctSentence);
         });
       } else if (this.currentLevel === "A2") {
-        // --- MODO ESCRIBIR CON HINT ---
+        // --- MODO ESCRIBIR CON HINT (A2) ---
         const hintDiv = document.createElement("div");
         hintDiv.id = "word-hints";
 
@@ -103,6 +103,41 @@ document.addEventListener("DOMContentLoaded", () => {
           const userSentence = inputField.value.trim();
           this.checkSentence(userSentence, correctSentence);
         });
+      } else if (this.currentLevel === "A1") {
+        // --- MODO ORDENAR PALABRAS (A1) ---
+        const instructions = document.createElement("p");
+        instructions.textContent =
+          "Organiza las palabras para formar la oración correcta:";
+        gameArea.appendChild(instructions);
+
+        const hintDiv = document.createElement("div");
+        hintDiv.id = "word-hints";
+
+        // Mostrar cada palabra en un span con la clase "word-box"
+        scrambledWords.forEach((word) => {
+          const wordSpan = document.createElement("span");
+          wordSpan.classList.add("word-box");
+          wordSpan.textContent = word;
+          hintDiv.appendChild(wordSpan);
+        });
+
+        gameArea.appendChild(hintDiv);
+
+        const inputField = document.createElement("input");
+        inputField.type = "text";
+        inputField.id = "sentence-input";
+        inputField.placeholder = "Escribe la oración aquí...";
+        gameArea.appendChild(inputField);
+
+        const checkButton = document.createElement("button");
+        checkButton.id = "check-button";
+        checkButton.textContent = "Verificar";
+        gameArea.appendChild(checkButton);
+
+        checkButton.addEventListener("click", () => {
+          const userSentence = inputField.value.trim();
+          this.checkSentence(userSentence, correctSentence);
+        });
       }
     }
 
@@ -122,9 +157,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (isCorrect) {
         overlay.innerHTML = `
           <p class="result-message">Well done!</p>
-          <p><strong>Correct Sentence:</strong> ${
-            this.currentSentences[this.currentSentenceIndex].sentence
-          }</p>
+          <p><strong>Correct Sentence:</strong> ${this.currentSentences[this.currentSentenceIndex].sentence}</p>
           <button id="next-button">${
             this.currentSentenceIndex < this.currentSentences.length - 1
               ? "Next Sentence"
@@ -134,9 +167,7 @@ document.addEventListener("DOMContentLoaded", () => {
       } else {
         overlay.innerHTML = `
           <p class="result-message">Incorrect, try again!</p>
-          <p><strong>Correct Sentence:</strong> ${
-            this.currentSentences[this.currentSentenceIndex].sentence
-          }</p>
+          <p><strong>Correct Sentence:</strong> ${this.currentSentences[this.currentSentenceIndex].sentence}</p>
           <button id="retry-button">Retry</button>
         `;
       }
@@ -154,12 +185,10 @@ document.addEventListener("DOMContentLoaded", () => {
           }
         });
       } else {
-        document
-          .getElementById("retry-button")
-          .addEventListener("click", () => {
-            overlay.remove();
-            this.loadSentence();
-          });
+        document.getElementById("retry-button").addEventListener("click", () => {
+          overlay.remove();
+          this.loadSentence();
+        });
       }
     }
 
@@ -177,14 +206,12 @@ document.addEventListener("DOMContentLoaded", () => {
       `;
       main.appendChild(summaryDiv);
 
-      document
-        .getElementById("restart-button")
-        .addEventListener("click", () => {
-          summaryDiv.remove();
-          gameArea.style.display = "block";
-          this.generateSentences();
-          this.loadSentence();
-        });
+      document.getElementById("restart-button").addEventListener("click", () => {
+        summaryDiv.remove();
+        gameArea.style.display = "block";
+        this.generateSentences();
+        this.loadSentence();
+      });
     }
   }
 
