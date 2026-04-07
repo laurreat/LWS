@@ -11,7 +11,6 @@ import { Button } from "@/components/ui";
 
 const navLinks = [
   { href: "/", label: "Inicio" },
-  { href: "/games/vocabulary", label: "Juegos" },
   { href: "/progress", label: "Progreso" },
   { href: "/resources", label: "Recursos" },
 ];
