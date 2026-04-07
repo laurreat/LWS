@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
-import { Play, Pause, Volume2, Home, Trophy, CheckCircle, XCircle } from "lucide-react";
+import { Volume2, Home, Trophy, CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
 import { useSpeech } from "@/hooks/useSpeech";
@@ -41,7 +41,7 @@ export default function ListeningPage() {
     if (isPlaying) {
       stop();
       setIsPlaying(false);
-    } else {
+    } else if (questions[currentIndex]) {
       const phrase = questions[currentIndex].sentence;
       setIsPlaying(true);
       speak(phrase);
@@ -72,29 +72,23 @@ export default function ListeningPage() {
     }
   }, [selectedLevel, score, playGame]);
 
-  if (gameState === "finished") {
-    finishGame();
-    return (
-      <div className="min-h-screen p-4">
-        <div className="max-w-2xl mx-auto py-8 text-center">
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-8xl mb-6">
-            {score >= 80 ? "🎉" : score >= 50 ? "👍" : "💪"}
-          </motion.div>
-          <h1 className="text-4xl font-bold mb-4">¡Juego Terminado!</h1>
-          <Card className="mb-8">
-            <div className="flex justify-around">
-              <div><p className="text-4xl font-bold text-primary">{score}</p><p className="text-gray-500">Puntos</p></div>
-              <div><p className="text-4xl font-bold text-success">{Math.round(score / 10)}/10</p><p className="text-gray-500">Correctas</p></div>
-            </div>
-          </Card>
-          <div className="flex gap-4 justify-center">
-            <Link href="/"><Button variant="outline"><Home className="w-4 h-4 mr-2" />Inicio</Button></Link>
-            <Button onClick={() => startGame(selectedLevel!)}><Trophy className="w-4 h-4 mr-2" />Jugar de nuevo</Button>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  useEffect(() => {
+    if (gameState === "finished") {
+      finishGame();
+    }
+  }, [gameState, finishGame]);
+
+  const currentQuestion = questions[currentIndex] || null;
+  
+  const options = useMemo(() => {
+    if (!currentQuestion || !selectedLevel) return [];
+    const correct = currentQuestion.translation;
+    const others = ALL_PHRASES
+      .filter((p) => p.translation !== correct && p.level === selectedLevel)
+      .map((p) => p.translation);
+    const wrong = others.sort(() => Math.random() - 0.5).slice(0, 3);
+    return [correct, ...wrong].sort(() => Math.random() - 0.5);
+  }, [currentQuestion, selectedLevel]);
 
   if (gameState === "select") {
     return (
@@ -117,13 +111,32 @@ export default function ListeningPage() {
     );
   }
 
-  const currentQuestion = questions[currentIndex];
-  const options = useMemo(() => {
-    const correct = currentQuestion.translation;
-    const others = ALL_PHRASES.filter((p) => p.translation !== correct && p.level === selectedLevel).map((p) => p.translation);
-    const wrong = others.sort(() => Math.random() - 0.5).slice(0, 3);
-    return [correct, ...wrong].sort(() => Math.random() - 0.5);
-  }, [currentQuestion, selectedLevel]);
+  if (gameState === "finished") {
+    return (
+      <div className="min-h-screen p-4">
+        <div className="max-w-2xl mx-auto py-8 text-center">
+          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-8xl mb-6">
+            {score >= 80 ? "🎉" : score >= 50 ? "👍" : "💪"}
+          </motion.div>
+          <h1 className="text-4xl font-bold mb-4">¡Juego Terminado!</h1>
+          <Card className="mb-8">
+            <div className="flex justify-around">
+              <div><p className="text-4xl font-bold text-primary">{score}</p><p className="text-gray-500">Puntos</p></div>
+              <div><p className="text-4xl font-bold text-success">{Math.round(score / 10)}/10</p><p className="text-gray-500">Correctas</p></div>
+            </div>
+          </Card>
+          <div className="flex gap-4 justify-center">
+            <Link href="/"><Button variant="outline"><Home className="w-4 h-4 mr-2" />Inicio</Button></Link>
+            <Button onClick={() => startGame(selectedLevel!)}><Trophy className="w-4 h-4 mr-2" />Jugar de nuevo</Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!currentQuestion) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen p-4">
@@ -140,7 +153,7 @@ export default function ListeningPage() {
         <Card className="mb-8 text-center">
           <p className="text-sm text-gray-500 mb-4">Presiona el botón para escuchar</p>
           <Button size="lg" onClick={playAudio} className="rounded-full w-20 h-20">
-            {isPlaying ? <Pause className="w-8 h-8" /> : <Volume2 className="w-8 h-8" />}
+            <Volume2 className="w-8 h-8" />
           </Button>
         </Card>
 
