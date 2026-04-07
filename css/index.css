@@ -9,20 +9,23 @@
 
 /* Variables de colores */
 :root {
-  --bg-dark: #640d5f;
-  --bg-dark-90: #640d5f;
-  --gradient-dark-1: #640d5f;
-  --gradient-dark-2: #d91656;
-  --text-light: #ffffff;
-  --border-light: rgba(255, 255, 255, 0.1);
-  --secondary-text: #d91656;
-  --accent: #ffb200;
-  --accent-hover: #eb5b00;
-  --shadow-1: #640d5f;
-  --shadow-2: #d91656;
-  --radial-overlay: rgba(255, 255, 255, 0.05);
-  --border-dashed: rgba(255, 255, 255, 0.2);
-}
+   --bg-dark: #4a148c; /* Darker purple for better contrast */
+   --bg-dark-90: #6a1b9a; /* Slightly lighter purple */
+   --gradient-dark-1: #8e24aa; /* Vibrant purple */
+   --gradient-dark-2: #ab47bc; /* Bright magenta-purple */
+   --text-light: #ffffff;
+   --border-light: rgba(255, 255, 255, 0.15);
+   --secondary-text: #ff8a80; /* Soft coral */
+   --accent: #ffeb3b; /* Bright yellow */
+   --accent-hover: #fdd835; /* Slightly darker yellow */
+   --success-color: #4caf50; /* Green for positive feedback */
+   --warning-color: #ff9800; /* Orange for warnings */
+   --error-color: #f44336; /* Red for errors */
+   --shadow-1: #6a1b9a;
+   --shadow-2: #ab47bc;
+   --radial-overlay: rgba(255, 255, 255, 0.1);
+   --border-dashed: rgba(255, 255, 255, 0.25);
+ }
 
 .modal-content p {
   font-size: 1rem;

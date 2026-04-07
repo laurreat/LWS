@@ -2,20 +2,23 @@
 
 /* Variables de colores */
 :root {
-  --bg-dark: #640D5F;
-  --bg-dark-90: #640D5F;
-  --gradient-dark-1: #640D5F;
-  --gradient-dark-2: #D91656;
-  --text-light: #FFFFFF;
-  --border-light: rgba(255, 255, 255, 0.1);
-  --secondary-text: #D91656;
-  --accent: #FFB200;
-  --accent-hover: #EB5B00;
-  --shadow-1: #640D5F;
-  --shadow-2: #D91656;
-  --radial-overlay: rgba(255, 255, 255, 0.05);
-  --border-dashed: rgba(255, 255, 255, 0.2);
-}
+   --bg-dark: #4a148c; /* Darker purple for better contrast */
+   --bg-dark-90: #6a1b9a; /* Slightly lighter purple */
+   --gradient-dark-1: #8e24aa; /* Vibrant purple */
+   --gradient-dark-2: #ab47bc; /* Bright magenta-purple */
+   --text-light: #ffffff;
+   --border-light: rgba(255, 255, 255, 0.15);
+   --secondary-text: #ff8a80; /* Soft coral */
+   --accent: #ffeb3b; /* Bright yellow */
+   --accent-hover: #fdd835; /* Slightly darker yellow */
+   --success-color: #4caf50; /* Green for positive feedback */
+   --warning-color: #ff9800; /* Orange for warnings */
+   --error-color: #f44336; /* Red for errors */
+   --shadow-1: #6a1b9a;
+   --shadow-2: #ab47bc;
+   --radial-overlay: rgba(255, 255, 255, 0.1);
+   --border-dashed: rgba(255, 255, 255, 0.25);
+ }
 
 body {
   font-family: "Poppins", sans-serif;

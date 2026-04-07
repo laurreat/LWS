@@ -1,16 +1,33 @@
 document.addEventListener("DOMContentLoaded", () => {
-  const gameArea = document.getElementById("game-area");
-  const optionsContainer = document.getElementById("options");
-  const vocabImage = document.getElementById("vocab-image");
-  const progress = document.getElementById("progress");
-  const feedbackMessage = document.getElementById("feedback-message");
+   const gameArea = document.getElementById("game-area");
+   const optionsContainer = document.getElementById("options");
+   const vocabImage = document.getElementById("vocab-image");
+   const progress = document.getElementById("progress");
+   const feedbackMessage = document.getElementById("feedback-message");
+   const audioPlayer = document.getElementById("audio-player") || document.createElement("audio");
+   audioPlayer.id = "audio-player";
 
-  let currentGameWords = [];
-  let currentWordIndex = 0;
-  let correctAnswers = 0; // Contador de respuestas correctas
+   // Speech synthesis for pronunciation
+   let speechSynthesis = window.speechSynthesis;
+   let utterance = new SpeechSynthesisUtterance();
+   utterance.lang = 'en-US';
+   utterance.rate = 0.8; // Slower rate for better comprehension
+   utterance.pitch = 1.0;
 
-  // Vocabulary data for each level
-  const vocabularyData = {
+   // Función para reproducir la pronunciación de una palabra
+   const playPronunciation = (word) => {
+     if ('speechSynthesis' in window) {
+       utterance.text = word;
+       speechSynthesis.speak(utterance);
+     }
+   };
+
+   let currentGameWords = [];
+   let currentWordIndex = 0;
+   let correctAnswers = 0; // Contador de respuestas correctas
+
+   // Vocabulary data for each level
+   const vocabularyData = {
     A1: [
       {
         word: "Apple",
@@ -665,27 +682,133 @@ document.addEventListener("DOMContentLoaded", () => {
     return selectedWords;
   };
 
-  // Función para mezclar las palabras
-  const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
+   // Función para mezclar las palabras
+   const shuffleArray = (array) => array.sort(() => Math.random() - 0.5);
 
-  // Función para cargar una palabra en el juego
-  const loadWord = () => {
-    const currentWord = currentGameWords[currentWordIndex];
-    vocabImage.src = `assets/images/${currentWord.image}`;
-    optionsContainer.innerHTML = "";
+   // Función para mostrar notificación de logro
+   const showAchievementNotification = (achievements) => {
+     achievements.forEach(achievement => {
+       // Create notification element
+       const notification = document.createElement("div");
+       notification.className = "achievement-notification";
+       notification.innerHTML = `
+         <div class="achievement-content">
+           <i class="fas ${achievement.icon} achievement-icon"></i>
+           <div class="achievement-text">
+             <h4>${achievement.name}</h4>
+             <p>${achievement.description}</p>
+             <span class="achievement-points">+${achievement.points} points</span>
+           </div>
+         </div>
+       `;
+       
+       // Add styles if not already present
+       if (!document.querySelector('.achievement-notification')) {
+         const style = document.createElement("style");
+         style.textContent = `
+           .achievement-notification {
+             position: fixed;
+             bottom: 20px;
+             right: 20px;
+             background: var(--bg-dark);
+             backdrop-filter: blur(10px);
+             border: 2px solid var(--accent);
+             border-radius: 15px;
+             padding: 15px;
+             display: flex;
+             align-items: center;
+             gap: 15px;
+             box-shadow: 0 8px 15px var(--shadow-1), -8px -8px 15px var(--shadow-2);
+             z-index: 1000;
+             animation: slideIn 0.5s ease-out;
+             max-width: 300px;
+             font-family: "Poppins", sans-serif;
+           }
+           
+           .achievement-icon {
+             font-size: 2rem;
+             color: var(--accent);
+           }
+           
+           .achievement-text h4 {
+             margin: 0 0 5px 0;
+             color: var(--text-light);
+             font-size: 1.2rem;
+           }
+           
+           .achievement-text p {
+             margin: 0;
+             color: var(--secondary-text);
+             font-size: 0.9rem;
+           }
+           
+           .achievement-points {
+             display: block;
+             margin-top: 5px;
+             font-weight: bold;
+             color: var(--success-color);
+             font-size: 0.9rem;
+           }
+           
+           @keyframes slideIn {
+             from {
+               transform: translateX(100%);
+               opacity: 0;
+             }
+             to {
+               transform: translateX(0);
+               opacity: 1;
+             }
+           }
+           
+           @keyframes slideOut {
+             from {
+               transform: translateX(0);
+               opacity: 1;
+             }
+             to {
+               transform: translateX(100%);
+               opacity: 0;
+             }
+           }
+         `;
+         document.head.appendChild(style);
+       }
+       
+       // Add notification to page
+       document.body.appendChild(notification);
+       
+       // Remove after delay
+       setTimeout(() => {
+         notification.style.animation = "slideOut 0.5s ease-in";
+         setTimeout(() => {
+           notification.remove();
+         }, 500);
+       }, 5000);
+     });
+   };
 
-    currentWord.options.forEach((option) => {
-      const button = document.createElement("button");
-      button.textContent = option;
-      button.className = "option-button";
-      button.addEventListener("click", () => checkAnswer(option, button));
-      optionsContainer.appendChild(button);
-    });
+   // Función para cargar una palabra en el juego
+   const loadWord = () => {
+     const currentWord = currentGameWords[currentWordIndex];
+     vocabImage.src = `assets/images/${currentWord.image}`;
+     optionsContainer.innerHTML = "";
 
-    progress.textContent = `Word ${currentWordIndex + 1} of ${
-      currentGameWords.length
-    }`;
-  };
+     currentWord.options.forEach((option) => {
+       const button = document.createElement("button");
+       button.textContent = option;
+       button.className = "option-button";
+       button.addEventListener("click", () => checkAnswer(option, button));
+       optionsContainer.appendChild(button);
+     });
+
+     // Reproducir pronunciación de la palabra
+     playPronunciation(currentWord.word.toLowerCase());
+
+     progress.textContent = `Word ${currentWordIndex + 1} of ${
+       currentGameWords.length
+     }`;
+   };
 
   // Función para verificar la respuesta seleccionada
   const checkAnswer = (selectedOption, button) => {
@@ -715,19 +838,36 @@ document.addEventListener("DOMContentLoaded", () => {
     }, 1000);
   };
 
-  // Función para mostrar el resumen al final del juego
-  const showSummary = () => {
-    gameArea.style.display = "none";
+   // Función para mostrar el resumen al final del juego
+   const showSummary = () => {
+     gameArea.style.display = "none";
 
-    const summaryDiv = document.createElement("div");
-    summaryDiv.id = "game-summary";
-    summaryDiv.innerHTML = `
-      <h3>Game Over!</h3>
-      <p>You answered ${correctAnswers} out of ${currentGameWords.length} correctly.</p>
-      <a id="restart-button" href="index.html">Back to Menu</a>
-    `;
-    document.querySelector("main").appendChild(summaryDiv);
-  };
+     const summaryDiv = document.createElement("div");
+     summaryDiv.id = "game-summary";
+     summaryDiv.innerHTML = `
+       <h3>Game Over!</h3>
+       <p>You answered ${correctAnswers} out of ${currentGameWords.length} correctly.</p>
+       <p>Points earned: ${correctAnswers * 10}</p>
+       <a id="restart-button" href="index.html">Back to Menu</a>
+     `;
+     document.querySelector("main").appendChild(summaryDiv);
+     
+     // Add points to progress tracker
+     setTimeout(() => {
+       if (window.progressTracker) {
+         const pointsEarned = correctAnswers * 10;
+         const level = new URLSearchParams(window.location.search).get("level") || "A1";
+         window.progressTracker.addPoints(level, "vocabulary", pointsEarned);
+         window.progressTracker.completeGame(level, "vocabulary");
+         
+         // Show achievement notification if any
+         const newAchievements = window.progressTracker.checkAchievements();
+         if (newAchievements.length > 0) {
+           showAchievementNotification(newAchievements);
+         }
+       }
+     }, 500);
+   };
 
   // Inicializar el juego con el nivel seleccionado
   const initializeGame = (level) => {

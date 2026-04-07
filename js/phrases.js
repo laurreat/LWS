@@ -1093,11 +1093,40 @@ class ExplanationManager {
 }
 
 
-// Llamada para inicializar el juego
-function initializeGame() {
-  const game = new LanguageLearningGame(phrasesByLevel);
-  game.initGame();
+// Función para inicializar el reconocimiento de voz
+function initSpeechRecognition() {
+   // Verificar si el navegador soporta el reconocimiento de voz
+   if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+       const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+       const recognition = new SpeechRecognition();
+       
+       recognition.continuous = false;
+       recognition.interimResults = false;
+       recognition.lang = 'en-US';
+       
+       return recognition;
+   }
+   return null;
 }
 
-// Llamar a la inicialización cuando el DOM esté cargado
+// Llamada para inicializar el juego
+function initializeGame() {
+   const game = new LanguageLearningGame(phrasesByLevel);
+   game.initGame();
+   
+   // Inicializar reconocimiento de voz si está disponible
+   const speechRecognition = initSpeechRecognition();
+   if (speechRecognition) {
+       window.speechRecognition = speechRecognition;
+   }
+   
+   // Inicializar sistema de progreso si no existe
+   if (typeof window.progressTracker === 'undefined') {
+       const progressScript = document.createElement('script');
+       progressScript.src = 'js/progress.js';
+       document.head.appendChild(progressScript);
+   }
+}
+
+// Inicializar el juego cuando el DOM esté cargado
 document.addEventListener("DOMContentLoaded", initializeGame);

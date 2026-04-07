@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LWS - Grammar Games</title>
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="css/grammar.css" />
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+  />
+</head>
+<body>
+  <!-- Barra de navegación flotante -->
+  <header class="navbar">
+    <h1>LearnWithSena</h1>
+    <button class="menu-toggle"><i class="fas fa-bars"></i></button>
+    <nav>
+      <ul>
+        <li><a href="index.html" id="home-link">Inicio</a></li>
+        <li><a href="#about">Acerca de</a></li>
+        <li><a href="#games">Juegos</a></li>
+        <li><a href="#contact">Redes Sociales</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero" id="home">
+    <h2>Juegos de Gramática</h2>
+    <p>
+      Practica la gramática inglesa de forma divertida e interactiva.
+    </p>
+    <a href="#grammar-games" class="cta-button">Explora los juegos</a>
+  </section>
+
+  <main>
+    <!-- Sección de juegos de gramática -->
+    <section id="grammar-games">
+      <h2>Juegos de Gramática por Nivel</h2>
+      <div class="grammar-buttons">
+        <button class="grammar-button" data-game="subject-verb-agreement">
+          <i class="fas fa-users"></i> Concordancia Sujeto-Verbo
+        </button>
+        <button class="grammar-button" data-game="verb-tenses">
+          <i class="fas fa-clock"></i> Tiempos Verbales
+        </button>
+        <button class="grammar-button" data-game="prepositions">
+          <i class="fas fa-map-marker-alt"></i> Preposiciones
+        </button>
+        <button class="grammar-button" data-game="articles">
+          <i class="fas fa-list"></i> Artículos
+        </button>
+        <button class="grammar-button" data-game="plurals">
+          <i class="fas fa-copy"></i> Plurales
+        </button>
+        <button class="grammar-button" data-game="adjectives-adverbs">
+          <i class="fas fa-star-half-alt"></i> Adjetivos y Adverbios
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer id="contact">
+    <div class="container">
+      <p>&copy; 2024 LWS. Todos los derechos reservados.</p>
+      <div class="social-links">
+        <a href="https://www.facebook.com/sena.caqueta" title="Sena Caquetá"
+          ><i class="fab fa-facebook"></i
+        ></a>
+        <a href="https://x.com/SENAComunica" title="Sena Comunica(X)"
+          ><i class="fa-brands fa-x-twitter"></i
+        ></a>
+        <a href="https://www.facebook.com/SENA" title="Sena Comunica"
+          ><i class="fab fa-facebook"></i
+        ></a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/grammar.js"></script>
+</body>
+</html>

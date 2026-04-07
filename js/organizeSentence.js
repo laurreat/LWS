@@ -149,70 +149,200 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    showResult(isCorrect) {
-      const gameArea = document.getElementById("game-area");
-      const overlay = document.createElement("div");
-      overlay.id = "result-overlay";
+showResult(isCorrect) {
+       const gameArea = document.getElementById("game-area");
+       const overlay = document.createElement("div");
+       overlay.id = "result-overlay";
 
-      if (isCorrect) {
-        overlay.innerHTML = `
-          <p class="result-message">Well done!</p>
-          <p><strong>Correct Sentence:</strong> ${this.currentSentences[this.currentSentenceIndex].sentence}</p>
-          <button id="next-button">${
-            this.currentSentenceIndex < this.currentSentences.length - 1
-              ? "Next Sentence"
-              : "Finish"
-          }</button>
-        `;
-      } else {
-        overlay.innerHTML = `
-          <p class="result-message">Incorrect, try again!</p>
-          <p><strong>Correct Sentence:</strong> ${this.currentSentences[this.currentSentenceIndex].sentence}</p>
-          <button id="retry-button">Retry</button>
-        `;
-      }
+       if (isCorrect) {
+         overlay.innerHTML = `
+           <p class="result-message">Well done!</p>
+           <p><strong>Correct Sentence:</strong> ${this.currentSentences[this.currentSentenceIndex].sentence}</p>
+           <button id="next-button">${
+             this.currentSentenceIndex < this.currentSentences.length - 1
+               ? "Next Sentence"
+               : "Finish"
+           }</button>
+         `;
+       } else {
+         overlay.innerHTML = `
+           <p class="result-message">Incorrect, try again!</p>
+           <p><strong>Correct Sentence:</strong> ${this.currentSentences[this.currentSentenceIndex].sentence}</p>
+           <button id="retry-button">Retry</button>
+         `;
+       }
 
-      gameArea.appendChild(overlay);
+       gameArea.appendChild(overlay);
 
-      if (isCorrect) {
-        document.getElementById("next-button").addEventListener("click", () => {
-          overlay.remove();
-          this.currentSentenceIndex++;
-          if (this.currentSentenceIndex < this.currentSentences.length) {
-            this.loadSentence();
-          } else {
-            this.showSummary();
-          }
-        });
-      } else {
-        document.getElementById("retry-button").addEventListener("click", () => {
-          overlay.remove();
-          this.loadSentence();
-        });
-      }
-    }
+       if (isCorrect) {
+         document.getElementById("next-button").addEventListener("click", () => {
+           overlay.remove();
+           this.currentSentenceIndex++;
+           if (this.currentSentenceIndex < this.currentSentences.length) {
+             this.loadSentence();
+           } else {
+             this.showSummary();
+           }
+         });
+       } else {
+         document.getElementById("retry-button").addEventListener("click", () => {
+           overlay.remove();
+           this.loadSentence();
+         });
+       }
+     }
+     
+     // Función para mostrar notificación de logro
+     showAchievementNotification(achievements) {
+       achievements.forEach(achievement => {
+         // Create notification element
+         const notification = document.createElement("div");
+         notification.className = "achievement-notification";
+         notification.innerHTML = `
+           <div class="achievement-content">
+             <i class="fas ${achievement.icon} achievement-icon"></i>
+             <div class="achievement-text">
+               <h4>${achievement.name}</h4>
+               <p>${achievement.description}</p>
+               <span class="achievement-points">+${achievement.points} points</span>
+             </div>
+           </div>
+         `;
+         
+         // Add styles if not already present
+         if (!document.querySelector('.achievement-notification')) {
+           const style = document.createElement("style");
+           style.textContent = `
+             .achievement-notification {
+               position: fixed;
+               bottom: 20px;
+               right: 20px;
+               background: var(--bg-dark);
+               backdrop-filter: blur(10px);
+               border: 2px solid var(--accent);
+               border-radius: 15px;
+               padding: 15px;
+               display: flex;
+               align-items: center;
+               gap: 15px;
+               box-shadow: 0 8px 15px var(--shadow-1), -8px -8px 15px var(--shadow-2);
+               z-index: 1000;
+               animation: slideIn 0.5s ease-out;
+               max-width: 300px;
+               font-family: "Poppins", sans-serif;
+             }
+             
+             .achievement-icon {
+               font-size: 2rem;
+               color: var(--accent);
+             }
+             
+             .achievement-text h4 {
+               margin: 0 0 5px 0;
+               color: var(--text-light);
+               font-size: 1.2rem;
+             }
+             
+             .achievement-text p {
+               margin: 0;
+               color: var(--secondary-text);
+               font-size: 0.9rem;
+             }
+             
+             .achievement-points {
+               display: block;
+               margin-top: 5px;
+               font-weight: bold;
+               color: var(--success-color);
+               font-size: 0.9rem;
+             }
+             
+             @keyframes slideIn {
+               from {
+                 transform: translateX(100%);
+                 opacity: 0;
+               }
+               to {
+                 transform: translateX(0);
+                 opacity: 1;
+               }
+             }
+             
+             @keyframes slideOut {
+               from {
+                 transform: translateX(0);
+                 opacity: 1;
+               }
+               to {
+                 transform: translateX(100%);
+                 opacity: 0;
+               }
+             }
+           `;
+           document.head.appendChild(style);
+         }
+         
+         // Add notification to page
+         document.body.appendChild(notification);
+         
+         // Remove after delay
+         setTimeout(() => {
+           notification.style.animation = "slideOut 0.5s ease-in";
+           setTimeout(() => {
+             notification.remove();
+           }, 500);
+         }, 5000);
+       });
+     }
 
-    showSummary() {
-      const main = document.querySelector("main");
-      const gameArea = document.getElementById("game-area");
-      gameArea.style.display = "none";
+showSummary() {
+       const main = document.querySelector("main");
+       const gameArea = document.getElementById("game-area");
+       gameArea.style.display = "none";
 
-      const summaryDiv = document.createElement("div");
-      summaryDiv.id = "game-summary";
-      summaryDiv.innerHTML = `
-        <h3>Game Over!</h3>
-        <p>You completed all sentences for level ${this.currentLevel}!</p>
-        <button id="restart-button">Restart</button>
-      `;
-      main.appendChild(summaryDiv);
+       // Calculate score and points
+       const correctCount = this.currentSentences.filter((_, index) => 
+         index < this.currentSentenceIndex && 
+         this.userAnswers[index] === this.currentSentences[index].sentence.toLowerCase()
+       ).length;
 
-      document.getElementById("restart-button").addEventListener("click", () => {
-        summaryDiv.remove();
-        gameArea.style.display = "block";
-        this.generateSentences();
-        this.loadSentence();
-      });
-    }
+       const totalQuestions = this.currentSentences.length;
+       const scorePercentage = Math.round((correctCount / totalQuestions) * 100);
+       const pointsEarned = Math.round(correctCount * 10); // 10 points per correct answer
+
+       const summaryDiv = document.createElement("div");
+       summaryDiv.id = "game-summary";
+       summaryDiv.innerHTML = `
+         <h3>Game Over!</h3>
+         <p>You completed ${correctCount} of ${totalQuestions} sentences correctly.</p>
+         <p>Your score: ${scorePercentage}%</p>
+         <p>Points earned: ${pointsEarned}</p>
+         <button id="restart-button">Restart</button>
+       `;
+       main.appendChild(summaryDiv);
+
+       document.getElementById("restart-button").addEventListener("click", () => {
+         summaryDiv.remove();
+         gameArea.style.display = "block";
+         this.generateSentences();
+         this.loadSentence();
+       });
+       
+       // Add points to progress tracker
+       setTimeout(() => {
+         if (window.progressTracker) {
+           const level = this.currentLevel;
+           window.progressTracker.addPoints(level, "organizeSentence", pointsEarned);
+           window.progressTracker.completeGame(level, "organizeSentence");
+           
+           // Show achievement notification if any
+           const newAchievements = window.progressTracker.checkAchievements();
+           if (newAchievements.length > 0) {
+             showAchievementNotification(newAchievements);
+           }
+         }
+       }, 500);
+     }
   }
 
   // Ejemplo de estructura de datos para oraciones según nivel
