@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BookOpen, Headphones, Mic, FileText, ExternalLink } from "lucide-react";
+import { BookOpen, Headphones, Mic, FileText, Brain, Type, MessageSquare } from "lucide-react";
 import { Card, Button } from "@/components/ui";
 
 const resources = [
@@ -10,41 +10,57 @@ const resources = [
     category: "Vocabulario",
     icon: BookOpen,
     color: "from-violet-500 to-purple-500",
-    items: [
-      { title: "Flashcards A1", description: "100 tarjetas para principiantes", url: "#" },
-      { title: "Flashcards A2", description: "100 tarjetas intermedias", url: "#" },
-      { title: "Flashcards B1", description: "100 tarjetas avanzadas", url: "#" },
-    ],
+    link: "/games/vocabulary",
+    description: "Aprende y practica vocabulario con flashcards",
   },
   {
     category: "Listening",
     icon: Headphones,
     color: "from-pink-500 to-rose-500",
-    items: [
-      { title: "Canciones en inglés", description: "Letras y actividades", url: "#" },
-      { title: "Podcast para niños", description: "Historias cortas", url: "#" },
-      { title: "Audiolibros", description: "Clásicos adaptados", url: "#" },
-    ],
+    link: "/games/listening",
+    description: "Mejora tu comprensión auditiva",
   },
   {
     category: "Speaking",
     icon: Mic,
     color: "from-cyan-500 to-blue-500",
-    items: [
-      { title: "Fonética básica", description: "Sonidos del inglés", url: "#" },
-      { title: "Práctica de pronunciación", description: "Ejercicios guiados", url: "#" },
-      { title: "Diálogos cotidianos", description: "Conversaciones comunes", url: "#" },
-    ],
+    link: "/games/speaking",
+    description: "Practica tu pronunciación",
   },
   {
     category: "Grammar",
     icon: FileText,
     color: "from-amber-500 to-orange-500",
-    items: [
-      { title: "Guía de verbos", description: "Presente, pasado, futuro", url: "#" },
-      { title: "Preposiciones", description: "in, on, at, to, for...", url: "#" },
-      { title: "Artículos y plurales", description: "a, an, the, -s, -es", url: "#" },
-    ],
+    link: "/games/grammar",
+    description: "Ejercicios de gramática",
+  },
+  {
+    category: "Sentence",
+    icon: Type,
+    color: "from-emerald-500 to-teal-500",
+    link: "/games/sentence",
+    description: "Organiza palabras en oraciones",
+  },
+  {
+    category: "Spelling",
+    icon: MessageSquare,
+    color: "from-green-500 to-emerald-500",
+    link: "/games/spelling",
+    description: "Practica deletreo en inglés",
+  },
+  {
+    category: "Memory",
+    icon: Brain,
+    color: "from-yellow-500 to-amber-500",
+    link: "/games/memory",
+    description: "Encuentra las parejas",
+  },
+  {
+    category: "Phrases",
+    icon: BookOpen,
+    color: "from-indigo-500 to-violet-500",
+    link: "/games/phrases",
+    description: "Aprende frases completas",
   },
 ];
 
@@ -54,41 +70,26 @@ export default function ResourcesPage() {
       <div className="max-w-6xl mx-auto py-8">
         <h1 className="text-3xl font-bold text-center mb-4">📚 Recursos Educativos</h1>
         <p className="text-center text-gray-600 dark:text-gray-300 mb-8">
-          Material complementario para reforzar tu aprendizaje
+          Selecciona un recurso para practicar y mejorar tu inglés
         </p>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {resources.map((category, categoryIndex) => (
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {resources.map((resource, index) => (
             <motion.div
-              key={category.category}
+              key={resource.category}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: categoryIndex * 0.1 }}
+              transition={{ delay: index * 0.05 }}
             >
-              <Card className="overflow-hidden">
-                <div className={`bg-gradient-to-r ${category.color} p-4 text-white`}>
-                  <div className="flex items-center gap-3">
-                    <category.icon className="w-6 h-6" />
-                    <h2 className="text-xl font-bold">{category.category}</h2>
+              <Link href={resource.link}>
+                <Card hover className={`bg-gradient-to-br ${resource.color} border-0 h-full min-h-[140px]`}>
+                  <div className="text-center text-white h-full flex flex-col justify-center items-center">
+                    <resource.icon className="w-10 h-10 mb-2" />
+                    <h2 className="text-lg font-bold">{resource.category}</h2>
+                    <p className="text-xs text-white/80 mt-1">{resource.description}</p>
                   </div>
-                </div>
-                <div className="p-4 space-y-3">
-                  {category.items.map((item) => (
-                    <div
-                      key={item.title}
-                      className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
-                    >
-                      <div>
-                        <h3 className="font-medium">{item.title}</h3>
-                        <p className="text-sm text-gray-500">{item.description}</p>
-                      </div>
-                      <Button variant="ghost" size="sm">
-                        <ExternalLink className="w-4 h-4" />
-                      </Button>
-                    </div>
-                  ))}
-                </div>
-              </Card>
+                </Card>
+              </Link>
             </motion.div>
           ))}
         </div>
@@ -96,10 +97,10 @@ export default function ResourcesPage() {
         <div className="mt-12 text-center">
           <h2 className="text-2xl font-bold mb-4">🎯 ¿Listo para practicar?</h2>
           <p className="text-gray-600 dark:text-gray-300 mb-6">
-            Pon a prueba lo que has aprendido con nuestros juegos interactivos
+            Elige cualquiera de los juegos disponibles para empezar
           </p>
           <Link href="/">
-            <Button size="lg">Ir a los juegos</Button>
+            <Button size="lg">Ver todos los juegos</Button>
           </Link>
         </div>
       </div>
