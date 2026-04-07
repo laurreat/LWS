@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   title: "Learn With Sena - Aprende inglés jugando",
   description: "Plataforma interactiva de aprendizaje de inglés para niños. ¡Juega y aprende!",
   manifest: "/manifest.json",
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
