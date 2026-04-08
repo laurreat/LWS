@@ -4,9 +4,9 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Menu, X, Sun, Moon, Volume2, VolumeX } from "lucide-react";
+import { Menu, X, Sun, Moon, Volume2, VolumeX, LogOut, User } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
-import { useProgressStore } from "@/lib/store";
+import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui";
 
 const navLinks = [
@@ -19,9 +19,8 @@ export function Navbar() {
   const pathname = usePathname();
   const { theme, setTheme, resolvedTheme, mounted } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const soundEnabled = useProgressStore((s) => s.settings.soundEnabled);
-  const updateSettings = useProgressStore((s) => s.updateSettings);
-  const totalPoints = useProgressStore((s) => s.totalPoints);
+  const { user, progress, signOut } = useAuth();
+  const soundEnabled = progress?.settings?.soundEnabled ?? true;
 
   const toggleTheme = () => {
     const themes: ("light" | "dark" | "system")[] = ["light", "dark", "system"];
@@ -29,8 +28,8 @@ export function Navbar() {
     setTheme(themes[(currentIndex + 1) % themes.length]);
   };
 
-  const toggleSound = () => {
-    updateSettings({ soundEnabled: !soundEnabled });
+  const handleSignOut = async () => {
+    await signOut();
   };
 
   return (
@@ -67,12 +66,14 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-accent/10 rounded-full">
-              <span className="text-lg">⭐</span>
-              <span className="font-bold text-accent">{totalPoints}</span>
-            </div>
+            {user && progress && (
+              <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-accent/10 rounded-full">
+                <span className="text-lg">⭐</span>
+                <span className="font-bold text-accent">{progress.total_points}</span>
+              </div>
+            )}
 
-            <Button variant="ghost" size="sm" onClick={toggleSound} className="p-2">
+            <Button variant="ghost" size="sm" className="p-2">
               {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
             </Button>
 
@@ -80,6 +81,22 @@ export function Navbar() {
               <Button variant="ghost" size="sm" onClick={toggleTheme} className="p-2">
                 {resolvedTheme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
               </Button>
+            )}
+
+            {user ? (
+              <div className="flex items-center gap-2">
+                <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full">
+                  <User className="w-4 h-4 text-primary" />
+                  <span className="font-medium text-primary">{user.email?.split("@")[0]}</span>
+                </div>
+                <Button variant="ghost" size="sm" onClick={handleSignOut} className="p-2">
+                  <LogOut className="w-5 h-5" />
+                </Button>
+              </div>
+            ) : (
+              <Link href="/login">
+                <Button variant="outline" size="sm">Iniciar Sesión</Button>
+              </Link>
             )}
 
             <Button
@@ -117,6 +134,14 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
+              {user && (
+                <button
+                  onClick={() => { handleSignOut(); setMobileMenuOpen(false); }}
+                  className="block w-full text-left px-4 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                >
+                  Cerrar Sesión
+                </button>
+              )}
             </div>
           </motion.div>
         )}

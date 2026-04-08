@@ -2,24 +2,38 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Trophy, Star, Zap, Target, Trash2, Award } from "lucide-react";
+import { Trophy, Star, Zap, Target, Trash2, Award, Lock } from "lucide-react";
+import Link from "next/link";
 import { Card, Button, Modal, LevelBadge } from "@/components/ui";
-import { useProgressStore } from "@/lib/store";
+import { useAuth } from "@/contexts/AuthContext";
 import { ACHIEVEMENTS } from "@/lib/achievements";
 
 export default function ProgressPage() {
-  const totalPoints = useProgressStore((s) => s.totalPoints);
-  const streak = useProgressStore((s) => s.streak);
-  const gamesPlayed = useProgressStore((s) => s.gamesPlayed);
-  const achievements = useProgressStore((s) => s.achievements);
-  const levelProgress = useProgressStore((s) => s.levelProgress);
-  const resetProgress = useProgressStore((s) => s.resetProgress);
+  const { user, progress } = useAuth();
   const [showResetModal, setShowResetModal] = useState(false);
 
-  const handleReset = () => {
-    resetProgress();
-    setShowResetModal(false);
-  };
+  if (!user) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <Card className="text-center max-w-md">
+          <Trophy className="w-16 h-16 mx-auto mb-4 text-primary" />
+          <h1 className="text-2xl font-bold mb-4">Tu Progreso</h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
+            Inicia sesión para ver tu progreso y achievements.
+          </p>
+          <Link href="/login">
+            <Button>Iniciar Sesión</Button>
+          </Link>
+        </Card>
+      </div>
+    );
+  }
+
+  const totalPoints = progress?.total_points ?? 0;
+  const streak = progress?.streak ?? 0;
+  const gamesPlayed = progress?.games_played ?? 0;
+  const achievementsList = progress?.achievements ?? [];
+  const levelProgress = progress?.level_progress ?? { A1: { completed: 0, total: 0, points: 0 }, A2: { completed: 0, total: 0, points: 0 }, B1: { completed: 0, total: 0, points: 0 } };
 
   return (
     <div className="min-h-screen p-4">
@@ -44,7 +58,7 @@ export default function ProgressPage() {
           </Card>
           <Card className="text-center bg-gradient-to-br from-purple-400 to-pink-500 text-white border-0">
             <Award className="w-8 h-8 mx-auto mb-2" />
-            <p className="text-3xl font-bold">{achievements.length}</p>
+            <p className="text-3xl font-bold">{achievementsList.length}</p>
             <p className="text-sm opacity-80">Logros</p>
           </Card>
         </div>
@@ -77,14 +91,14 @@ export default function ProgressPage() {
         </div>
 
         <h2 className="text-2xl font-bold mb-4">🎖️ Logros Desbloqueados</h2>
-        {achievements.length === 0 ? (
+        {achievementsList.length === 0 ? (
           <Card className="text-center py-8">
             <Trophy className="w-16 h-16 mx-auto mb-4 text-gray-300" />
             <p className="text-gray-500">¡Completa juegos para desbloquear logros!</p>
           </Card>
         ) : (
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-            {ACHIEVEMENTS.filter((a) => achievements.includes(a.id)).map((achievement) => (
+            {ACHIEVEMENTS.filter((a) => achievementsList.includes(a.id)).map((achievement) => (
               <motion.div
                 key={achievement.id}
                 initial={{ scale: 0 }}
@@ -102,7 +116,7 @@ export default function ProgressPage() {
 
         <h2 className="text-2xl font-bold mb-4">🔓 Logros Disponibles</h2>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 mb-8">
-          {ACHIEVEMENTS.filter((a) => !achievements.includes(a.id)).map((achievement) => (
+          {ACHIEVEMENTS.filter((a) => !achievementsList.includes(a.id)).map((achievement) => (
             <div
               key={achievement.id}
               className="bg-gray-100 dark:bg-gray-800 rounded-xl p-4 text-center opacity-50"
@@ -114,30 +128,6 @@ export default function ProgressPage() {
             </div>
           ))}
         </div>
-
-        <div className="text-center">
-          <Button variant="error" onClick={() => setShowResetModal(true)}>
-            <Trash2 className="w-4 h-4 mr-2" />Eliminar Progreso
-          </Button>
-        </div>
-
-        <Modal
-          isOpen={showResetModal}
-          onClose={() => setShowResetModal(false)}
-          title="¿Eliminar progreso?"
-        >
-          <p className="mb-6 text-gray-600 dark:text-gray-300">
-            Esta acción eliminará todo tu progreso, incluyendo puntos, logros y estadísticas. Esta acción no se puede deshacer.
-          </p>
-          <div className="flex gap-4">
-            <Button variant="outline" className="flex-1" onClick={() => setShowResetModal(false)}>
-              Cancelar
-            </Button>
-            <Button variant="error" className="flex-1" onClick={handleReset}>
-              Eliminar
-            </Button>
-          </div>
-        </Modal>
       </div>
     </div>
   );

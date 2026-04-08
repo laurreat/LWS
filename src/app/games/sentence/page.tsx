@@ -7,7 +7,7 @@ import { Volume2, Home, Trophy, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
 import { useSpeech } from "@/hooks/useSpeech";
-import { useProgress } from "@/hooks/useProgress";
+import { useAuth } from "@/contexts/AuthContext";
 import { ALL_SENTENCES } from "@/data/sentences";
 import { GameLevel, Sentence } from "@/types";
 
@@ -24,7 +24,7 @@ export default function SentencePage() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { speak } = useSpeech();
-  const { playGame } = useProgress();
+  const { playGame } = useAuth();
 
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_SENTENCES.filter((s) => s.level === level);

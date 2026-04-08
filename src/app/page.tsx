@@ -4,7 +4,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { BookOpen, Trophy, Star, Zap, Target, Mic } from "lucide-react";
 import { Card, Button } from "@/components/ui";
-import { useProgressStore } from "@/lib/store";
+import { useAuth } from "@/contexts/AuthContext";
 
 const games = [
   { id: "vocabulary", name: "Vocabulary", icon: BookOpen, color: "from-violet-500 to-purple-500", description: "Aprende palabras nuevas" },
@@ -18,9 +18,10 @@ const games = [
 ];
 
 export default function HomePage() {
-  const totalPoints = useProgressStore((s) => s.totalPoints);
-  const streak = useProgressStore((s) => s.streak);
-  const gamesPlayed = useProgressStore((s) => s.gamesPlayed);
+  const { user, progress } = useAuth();
+  const totalPoints = progress?.total_points ?? 0;
+  const streak = progress?.streak ?? 0;
+  const gamesPlayed = progress?.games_played ?? 0;
 
   return (
     <div className="min-h-screen">

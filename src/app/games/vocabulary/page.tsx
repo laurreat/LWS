@@ -7,7 +7,7 @@ import { Volume2, CheckCircle, XCircle, Trophy, Home } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
 import { useSpeech } from "@/hooks/useSpeech";
-import { useProgress } from "@/hooks/useProgress";
+import { useAuth } from "@/contexts/AuthContext";
 import { A1_WORDS, A2_WORDS, B1_WORDS } from "@/data/vocabulary";
 import { GameLevel, Word } from "@/types";
 
@@ -49,7 +49,7 @@ export default function VocabularyPage() {
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { speak } = useSpeech();
-  const { playGame } = useProgress();
+  const { playGame, user } = useAuth();
 
   const startGame = useCallback((level: GameLevel) => {
     const words = WORDS_BY_LEVEL[level];

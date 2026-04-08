@@ -6,7 +6,7 @@ import confetti from "canvas-confetti";
 import { Home, Trophy, CheckCircle, XCircle, Info } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
-import { useProgress } from "@/hooks/useProgress";
+import { useAuth } from "@/contexts/AuthContext";
 import { ALL_GRAMMAR } from "@/data/grammar";
 import { GameLevel, GrammarQuestion } from "@/types";
 
@@ -22,7 +22,7 @@ export default function GrammarPage() {
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
-  const { playGame } = useProgress();
+  const { playGame } = useAuth();
 
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_GRAMMAR.filter((q) => q.level === level);

@@ -6,7 +6,7 @@ import confetti from "canvas-confetti";
 import { Home, Trophy, RefreshCw, CheckCircle } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
-import { useProgress } from "@/hooks/useProgress";
+import { useAuth } from "@/contexts/AuthContext";
 import { A1_WORDS } from "@/data/vocabulary";
 import { GameLevel, Word } from "@/types";
 
@@ -35,7 +35,7 @@ export default function MemoryPage() {
   const [score, setScore] = useState(0);
   const [moves, setMoves] = useState(0);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
-  const { playGame } = useProgress();
+  const { playGame } = useAuth();
 
   const startGame = useCallback((level: GameLevel) => {
     const words = A1_WORDS.filter((w) => true).slice(0, 100);

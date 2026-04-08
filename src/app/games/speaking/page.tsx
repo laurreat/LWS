@@ -7,7 +7,7 @@ import { Mic, MicOff, Volume2, Home, Trophy, CheckCircle, XCircle, RefreshCw } f
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
 import { useSpeech } from "@/hooks/useSpeech";
-import { useProgress } from "@/hooks/useProgress";
+import { useAuth } from "@/contexts/AuthContext";
 import { ALL_PHRASES } from "@/data/phrases";
 import { GameLevel, Phrase } from "@/types";
 
@@ -24,7 +24,7 @@ export default function SpeakingPage() {
   const [showResult, setShowResult] = useState<boolean | null>(null);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { speak } = useSpeech();
-  const { playGame } = useProgress();
+  const { playGame } = useAuth();
   const recognitionRef = useRef<any>(null);
 
   const startGame = useCallback((level: GameLevel) => {

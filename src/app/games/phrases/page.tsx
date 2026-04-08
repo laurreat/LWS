@@ -7,7 +7,7 @@ import { Volume2, Home, Trophy, CheckCircle, XCircle } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
 import { useSpeech } from "@/hooks/useSpeech";
-import { useProgress } from "@/hooks/useProgress";
+import { useAuth } from "@/contexts/AuthContext";
 import { ALL_PHRASES } from "@/data/phrases";
 import { GameLevel, Phrase } from "@/types";
 
@@ -23,7 +23,7 @@ export default function PhrasesPage() {
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { speak } = useSpeech();
-  const { playGame } = useProgress();
+  const { playGame } = useAuth();
 
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_PHRASES.filter((p) => p.level === level);

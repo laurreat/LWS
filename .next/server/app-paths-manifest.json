@@ -2,13 +2,15 @@
   "/_not-found/page": "app/_not-found/page.js",
   "/games/grammar/page": "app/games/grammar/page.js",
   "/games/phrases/page": "app/games/phrases/page.js",
+  "/games/memory/page": "app/games/memory/page.js",
+  "/games/spelling/page": "app/games/spelling/page.js",
   "/games/listening/page": "app/games/listening/page.js",
+  "/games/sentence/page": "app/games/sentence/page.js",
   "/games/speaking/page": "app/games/speaking/page.js",
   "/games/vocabulary/page": "app/games/vocabulary/page.js",
-  "/resources/page": "app/resources/page.js",
   "/page": "app/page.js",
-  "/games/spelling/page": "app/games/spelling/page.js",
-  "/games/sentence/page": "app/games/sentence/page.js",
-  "/games/memory/page": "app/games/memory/page.js",
-  "/progress/page": "app/progress/page.js"
+  "/login/page": "app/login/page.js",
+  "/progress/page": "app/progress/page.js",
+  "/signup/page": "app/signup/page.js",
+  "/resources/page": "app/resources/page.js"
 }

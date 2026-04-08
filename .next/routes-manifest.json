@@ -81,6 +81,12 @@
       "namedRegex": "^/games/vocabulary(?:/)?$"
     },
     {
+      "page": "/login",
+      "regex": "^/login(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/login(?:/)?$"
+    },
+    {
       "page": "/progress",
       "regex": "^/progress(?:/)?$",
       "routeKeys": {},
@@ -91,6 +97,12 @@
       "regex": "^/resources(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/resources(?:/)?$"
+    },
+    {
+      "page": "/signup",
+      "regex": "^/signup(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/signup(?:/)?$"
     }
   ],
   "dataRoutes": [],
