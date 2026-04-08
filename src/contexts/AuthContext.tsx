@@ -44,6 +44,7 @@ interface AuthContextType {
   updateProgress: (updates: Partial<UserProgress>) => Promise<void>;
   playGame: (gameId: string, score: number, pointsEarned: number) => Promise<boolean>;
   updateProfile: (updates: Partial<Profile>) => Promise<void>;
+  deleteAccount: () => Promise<{ error: Error | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -137,6 +138,28 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
     setProfile(null);
     setProgress(null);
+  }
+
+  async function deleteAccount() {
+    if (!user) return { error: new Error("No user logged in") };
+
+    try {
+      await supabase.from("user_progress").delete().eq("user_id", user.id);
+      await supabase.from("profiles").delete().eq("id", user.id);
+      
+      const { error } = await supabase.auth.admin.deleteUser(user.id);
+      
+      if (error) return { error };
+      
+      setUser(null);
+      setSession(null);
+      setProfile(null);
+      setProgress(null);
+      
+      return { error: null };
+    } catch (error) {
+      return { error: error as Error };
+    }
   }
 
   async function updateProgress(updates: Partial<UserProgress>) {
@@ -282,6 +305,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         updateProgress,
         playGame,
         updateProfile,
+        deleteAccount,
       }}
     >
       {children}

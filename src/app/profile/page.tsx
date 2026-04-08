@@ -1,18 +1,22 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { User, Mail, Save, Trophy, Star, Zap } from "lucide-react";
+import { User, Mail, Save, Trophy, Star, Zap, AlertTriangle } from "lucide-react";
 import Link from "next/link";
-import { Card, Button } from "@/components/ui";
+import { Card, Button, Modal } from "@/components/ui";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function ProfilePage() {
-  const { user, profile, progress, updateProfile, updateProgress } = useAuth();
+  const { user, profile, progress, updateProfile, deleteAccount } = useAuth();
+  const router = useRouter();
   const [name, setName] = useState(profile?.name || "");
   const [username, setUsername] = useState(profile?.username || "");
   const [saving, setSaving] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleting, setDeleting] = useState(false);
 
   if (!user) {
     return (
@@ -37,6 +41,17 @@ export default function ProfilePage() {
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
+  };
+
+  const handleDeleteAccount = async () => {
+    setDeleting(true);
+    const { error } = await deleteAccount();
+    if (!error) {
+      router.push("/");
+    } else {
+      setDeleting(false);
+      setShowDeleteModal(false);
+    }
   };
 
   const totalPoints = progress?.total_points ?? 0;
@@ -136,6 +151,43 @@ export default function ProfilePage() {
             Ver todos los logros →
           </Link>
         </Card>
+
+        <div className="mt-8">
+          <Button
+            variant="error"
+            className="w-full"
+            onClick={() => setShowDeleteModal(true)}
+          >
+            <AlertTriangle className="w-4 h-4 mr-2" />
+            Eliminar mi cuenta
+          </Button>
+        </div>
+
+        <Modal
+          isOpen={showDeleteModal}
+          onClose={() => setShowDeleteModal(false)}
+          title="¿Eliminar cuenta?"
+        >
+          <p className="mb-4 text-gray-600 dark:text-gray-300">
+            Esta acción eliminará permanentemente tu cuenta, incluyendo:
+          </p>
+          <ul className="list-disc list-inside mb-6 text-gray-600 dark:text-gray-300 space-y-1">
+            <li>Tu perfil y datos</li>
+            <li>Todos tus puntos y logros</li>
+            <li>Tu historial de juegos</li>
+          </ul>
+          <p className="text-red-500 font-medium mb-6">
+            Esta acción no se puede deshacer.
+          </p>
+          <div className="flex gap-4">
+            <Button variant="outline" className="flex-1" onClick={() => setShowDeleteModal(false)}>
+              Cancelar
+            </Button>
+            <Button variant="error" className="flex-1" onClick={handleDeleteAccount} disabled={deleting}>
+              {deleting ? "Eliminando..." : "Sí, eliminar"}
+            </Button>
+          </div>
+        </Modal>
       </div>
     </div>
   );
