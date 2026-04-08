@@ -1,15 +1,14 @@
 "use client";
 
 import { useState, useEffect, Suspense } from "react";
-import Link from "next/link";
-import { useSearchParams, useRouter } from "next/navigation";
+import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { Card, Button } from "@/components/ui";
+import Link from "next/link";
 
 function ResetPasswordContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const token = searchParams.get("token");
   
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -18,10 +17,24 @@ function ResetPasswordContent() {
   const [success, setSuccess] = useState(false);
 
   useEffect(() => {
-    if (!token) {
-      setError("Token no válido");
+    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const accessToken = hashParams.get("access_token");
+    const refreshToken = hashParams.get("refresh_token");
+
+    if (accessToken && refreshToken) {
+      const supabase = createClient();
+      supabase.auth.setSession({
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      }).then(({ error }) => {
+        if (error) {
+          setError("Token inválido o expirado");
+        }
+      });
+    } else if (!searchParams.get("type")) {
+      setError("Enlace inválido o expirado");
     }
-  }, [token]);
+  }, [searchParams]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -105,7 +118,7 @@ function ResetPasswordContent() {
             />
           </div>
 
-          <Button type="submit" className="w-full" disabled={loading || !token}>
+          <Button type="submit" className="w-full" disabled={loading}>
             {loading ? "Guardando..." : "Cambiar contraseña"}
           </Button>
         </form>

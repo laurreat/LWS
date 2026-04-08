@@ -18,7 +18,7 @@ export default function ForgotPasswordPage() {
 
     const supabase = createClient();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${typeof window !== 'undefined' ? window.location.origin : 'https://lws-one.vercel.app'}/reset-password`,
+      redirectTo: "https://lws-one.vercel.app/reset-password",
     });
 
     setLoading(false);
