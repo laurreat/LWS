@@ -3,13 +3,13 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { User, Mail, Save, Trophy, Star, Zap, AlertTriangle } from "lucide-react";
+import { User, Mail, Save, Trophy, Star, Zap, AlertTriangle, Lock, Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { Card, Button, Modal } from "@/components/ui";
 import { useAuth } from "@/contexts/AuthContext";
 
 export default function ProfilePage() {
-  const { user, profile, progress, updateProfile, requestAccountDeletion } = useAuth();
+  const { user, profile, progress, updateProfile, requestAccountDeletion, changePassword } = useAuth();
   const router = useRouter();
   const [name, setName] = useState(profile?.name || "");
   const [username, setUsername] = useState(profile?.username || "");
@@ -17,6 +17,12 @@ export default function ProfilePage() {
   const [saved, setSaved] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const [currentPassword, setCurrentPassword] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
 
   if (!user) {
     return (
@@ -51,6 +57,30 @@ export default function ProfilePage() {
     } else {
       setDeleting(false);
       setShowDeleteModal(false);
+    }
+  };
+
+  const handleChangePassword = async () => {
+    if (newPassword !== confirmPassword) {
+      alert("Las contraseñas no coinciden");
+      return;
+    }
+    if (newPassword.length < 6) {
+      alert("La contraseña debe tener al menos 6 caracteres");
+      return;
+    }
+
+    setChangingPassword(true);
+    const { error } = await changePassword(currentPassword, newPassword);
+    setChangingPassword(false);
+
+    if (error) {
+      alert(error.message);
+    } else {
+      alert("Contraseña cambiada exitosamente");
+      setCurrentPassword("");
+      setNewPassword("");
+      setConfirmPassword("");
     }
   };
 
@@ -112,6 +142,43 @@ export default function ProfilePage() {
                 disabled
                 className="w-full p-3 border rounded-lg bg-gray-100 dark:bg-gray-800 dark:border-gray-700 opacity-60"
               />
+            </div>
+
+            <div className="pt-4 border-t dark:border-gray-700">
+              <label className="block text-sm font-medium mb-2 flex items-center gap-2">
+                <Lock className="w-4 h-4" /> Cambiar contraseña
+              </label>
+              <div className="space-y-3">
+                <input
+                  type={showCurrentPassword ? "text" : "password"}
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
+                  placeholder="Contraseña actual"
+                />
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
+                  placeholder="Nueva contraseña"
+                />
+                <input
+                  type={showNewPassword ? "text" : "password"}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
+                  placeholder="Confirmar contraseña"
+                />
+                <Button
+                  variant="outline"
+                  onClick={handleChangePassword}
+                  disabled={changingPassword || !currentPassword || !newPassword || !confirmPassword}
+                  className="w-full"
+                >
+                  {changingPassword ? "Cambiando..." : "Cambiar contraseña"}
+                </Button>
+              </div>
             </div>
 
             <Button

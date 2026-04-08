@@ -1,18 +1,20 @@
 {
   "/_not-found/page": "app/_not-found/page.js",
   "/api/delete-account/route": "app/api/delete-account/route.js",
-  "/games/grammar/page": "app/games/grammar/page.js",
-  "/games/speaking/page": "app/games/speaking/page.js",
-  "/login/page": "app/login/page.js",
-  "/games/listening/page": "app/games/listening/page.js",
+  "/forgot-password/page": "app/forgot-password/page.js",
   "/games/memory/page": "app/games/memory/page.js",
+  "/games/grammar/page": "app/games/grammar/page.js",
   "/games/sentence/page": "app/games/sentence/page.js",
-  "/games/spelling/page": "app/games/spelling/page.js",
+  "/games/listening/page": "app/games/listening/page.js",
   "/games/phrases/page": "app/games/phrases/page.js",
+  "/games/speaking/page": "app/games/speaking/page.js",
+  "/games/spelling/page": "app/games/spelling/page.js",
   "/games/vocabulary/page": "app/games/vocabulary/page.js",
+  "/login/page": "app/login/page.js",
   "/profile/page": "app/profile/page.js",
   "/page": "app/page.js",
+  "/resources/page": "app/resources/page.js",
   "/progress/page": "app/progress/page.js",
-  "/signup/page": "app/signup/page.js",
-  "/resources/page": "app/resources/page.js"
+  "/reset-password/page": "app/reset-password/page.js",
+  "/signup/page": "app/signup/page.js"
 }

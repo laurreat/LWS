@@ -41,6 +41,7 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string, name: string, username: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
+  changePassword: (currentPassword: string, newPassword: string) => Promise<{ error: Error | null }>;
   updateProgress: (updates: Partial<UserProgress>) => Promise<void>;
   playGame: (gameId: string, score: number, pointsEarned: number) => Promise<boolean>;
   updateProfile: (updates: Partial<Profile>) => Promise<void>;
@@ -138,6 +139,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await supabase.auth.signOut();
     setProfile(null);
     setProgress(null);
+  }
+
+  async function changePassword(currentPassword: string, newPassword: string) {
+    try {
+      const { error } = await supabase.auth.updateUser({
+        password: newPassword,
+      });
+      return { error };
+    } catch (error) {
+      return { error: error as Error };
+    }
   }
 
   async function requestAccountDeletion() {
@@ -308,6 +320,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signIn,
         signUp,
         signOut,
+        changePassword,
         updateProgress,
         playGame,
         updateProfile,
