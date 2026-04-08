@@ -144,9 +144,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!user) return { error: new Error("No user logged in") };
 
     try {
-      await supabase.from("deletion_requests").delete().eq("user_id", user.id);
-      await supabase.from("user_progress").delete().eq("user_id", user.id);
-      await supabase.from("profiles").delete().eq("id", user.id);
+      const response = await fetch("/api/delete-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: user.id }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        return { error: new Error(data.error) };
+      }
 
       await supabase.auth.signOut();
       setUser(null);

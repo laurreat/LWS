@@ -20,16 +20,19 @@ export async function POST(request: NextRequest) {
       auth: { autoRefreshToken: false, persistSession: false },
     });
 
-    await supabaseAdmin.from("user_progress").delete().eq("user_id", userId);
-    await supabaseAdmin.from("profiles").delete().eq("id", userId);
-    await supabaseAdmin.from("deletion_requests").delete().eq("user_id", userId);
-
+    // Delete from auth.users using admin API
     const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(userId);
 
     if (deleteError) {
-      console.error("Delete user error:", deleteError);
+      console.error("Delete auth user error:", deleteError);
       return NextResponse.json({ error: deleteError.message }, { status: 500 });
     }
+
+    // Delete from user_progress
+    await supabaseAdmin.from("user_progress").delete().eq("user_id", userId);
+    
+    // Delete from profiles  
+    await supabaseAdmin.from("profiles").delete().eq("id", userId);
 
     return NextResponse.json({ success: true });
   } catch (error) {
