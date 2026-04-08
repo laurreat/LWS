@@ -94,9 +94,14 @@ export function Navbar() {
                 </Button>
               </div>
             ) : (
-              <Link href="/login">
-                <Button variant="outline" size="sm">Iniciar Sesión</Button>
-              </Link>
+              <div className="flex items-center gap-2">
+                <Link href="/signup">
+                  <Button variant="ghost" size="sm">Registrarse</Button>
+                </Link>
+                <Link href="/login">
+                  <Button variant="outline" size="sm">Iniciar Sesión</Button>
+                </Link>
+              </div>
             )}
 
             <Button
@@ -134,13 +139,30 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              {user && (
+              {user ? (
                 <button
                   onClick={() => { handleSignOut(); setMobileMenuOpen(false); }}
                   className="block w-full text-left px-4 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
                 >
                   Cerrar Sesión
                 </button>
+              ) : (
+                <>
+                  <Link
+                    href="/signup"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-4 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                  >
+                    Registrarse
+                  </Link>
+                  <Link
+                    href="/login"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-4 py-2 rounded-lg font-medium text-primary hover:bg-gray-100 dark:text-primary dark:hover:bg-gray-800"
+                  >
+                    Iniciar Sesión
+                  </Link>
+                </>
               )}
             </div>
           </motion.div>
