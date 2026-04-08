@@ -1,23 +1,22 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase";
 import { Card, Button } from "@/components/ui";
 import Link from "next/link";
 
-function ResetPasswordContent() {
-  const searchParams = useSearchParams();
+export default function ResetPasswordPage() {
   const router = useRouter();
-  
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
+  const [validToken, setValidToken] = useState<boolean | null>(null);
 
   useEffect(() => {
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
+    const hashParams = new URLSearchParams(window.location.hash.replace("#", "?"));
     const accessToken = hashParams.get("access_token");
     const refreshToken = hashParams.get("refresh_token");
 
@@ -28,13 +27,22 @@ function ResetPasswordContent() {
         refresh_token: refreshToken,
       }).then(({ error }) => {
         if (error) {
-          setError("Token inválido o expirado");
+          console.error("Session error:", error);
+          setError("Enlace inválido o expirado");
+          setValidToken(false);
+        } else {
+          setValidToken(true);
         }
+      }).catch((err) => {
+        console.error("Error:", err);
+        setError("Enlace inválido o expirado");
+        setValidToken(false);
       });
-    } else if (!searchParams.get("type")) {
+    } else {
       setError("Enlace inválido o expirado");
+      setValidToken(false);
     }
-  }, [searchParams]);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -64,6 +72,17 @@ function ResetPasswordContent() {
       setTimeout(() => router.push("/login"), 3000);
     }
   };
+
+  if (validToken === null) {
+    return (
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <Card className="w-full max-w-md text-center">
+          <div className="text-4xl mb-4">⏳</div>
+          <h1 className="text-2xl font-bold mb-4">Verificando enlace...</h1>
+        </Card>
+      </div>
+    );
+  }
 
   if (success) {
     return (
@@ -98,6 +117,7 @@ function ResetPasswordContent() {
             <label className="block text-sm font-medium mb-1">Nueva contraseña</label>
             <input
               type="password"
+              name="newPassword"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
@@ -110,6 +130,7 @@ function ResetPasswordContent() {
             <label className="block text-sm font-medium mb-1">Confirmar contraseña</label>
             <input
               type="password"
+              name="confirmPassword"
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
@@ -122,21 +143,14 @@ function ResetPasswordContent() {
             {loading ? "Guardando..." : "Cambiar contraseña"}
           </Button>
         </form>
+
+        <p className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+          ¿Recordaste tu contraseña?{" "}
+          <Link href="/login" className="text-primary hover:underline">
+            Iniciar Sesión
+          </Link>
+        </p>
       </Card>
     </div>
-  );
-}
-
-export default function ResetPasswordPage() {
-  return (
-    <Suspense fallback={
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="w-full max-w-md text-center">
-          <p>Cargando...</p>
-        </Card>
-      </div>
-    }>
-      <ResetPasswordContent />
-    </Suspense>
   );
 }
