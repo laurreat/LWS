@@ -24,7 +24,7 @@ export default function ListeningPage() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { speak, stop } = useSpeech();
-  const { playGame } = useAuth();
+  const { playGame, user } = useAuth();
 
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_PHRASES.filter((p) => p.level === level);
@@ -68,9 +68,9 @@ export default function ListeningPage() {
   const finishGame = useCallback(() => {
     if (selectedLevel) {
       playGame("listening", score, score);
-      if (score >= 80) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      if (score >= 80 && user) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-  }, [selectedLevel, score, playGame]);
+  }, [selectedLevel, score, playGame, user]);
 
   useEffect(() => {
     if (gameState === "finished") {

@@ -24,7 +24,7 @@ export default function SentencePage() {
   const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { speak } = useSpeech();
-  const { playGame } = useAuth();
+  const { playGame, user } = useAuth();
 
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_SENTENCES.filter((s) => s.level === level);
@@ -66,11 +66,11 @@ export default function SentencePage() {
   const finishGame = useCallback(() => {
     if (selectedLevel) {
       playGame("sentence", score, score);
-      if (score >= 80) {
+      if (score >= 80 && user) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }
     }
-  }, [selectedLevel, score, playGame]);
+  }, [selectedLevel, score, playGame, user]);
 
   const handleReorder = (newOrder: string[]) => {
     if (isCorrect === null) {

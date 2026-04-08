@@ -22,7 +22,7 @@ export default function GrammarPage() {
   const [score, setScore] = useState(0);
   const [showExplanation, setShowExplanation] = useState(false);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
-  const { playGame } = useAuth();
+  const { playGame, user } = useAuth();
 
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_GRAMMAR.filter((q) => q.level === level);
@@ -58,11 +58,11 @@ export default function GrammarPage() {
   const finishGame = useCallback(() => {
     if (selectedLevel) {
       playGame("grammar", score, score);
-      if (score >= 80) {
+      if (score >= 80 && user) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }
     }
-  }, [selectedLevel, score, playGame]);
+  }, [selectedLevel, score, playGame, user]);
 
   if (gameState === "finished") {
     finishGame();

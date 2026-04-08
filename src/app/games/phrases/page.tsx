@@ -23,7 +23,7 @@ export default function PhrasesPage() {
   const [score, setScore] = useState(0);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { speak } = useSpeech();
-  const { playGame } = useAuth();
+  const { playGame, user } = useAuth();
 
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_PHRASES.filter((p) => p.level === level);
@@ -66,11 +66,11 @@ export default function PhrasesPage() {
       const pointsEarned = score;
       playGame("phrases", score, pointsEarned);
       
-      if (score >= 80) {
+      if (score >= 80 && user) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }
     }
-  }, [selectedLevel, score, playGame]);
+  }, [selectedLevel, score, playGame, user]);
 
   if (gameState === "finished") {
     finishGame();

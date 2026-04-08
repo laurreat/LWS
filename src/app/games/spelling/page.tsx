@@ -24,7 +24,7 @@ export default function SpellingPage() {
   const [showResult, setShowResult] = useState<boolean | null>(null);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { speak } = useSpeech();
-  const { playGame } = useAuth();
+  const { playGame, user } = useAuth();
 
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_PHRASES.filter((p) => p.level === level);
@@ -58,9 +58,9 @@ export default function SpellingPage() {
   const finishGame = useCallback(() => {
     if (selectedLevel) {
       playGame("spelling", score, score);
-      if (score >= 80) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      if (score >= 80 && user) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-  }, [selectedLevel, score, playGame]);
+  }, [selectedLevel, score, playGame, user]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && showResult === null) {

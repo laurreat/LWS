@@ -35,7 +35,7 @@ export default function MemoryPage() {
   const [score, setScore] = useState(0);
   const [moves, setMoves] = useState(0);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
-  const { playGame } = useAuth();
+  const { playGame, user } = useAuth();
 
   const startGame = useCallback((level: GameLevel) => {
     const words = A1_WORDS.filter((w) => true).slice(0, 100);
@@ -98,9 +98,9 @@ export default function MemoryPage() {
     if (selectedLevel) {
       const finalScore = Math.max(0, 120 - moves * 5);
       playGame("memory", finalScore, finalScore);
-      confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      if (user) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-  }, [selectedLevel, moves, playGame]);
+  }, [selectedLevel, moves, playGame, user]);
 
   useEffect(() => {
     if (gameState === "finished") {

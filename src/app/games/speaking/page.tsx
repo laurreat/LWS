@@ -24,7 +24,7 @@ export default function SpeakingPage() {
   const [showResult, setShowResult] = useState<boolean | null>(null);
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { speak } = useSpeech();
-  const { playGame } = useAuth();
+  const { playGame, user } = useAuth();
   const recognitionRef = useRef<any>(null);
 
   const startGame = useCallback((level: GameLevel) => {
@@ -88,9 +88,9 @@ export default function SpeakingPage() {
   const finishGame = useCallback(() => {
     if (selectedLevel) {
       playGame("speaking", score, score);
-      if (score >= 80) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+      if (score >= 80 && user) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-  }, [selectedLevel, score, playGame]);
+  }, [selectedLevel, score, playGame, user]);
 
   useEffect(() => {
     return () => {
