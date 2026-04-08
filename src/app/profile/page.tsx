@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { User, Mail, Save, Trophy, Star, Zap, AlertTriangle, CheckCircle } from "lucide-react";
+import { User, Mail, Save, Trophy, Star, Zap, AlertTriangle } from "lucide-react";
 import Link from "next/link";
 import { Card, Button, Modal } from "@/components/ui";
 import { useAuth } from "@/contexts/AuthContext";
@@ -17,7 +17,6 @@ export default function ProfilePage() {
   const [saved, setSaved] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const [deleteSent, setDeleteSent] = useState(false);
 
   if (!user) {
     return (
@@ -48,9 +47,7 @@ export default function ProfilePage() {
     setDeleting(true);
     const { error } = await requestAccountDeletion();
     if (!error) {
-      setDeleteSent(true);
-      setShowDeleteModal(false);
-      setDeleting(false);
+      router.push("/");
     } else {
       setDeleting(false);
       setShowDeleteModal(false);
@@ -172,10 +169,6 @@ export default function ProfilePage() {
           title="¿Eliminar cuenta?"
         >
           <p className="mb-4 text-gray-600 dark:text-gray-300">
-            Se enviará un correo de confirmación a:
-          </p>
-          <p className="font-medium mb-4">{user?.email}</p>
-          <p className="mb-4 text-gray-600 dark:text-gray-300">
             Esta acción eliminará permanentemente tu cuenta, incluyendo:
           </p>
           <ul className="list-disc list-inside mb-6 text-gray-600 dark:text-gray-300 space-y-1">
@@ -191,26 +184,10 @@ export default function ProfilePage() {
               Cancelar
             </Button>
             <Button variant="error" className="flex-1" onClick={handleDeleteAccount} disabled={deleting}>
-              {deleting ? "Enviando..." : "Sí, eliminar"}
+              {deleting ? "Eliminando..." : "Sí, eliminar"}
             </Button>
           </div>
         </Modal>
-
-        {deleteSent && (
-          <Card className="mt-6 bg-green-50 dark:bg-green-900/20 border-green-500">
-            <div className="flex items-center gap-3">
-              <CheckCircle className="w-6 h-6 text-green-500" />
-              <div>
-                <p className="font-medium text-green-700 dark:text-green-400">
-                  Correo de confirmación enviado
-                </p>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
-                  Revisa tu bandeja de entrada y sigue las instrucciones para eliminar tu cuenta.
-                </p>
-              </div>
-            </div>
-          </Card>
-        )}
       </div>
     </div>
   );

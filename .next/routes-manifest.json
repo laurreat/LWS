@@ -33,12 +33,6 @@
       "namedRegex": "^/_not\\-found(?:/)?$"
     },
     {
-      "page": "/confirm-delete",
-      "regex": "^/confirm\\-delete(?:/)?$",
-      "routeKeys": {},
-      "namedRegex": "^/confirm\\-delete(?:/)?$"
-    },
-    {
       "page": "/games/grammar",
       "regex": "^/games/grammar(?:/)?$",
       "routeKeys": {},

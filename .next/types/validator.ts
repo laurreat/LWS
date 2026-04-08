@@ -47,15 +47,6 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 }
 
 
-// Validate ../../src/app/confirm-delete/page.tsx
-{
-  type __IsExpected<Specific extends AppPageConfig<"/confirm-delete">> = Specific
-  const handler = {} as typeof import("../../src/app/confirm-delete/page.js")
-  type __Check = __IsExpected<typeof handler>
-  // @ts-ignore
-  type __Unused = __Check
-}
-
 // Validate ../../src/app/games/grammar/page.tsx
 {
   type __IsExpected<Specific extends AppPageConfig<"/games/grammar">> = Specific
@@ -186,15 +177,6 @@ type RouteHandlerConfig<Route extends AppRouteHandlerRoutes = AppRouteHandlerRou
 {
   type __IsExpected<Specific extends RouteHandlerConfig<"/api/delete-account">> = Specific
   const handler = {} as typeof import("../../src/app/api/delete-account/route.js")
-  type __Check = __IsExpected<typeof handler>
-  // @ts-ignore
-  type __Unused = __Check
-}
-
-// Validate ../../src/app/api/send-deletion-email/route.ts
-{
-  type __IsExpected<Specific extends RouteHandlerConfig<"/api/send-deletion-email">> = Specific
-  const handler = {} as typeof import("../../src/app/api/send-deletion-email/route.js")
   type __Check = __IsExpected<typeof handler>
   // @ts-ignore
   type __Unused = __Check

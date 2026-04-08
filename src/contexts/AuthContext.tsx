@@ -144,22 +144,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!user) return { error: new Error("No user logged in") };
 
     try {
-      const { data, error } = await supabase.rpc("request_account_deletion", {});
+      await supabase.from("deletion_requests").delete().eq("user_id", user.id);
+      await supabase.from("user_progress").delete().eq("user_id", user.id);
+      await supabase.from("profiles").delete().eq("id", user.id);
 
-      if (error) {
-        return { error };
-      }
-
-      const response = await fetch("/api/send-deletion-email", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ token: data, email: user.email }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        return { error: new Error(data.error) };
-      }
+      await supabase.auth.signOut();
+      setUser(null);
+      setSession(null);
+      setProfile(null);
+      setProgress(null);
 
       return { error: null };
     } catch (error) {
