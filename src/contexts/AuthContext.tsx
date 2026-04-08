@@ -44,7 +44,7 @@ interface AuthContextType {
   updateProgress: (updates: Partial<UserProgress>) => Promise<void>;
   playGame: (gameId: string, score: number, pointsEarned: number) => Promise<boolean>;
   updateProfile: (updates: Partial<Profile>) => Promise<void>;
-  deleteAccount: () => Promise<{ error: Error | null }>;
+  requestAccountDeletion: () => Promise<{ error: Error | null }>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -140,22 +140,30 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProgress(null);
   }
 
-  async function deleteAccount() {
+  async function requestAccountDeletion() {
     if (!user) return { error: new Error("No user logged in") };
 
     try {
-      await supabase.from("user_progress").delete().eq("user_id", user.id);
-      await supabase.from("profiles").delete().eq("id", user.id);
-      
-      const { error } = await supabase.auth.admin.deleteUser(user.id);
-      
-      if (error) return { error };
-      
-      setUser(null);
-      setSession(null);
-      setProfile(null);
-      setProgress(null);
-      
+      const { data, error } = await supabase.rpc("request_account_deletion", {});
+
+      if (error) {
+        return { error };
+      }
+
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
+      const confirmationUrl = `${siteUrl}/confirm-delete?token=${data}`;
+
+      const { error: emailError } = await supabase.auth.signInWithOtp({
+        email: user.email!,
+        options: {
+          emailRedirectTo: confirmationUrl,
+        },
+      });
+
+      if (emailError) {
+        console.error("Email error:", emailError);
+      }
+
       return { error: null };
     } catch (error) {
       return { error: error as Error };
@@ -305,7 +313,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         updateProgress,
         playGame,
         updateProfile,
-        deleteAccount,
+        requestAccountDeletion,
       }}
     >
       {children}
