@@ -150,18 +150,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return { error };
       }
 
-      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "";
-      const confirmationUrl = `${siteUrl}/confirm-delete?token=${data}`;
-
-      const { error: emailError } = await supabase.auth.signInWithOtp({
-        email: user.email!,
-        options: {
-          emailRedirectTo: confirmationUrl,
-        },
+      const response = await fetch("/api/send-deletion-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ token: data, email: user.email }),
       });
 
-      if (emailError) {
-        console.error("Email error:", emailError);
+      if (!response.ok) {
+        const data = await response.json();
+        return { error: new Error(data.error) };
       }
 
       return { error: null };
