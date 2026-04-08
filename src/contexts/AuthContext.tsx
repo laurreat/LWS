@@ -38,10 +38,10 @@ interface AuthContextType {
   progress: UserProgress | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
-  signUp: (email: string, password: string, username: string) => Promise<{ error: Error | null }>;
+  signUp: (email: string, password: string, name: string, username: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
   updateProgress: (updates: Partial<UserProgress>) => Promise<void>;
-  playGame: (gameId: string, score: number, pointsEarned: number) => Promise<void>;
+  playGame: (gameId: string, score: number, pointsEarned: number) => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -122,11 +122,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   }
 
-  async function signUp(email: string, password: string, username: string) {
+  async function signUp(email: string, password: string, name: string, username: string) {
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: { data: { username } },
+      options: { data: { name, username } },
     });
     return { error };
   }
@@ -216,8 +216,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
   }, [user, progress, supabase]);
 
-  async function playGame(gameId: string, score: number, pointsEarned: number) {
-    if (!user || !progress) return;
+  async function playGame(gameId: string, score: number, pointsEarned: number): Promise<boolean> {
+    if (!user || !progress) return false;
 
     const currentStats = progress.game_stats[gameId] || { timesPlayed: 0, bestScore: 0 };
     const newGameStats = {
@@ -250,6 +250,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     await updateStreak();
     await checkAchievements();
+    return true;
   }
 
   return (

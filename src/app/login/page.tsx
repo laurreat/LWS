@@ -76,6 +76,13 @@ export default function LoginPage() {
             Regístrate
           </Link>
         </p>
+
+        <p className="text-center mt-2 text-xs text-gray-500 dark:text-gray-400">
+          ¿Sin cuenta?{" "}
+          <Link href="/" className="text-primary hover:underline">
+            Juega sin registrarte
+          </Link> - Tu progreso no se guardará
+        </p>
       </Card>
     </div>
   );

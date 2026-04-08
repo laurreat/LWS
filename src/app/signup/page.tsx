@@ -7,6 +7,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { Card, Button } from "@/components/ui";
 
 export default function SignUpPage() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
@@ -26,7 +27,13 @@ export default function SignUpPage() {
       return;
     }
 
-    const { error } = await signUp(email, password, username);
+    if (!name.trim() || !username.trim()) {
+      setError("Por favor completa todos los campos");
+      setLoading(false);
+      return;
+    }
+
+    const { error } = await signUp(email, password, name, username);
 
     if (error) {
       setError(error.message);
@@ -49,13 +56,25 @@ export default function SignUpPage() {
           )}
 
           <div>
+            <label className="block text-sm font-medium mb-1">Nombre completo</label>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
+              placeholder="Tu nombre"
+              required
+            />
+          </div>
+
+          <div>
             <label className="block text-sm font-medium mb-1">Nombre de usuario</label>
             <input
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               className="w-full p-3 border rounded-lg dark:bg-gray-800 dark:border-gray-700"
-              placeholder="Tu nombre"
+              placeholder="Nombre para mostrar"
               required
             />
           </div>
