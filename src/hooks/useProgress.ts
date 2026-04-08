@@ -42,6 +42,7 @@ export function useProgress() {
         resetStreak();
       }
     }
+    useProgressStore.setState({ lastPlayed: today });
   }, [lastPlayed, incrementStreak, resetStreak]);
 
   const playGame = useCallback((gameId: string, score: number, pointsEarned: number) => {
