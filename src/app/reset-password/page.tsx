@@ -13,40 +13,47 @@ export default function ResetPasswordPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
-  const [validToken, setValidToken] = useState<boolean | null>(null);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [checking, setChecking] = useState(true);
 
   useEffect(() => {
-    const hashParams = new URLSearchParams(window.location.hash.replace("#", "?"));
-    const accessToken = hashParams.get("access_token");
-    const refreshToken = hashParams.get("refresh_token");
-
-    if (accessToken && refreshToken) {
+    async function checkAuth() {
       const supabase = createClient();
-      supabase.auth.setSession({
-        access_token: accessToken,
-        refresh_token: refreshToken,
-      }).then(({ error }) => {
-        if (error) {
-          console.error("Session error:", error);
-          setError("Enlace inválido o expirado");
-          setValidToken(false);
-        } else {
-          setValidToken(true);
+      
+      const hashParams = new URLSearchParams(window.location.hash.replace("#", "?"));
+      const accessToken = hashParams.get("access_token");
+      const refreshToken = hashParams.get("refresh_token");
+
+      if (accessToken && refreshToken) {
+        const { error } = await supabase.auth.setSession({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+        
+        if (!error) {
+          setIsAuthenticated(true);
         }
-      }).catch((err) => {
-        console.error("Error:", err);
-        setError("Enlace inválido o expirado");
-        setValidToken(false);
-      });
-    } else {
-      setError("Enlace inválido o expirado");
-      setValidToken(false);
+      } else {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+          setIsAuthenticated(true);
+        }
+      }
+      
+      setChecking(false);
     }
+
+    checkAuth();
   }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError("");
+
+    if (!isAuthenticated) {
+      setError("Tu sesión ha expirado. Solicita un nuevo enlace de recuperación.");
+      return;
+    }
 
     if (password !== confirmPassword) {
       setError("Las contraseñas no coinciden");
@@ -69,16 +76,17 @@ export default function ResetPasswordPage() {
       setError(error.message);
     } else {
       setSuccess(true);
+      await supabase.auth.signOut();
       setTimeout(() => router.push("/login"), 3000);
     }
   };
 
-  if (validToken === null) {
+  if (checking) {
     return (
       <div className="min-h-screen flex items-center justify-center p-4">
         <Card className="w-full max-w-md text-center">
           <div className="text-4xl mb-4">⏳</div>
-          <h1 className="text-2xl font-bold mb-4">Verificando enlace...</h1>
+          <h1 className="text-2xl font-bold mb-4">Verificando...</h1>
         </Card>
       </div>
     );
@@ -139,7 +147,7 @@ export default function ResetPasswordPage() {
             />
           </div>
 
-          <Button type="submit" className="w-full" disabled={loading}>
+          <Button type="submit" className="w-full" disabled={loading || !isAuthenticated}>
             {loading ? "Guardando..." : "Cambiar contraseña"}
           </Button>
         </form>
