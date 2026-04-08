@@ -21,14 +21,15 @@ export function useProgress() {
   const resetStreak = useProgressStore((s) => s.resetStreak);
   const updateLevelProgress = useProgressStore((s) => s.updateLevelProgress);
   const updateSettings = useProgressStore((s) => s.updateSettings);
+  const gameStats = useProgressStore((s) => s.gameStats);
 
   const checkAchievements = useCallback(() => {
     ACHIEVEMENTS.forEach((achievement) => {
-      if (!achievements.includes(achievement.id) && achievement.condition({ achievements, streak, totalPoints, gamesPlayed, settings, levelProgress })) {
+      if (!achievements.includes(achievement.id) && achievement.condition({ achievements, streak, totalPoints, gamesPlayed, settings, levelProgress, lastPlayed, gameStats })) {
         unlockAchievement(achievement.id);
       }
     });
-  }, [achievements, streak, totalPoints, gamesPlayed, settings, levelProgress, unlockAchievement]);
+  }, [achievements, streak, totalPoints, gamesPlayed, settings, levelProgress, lastPlayed, gameStats, unlockAchievement]);
 
   const updateStreak = useCallback(() => {
     const today = new Date().toDateString();
