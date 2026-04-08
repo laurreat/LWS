@@ -19,7 +19,7 @@ export function Navbar() {
   const pathname = usePathname();
   const { theme, setTheme, resolvedTheme, mounted } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const { user, progress, signOut } = useAuth();
+  const { user, profile, progress, signOut } = useAuth();
   const soundEnabled = progress?.settings?.soundEnabled ?? true;
 
   const toggleTheme = () => {
@@ -87,8 +87,13 @@ export function Navbar() {
               <div className="flex items-center gap-2">
                 <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-primary/10 rounded-full">
                   <User className="w-4 h-4 text-primary" />
-                  <span className="font-medium text-primary">{user.email?.split("@")[0]}</span>
+                  <span className="font-medium text-primary">{profile?.username || user.email?.split("@")[0]}</span>
                 </div>
+                <Link href="/profile">
+                  <Button variant="ghost" size="sm" className="p-2">
+                    <User className="w-5 h-5" />
+                  </Button>
+                </Link>
                 <Button variant="ghost" size="sm" onClick={handleSignOut} className="p-2">
                   <LogOut className="w-5 h-5" />
                 </Button>
@@ -140,12 +145,21 @@ export function Navbar() {
                 </Link>
               ))}
               {user ? (
-                <button
-                  onClick={() => { handleSignOut(); setMobileMenuOpen(false); }}
-                  className="block w-full text-left px-4 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
-                >
-                  Cerrar Sesión
-                </button>
+                <>
+                  <Link
+                    href="/profile"
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="block px-4 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                  >
+                    Mi Perfil
+                  </Link>
+                  <button
+                    onClick={() => { handleSignOut(); setMobileMenuOpen(false); }}
+                    className="block w-full text-left px-4 py-2 rounded-lg font-medium text-gray-600 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-800"
+                  >
+                    Cerrar Sesión
+                  </button>
+                </>
               ) : (
                 <>
                   <Link

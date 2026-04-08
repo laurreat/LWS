@@ -8,6 +8,7 @@ import { ACHIEVEMENTS } from "@/lib/achievements";
 interface Profile {
   id: string;
   username: string | null;
+  name: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -42,6 +43,7 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   updateProgress: (updates: Partial<UserProgress>) => Promise<void>;
   playGame: (gameId: string, score: number, pointsEarned: number) => Promise<boolean>;
+  updateProfile: (updates: Partial<Profile>) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -147,6 +149,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (!error && progress) {
       setProgress({ ...progress, ...updates });
+    }
+  }
+
+  async function updateProfile(updates: Partial<Profile>) {
+    if (!user) return;
+
+    const { error } = await supabase
+      .from("profiles")
+      .update(updates)
+      .eq("id", user.id);
+
+    if (!error && profile) {
+      setProfile({ ...profile, ...updates });
     }
   }
 
@@ -266,6 +281,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         signOut,
         updateProgress,
         playGame,
+        updateProfile,
       }}
     >
       {children}
