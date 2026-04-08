@@ -8,7 +8,12 @@ import { useProgressStore } from "@/lib/store";
 import { ACHIEVEMENTS } from "@/lib/achievements";
 
 export default function ProgressPage() {
-  const { totalPoints, streak, gamesPlayed, achievements, levelProgress, resetProgress } = useProgressStore();
+  const totalPoints = useProgressStore((s) => s.totalPoints);
+  const streak = useProgressStore((s) => s.streak);
+  const gamesPlayed = useProgressStore((s) => s.gamesPlayed);
+  const achievements = useProgressStore((s) => s.achievements);
+  const levelProgress = useProgressStore((s) => s.levelProgress);
+  const resetProgress = useProgressStore((s) => s.resetProgress);
   const [showResetModal, setShowResetModal] = useState(false);
 
   const handleReset = () => {
