@@ -24,7 +24,7 @@ export const useProgressStore = create<ProgressStore>()(
 
       addPoints: (points: number) =>
         set((state) => ({
-          totalPoints: state.totalPoints + points,
+          total_points: state.total_points + points,
         })),
 
       incrementStreak: () =>
@@ -37,15 +37,15 @@ export const useProgressStore = create<ProgressStore>()(
 
       incrementGamesPlayed: () =>
         set((state) => ({
-          gamesPlayed: state.gamesPlayed + 1,
+          games_played: state.games_played + 1,
         })),
 
       updateGameStats: (gameId: GameId, score: number) =>
         set((state) => {
-          const currentStats = state.gameStats[gameId] || { timesPlayed: 0, bestScore: 0 };
+          const currentStats = state.game_stats[gameId] || { timesPlayed: 0, bestScore: 0 };
           return {
-            gameStats: {
-              ...state.gameStats,
+            game_stats: {
+              ...state.game_stats,
               [gameId]: {
                 timesPlayed: currentStats.timesPlayed + 1,
                 bestScore: Math.max(currentStats.bestScore, score),
@@ -59,18 +59,18 @@ export const useProgressStore = create<ProgressStore>()(
           if (state.achievements.includes(achievementId)) return state;
           return {
             achievements: [...state.achievements, achievementId],
-            totalPoints: state.totalPoints + 50,
+            total_points: state.total_points + 50,
           };
         }),
 
       updateLevelProgress: (level: GameLevel, completed: number, points: number) =>
         set((state) => ({
-          levelProgress: {
-            ...state.levelProgress,
+          level_progress: {
+            ...state.level_progress,
             [level]: {
-              ...state.levelProgress[level],
-              completed: Math.max(state.levelProgress[level].completed, completed),
-              points: state.levelProgress[level].points + points,
+              ...state.level_progress[level],
+              completed: Math.max(state.level_progress[level].completed, completed),
+              points: state.level_progress[level].points + points,
             },
           },
         })),

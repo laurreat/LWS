@@ -10,22 +10,23 @@ export function useProgress() {
     useMemo(() => (state) => ({
       achievements: state.achievements,
       streak: state.streak,
-      totalPoints: state.totalPoints,
-      gamesPlayed: state.gamesPlayed,
+      totalPoints: state.total_points,
+      gamesPlayed: state.games_played,
       settings: state.settings,
-      levelProgress: state.levelProgress,
-      lastPlayed: state.lastPlayed,
-      gameStats: state.gameStats,
+      levelProgress: state.level_progress,
+      lastPlayed: state.last_played,
+      gameStats: state.game_stats,
     }), [])
   );
 
   const checkAchievements = useCallback(() => {
+    const state = useProgressStore.getState();
     ACHIEVEMENTS.forEach((achievement) => {
-      if (!store.achievements.includes(achievement.id) && achievement.condition(store)) {
+      if (!state.achievements.includes(achievement.id) && achievement.condition(state)) {
         useProgressStore.getState().unlockAchievement(achievement.id);
       }
     });
-  }, [store]);
+  }, []);
 
   const updateStreak = useCallback(() => {
     const today = new Date().toDateString();
@@ -39,7 +40,7 @@ export function useProgress() {
         useProgressStore.getState().resetStreak();
       }
     }
-    useProgressStore.setState({ lastPlayed: today });
+    useProgressStore.setState({ last_played: today });
   }, [store.lastPlayed]);
 
   const playGame = useCallback((gameId: string, score: number, pointsEarned: number) => {
