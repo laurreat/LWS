@@ -63,6 +63,14 @@ export interface UserProgress {
   };
 }
 
+export interface Profile {
+  id: string;
+  name: string;
+  username: string;
+  avatar_url?: string;
+  updated_at?: string;
+}
+
 export interface Achievement {
   id: string;
   name: string;
