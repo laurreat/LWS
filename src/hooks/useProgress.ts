@@ -43,11 +43,15 @@ export function useProgress() {
     useProgressStore.setState({ last_played: today });
   }, [store.lastPlayed]);
 
-  const playGame = useCallback((gameId: string, score: number, pointsEarned: number) => {
+  const playGame = useCallback((gameId: string, score: number, pointsEarned: number, level?: string) => {
     const state = useProgressStore.getState();
     state.updateGameStats(gameId as GameId, score);
     state.addPoints(pointsEarned);
     state.incrementGamesPlayed();
+    if (level) {
+      const correctAnswers = Math.round(score / 10);
+      state.updateLevelProgress(level as "A1" | "A2" | "B1", correctAnswers, pointsEarned);
+    }
     updateStreak();
     checkAchievements();
   }, [updateStreak, checkAchievements]);

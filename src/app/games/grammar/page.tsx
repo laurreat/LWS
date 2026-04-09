@@ -61,7 +61,7 @@ export default function GrammarPage() {
   const finishGame = useCallback(() => {
     if (selectedLevel && !hasFinishedTriggered) {
       setHasFinishedTriggered(true);
-      playGame("grammar", score, score);
+      playGame("grammar", score, score, selectedLevel);
       if (score >= 80 && user) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }

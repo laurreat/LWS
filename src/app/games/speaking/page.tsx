@@ -90,7 +90,7 @@ export default function SpeakingPage() {
   const finishGame = useCallback(() => {
     if (selectedLevel && !hasFinishedTriggered) {
       setHasFinishedTriggered(true);
-      playGame("speaking", score, score);
+      playGame("speaking", score, score, selectedLevel);
       if (score >= 80 && user) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
   }, [selectedLevel, score, playGame, user, hasFinishedTriggered]);

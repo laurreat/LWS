@@ -68,7 +68,7 @@ export default function PhrasesPage() {
     if (selectedLevel && !hasFinishedTriggered) {
       setHasFinishedTriggered(true);
       const pointsEarned = score;
-      playGame("phrases", score, pointsEarned);
+      playGame("phrases", score, pointsEarned, selectedLevel);
       
       if (score >= 80 && user) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });

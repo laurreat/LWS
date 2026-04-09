@@ -16,7 +16,7 @@
       "static/chunks/44530001-2a95bb40d7cb4c97.js",
       "static/chunks/64-a2782c49e8a78918.js",
       "static/chunks/611-dba2aedaf525cc54.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
       "static/chunks/app/layout-d5080c42c0266567.js"
     ],
     "/api/delete-account/route": [
@@ -25,29 +25,6 @@
       "static/chunks/493-e61740f684b4ba13.js",
       "static/chunks/main-app-b2ee466e1b386148.js",
       "static/chunks/app/api/delete-account/route-8cbc61be8fe2bd36.js"
-    ],
-    "/forgot-password/page": [
-      "static/chunks/webpack-a3d417792efffc63.js",
-      "static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "static/chunks/493-e61740f684b4ba13.js",
-      "static/chunks/main-app-b2ee466e1b386148.js",
-      "static/chunks/44530001-2a95bb40d7cb4c97.js",
-      "static/chunks/64-a2782c49e8a78918.js",
-      "static/chunks/611-dba2aedaf525cc54.js",
-      "static/chunks/app/forgot-password/page-fe8fdfebcd29914b.js"
-    ],
-    "/games/memory/page": [
-      "static/chunks/webpack-a3d417792efffc63.js",
-      "static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "static/chunks/493-e61740f684b4ba13.js",
-      "static/chunks/main-app-b2ee466e1b386148.js",
-      "static/chunks/44530001-2a95bb40d7cb4c97.js",
-      "static/chunks/64-a2782c49e8a78918.js",
-      "static/chunks/611-dba2aedaf525cc54.js",
-      "static/chunks/288-c170715c655f2f3c.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
-      "static/chunks/526-dbe84c27f92a11b6.js",
-      "static/chunks/app/games/memory/page-a84fe14f9ca9ab67.js"
     ],
     "/games/listening/page": [
       "static/chunks/webpack-a3d417792efffc63.js",
@@ -59,48 +36,9 @@
       "static/chunks/611-dba2aedaf525cc54.js",
       "static/chunks/288-c170715c655f2f3c.js",
       "static/chunks/665-f4f6f5a7843d4e0f.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
       "static/chunks/355-038b81ed6dd1b5a0.js",
-      "static/chunks/app/games/listening/page-3d56b459e5ae2d16.js"
-    ],
-    "/games/grammar/page": [
-      "static/chunks/webpack-a3d417792efffc63.js",
-      "static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "static/chunks/493-e61740f684b4ba13.js",
-      "static/chunks/main-app-b2ee466e1b386148.js",
-      "static/chunks/44530001-2a95bb40d7cb4c97.js",
-      "static/chunks/64-a2782c49e8a78918.js",
-      "static/chunks/611-dba2aedaf525cc54.js",
-      "static/chunks/288-c170715c655f2f3c.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
-      "static/chunks/app/games/grammar/page-3675ba69d04c5d5b.js"
-    ],
-    "/games/phrases/page": [
-      "static/chunks/webpack-a3d417792efffc63.js",
-      "static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "static/chunks/493-e61740f684b4ba13.js",
-      "static/chunks/main-app-b2ee466e1b386148.js",
-      "static/chunks/44530001-2a95bb40d7cb4c97.js",
-      "static/chunks/64-a2782c49e8a78918.js",
-      "static/chunks/611-dba2aedaf525cc54.js",
-      "static/chunks/288-c170715c655f2f3c.js",
-      "static/chunks/665-f4f6f5a7843d4e0f.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
-      "static/chunks/355-038b81ed6dd1b5a0.js",
-      "static/chunks/app/games/phrases/page-1b2d0e4d820513df.js"
-    ],
-    "/games/sentence/page": [
-      "static/chunks/webpack-a3d417792efffc63.js",
-      "static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "static/chunks/493-e61740f684b4ba13.js",
-      "static/chunks/main-app-b2ee466e1b386148.js",
-      "static/chunks/44530001-2a95bb40d7cb4c97.js",
-      "static/chunks/64-a2782c49e8a78918.js",
-      "static/chunks/611-dba2aedaf525cc54.js",
-      "static/chunks/288-c170715c655f2f3c.js",
-      "static/chunks/665-f4f6f5a7843d4e0f.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
-      "static/chunks/app/games/sentence/page-25a9bd37a5988f7b.js"
+      "static/chunks/app/games/listening/page-25639cf88f249586.js"
     ],
     "/games/speaking/page": [
       "static/chunks/webpack-a3d417792efffc63.js",
@@ -112,9 +50,49 @@
       "static/chunks/611-dba2aedaf525cc54.js",
       "static/chunks/288-c170715c655f2f3c.js",
       "static/chunks/665-f4f6f5a7843d4e0f.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
       "static/chunks/355-038b81ed6dd1b5a0.js",
-      "static/chunks/app/games/speaking/page-8b645959e6038f9d.js"
+      "static/chunks/app/games/speaking/page-8afd73d168907175.js"
+    ],
+    "/games/memory/page": [
+      "static/chunks/webpack-a3d417792efffc63.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/493-e61740f684b4ba13.js",
+      "static/chunks/main-app-b2ee466e1b386148.js",
+      "static/chunks/44530001-2a95bb40d7cb4c97.js",
+      "static/chunks/64-a2782c49e8a78918.js",
+      "static/chunks/611-dba2aedaf525cc54.js",
+      "static/chunks/288-c170715c655f2f3c.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
+      "static/chunks/526-dbe84c27f92a11b6.js",
+      "static/chunks/app/games/memory/page-8bb40b438c755eb2.js"
+    ],
+    "/games/sentence/page": [
+      "static/chunks/webpack-a3d417792efffc63.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/493-e61740f684b4ba13.js",
+      "static/chunks/main-app-b2ee466e1b386148.js",
+      "static/chunks/44530001-2a95bb40d7cb4c97.js",
+      "static/chunks/64-a2782c49e8a78918.js",
+      "static/chunks/611-dba2aedaf525cc54.js",
+      "static/chunks/288-c170715c655f2f3c.js",
+      "static/chunks/665-f4f6f5a7843d4e0f.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
+      "static/chunks/app/games/sentence/page-272893e6161df21f.js"
+    ],
+    "/games/phrases/page": [
+      "static/chunks/webpack-a3d417792efffc63.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/493-e61740f684b4ba13.js",
+      "static/chunks/main-app-b2ee466e1b386148.js",
+      "static/chunks/44530001-2a95bb40d7cb4c97.js",
+      "static/chunks/64-a2782c49e8a78918.js",
+      "static/chunks/611-dba2aedaf525cc54.js",
+      "static/chunks/288-c170715c655f2f3c.js",
+      "static/chunks/665-f4f6f5a7843d4e0f.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
+      "static/chunks/355-038b81ed6dd1b5a0.js",
+      "static/chunks/app/games/phrases/page-2c7d9fa2b2003631.js"
     ],
     "/games/spelling/page": [
       "static/chunks/webpack-a3d417792efffc63.js",
@@ -126,11 +104,11 @@
       "static/chunks/611-dba2aedaf525cc54.js",
       "static/chunks/288-c170715c655f2f3c.js",
       "static/chunks/665-f4f6f5a7843d4e0f.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
       "static/chunks/355-038b81ed6dd1b5a0.js",
-      "static/chunks/app/games/spelling/page-06587e8a3a7147d5.js"
+      "static/chunks/app/games/spelling/page-7eba8242fe7c1a6c.js"
     ],
-    "/login/page": [
+    "/games/grammar/page": [
       "static/chunks/webpack-a3d417792efffc63.js",
       "static/chunks/4bd1b696-c023c6e3521b1417.js",
       "static/chunks/493-e61740f684b4ba13.js",
@@ -138,10 +116,11 @@
       "static/chunks/44530001-2a95bb40d7cb4c97.js",
       "static/chunks/64-a2782c49e8a78918.js",
       "static/chunks/611-dba2aedaf525cc54.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
-      "static/chunks/app/login/page-83920c2ad67391bc.js"
+      "static/chunks/288-c170715c655f2f3c.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
+      "static/chunks/app/games/grammar/page-aebdaf9ae0fa3564.js"
     ],
-    "/profile/page": [
+    "/forgot-password/page": [
       "static/chunks/webpack-a3d417792efffc63.js",
       "static/chunks/4bd1b696-c023c6e3521b1417.js",
       "static/chunks/493-e61740f684b4ba13.js",
@@ -149,8 +128,7 @@
       "static/chunks/44530001-2a95bb40d7cb4c97.js",
       "static/chunks/64-a2782c49e8a78918.js",
       "static/chunks/611-dba2aedaf525cc54.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
-      "static/chunks/app/profile/page-93df10f5020fb2e8.js"
+      "static/chunks/app/forgot-password/page-fe8fdfebcd29914b.js"
     ],
     "/games/vocabulary/page": [
       "static/chunks/webpack-a3d417792efffc63.js",
@@ -162,9 +140,20 @@
       "static/chunks/611-dba2aedaf525cc54.js",
       "static/chunks/288-c170715c655f2f3c.js",
       "static/chunks/665-f4f6f5a7843d4e0f.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
       "static/chunks/526-dbe84c27f92a11b6.js",
-      "static/chunks/app/games/vocabulary/page-e3cf78cb898ce742.js"
+      "static/chunks/app/games/vocabulary/page-49c78185bacf0f0e.js"
+    ],
+    "/login/page": [
+      "static/chunks/webpack-a3d417792efffc63.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/493-e61740f684b4ba13.js",
+      "static/chunks/main-app-b2ee466e1b386148.js",
+      "static/chunks/44530001-2a95bb40d7cb4c97.js",
+      "static/chunks/64-a2782c49e8a78918.js",
+      "static/chunks/611-dba2aedaf525cc54.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
+      "static/chunks/app/login/page-83920c2ad67391bc.js"
     ],
     "/progress/page": [
       "static/chunks/webpack-a3d417792efffc63.js",
@@ -174,7 +163,7 @@
       "static/chunks/44530001-2a95bb40d7cb4c97.js",
       "static/chunks/64-a2782c49e8a78918.js",
       "static/chunks/611-dba2aedaf525cc54.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
       "static/chunks/app/progress/page-8e8f0a0ac95016b7.js"
     ],
     "/page": [
@@ -185,8 +174,27 @@
       "static/chunks/44530001-2a95bb40d7cb4c97.js",
       "static/chunks/64-a2782c49e8a78918.js",
       "static/chunks/611-dba2aedaf525cc54.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
       "static/chunks/app/page-5ac6804e8f8489bc.js"
+    ],
+    "/profile/page": [
+      "static/chunks/webpack-a3d417792efffc63.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/493-e61740f684b4ba13.js",
+      "static/chunks/main-app-b2ee466e1b386148.js",
+      "static/chunks/44530001-2a95bb40d7cb4c97.js",
+      "static/chunks/64-a2782c49e8a78918.js",
+      "static/chunks/611-dba2aedaf525cc54.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
+      "static/chunks/app/profile/page-93df10f5020fb2e8.js"
+    ],
+    "/resources/page": [
+      "static/chunks/webpack-a3d417792efffc63.js",
+      "static/chunks/4bd1b696-c023c6e3521b1417.js",
+      "static/chunks/493-e61740f684b4ba13.js",
+      "static/chunks/main-app-b2ee466e1b386148.js",
+      "static/chunks/64-a2782c49e8a78918.js",
+      "static/chunks/app/resources/page-2bc103dea2139ae8.js"
     ],
     "/reset-password/page": [
       "static/chunks/webpack-a3d417792efffc63.js",
@@ -206,16 +214,8 @@
       "static/chunks/44530001-2a95bb40d7cb4c97.js",
       "static/chunks/64-a2782c49e8a78918.js",
       "static/chunks/611-dba2aedaf525cc54.js",
-      "static/chunks/342-0d5c8471b868d7e5.js",
+      "static/chunks/342-4777dfb2bfd67c0e.js",
       "static/chunks/app/signup/page-0b84e9750f882fcd.js"
-    ],
-    "/resources/page": [
-      "static/chunks/webpack-a3d417792efffc63.js",
-      "static/chunks/4bd1b696-c023c6e3521b1417.js",
-      "static/chunks/493-e61740f684b4ba13.js",
-      "static/chunks/main-app-b2ee466e1b386148.js",
-      "static/chunks/64-a2782c49e8a78918.js",
-      "static/chunks/app/resources/page-2bc103dea2139ae8.js"
     ]
   }
 }

@@ -69,7 +69,7 @@ export default function SentencePage() {
   const finishGame = useCallback(() => {
     if (selectedLevel && !hasFinishedTriggered) {
       setHasFinishedTriggered(true);
-      playGame("sentence", score, score);
+      playGame("sentence", score, score, selectedLevel);
       if (score >= 80 && user) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }

@@ -6,9 +6,9 @@ export const defaultProgress: UserProgress = {
   last_played: "",
   games_played: 0,
   level_progress: {
-    A1: { completed: 0, total: 100, points: 0 },
-    A2: { completed: 0, total: 100, points: 0 },
-    B1: { completed: 0, total: 100, points: 0 },
+    A1: { completed: 0, total: 300, points: 0 },
+    A2: { completed: 0, total: 400, points: 0 },
+    B1: { completed: 0, total: 500, points: 0 },
   },
   game_stats: {},
   achievements: [],

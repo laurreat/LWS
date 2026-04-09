@@ -22,7 +22,7 @@ interface AuthContextType {
   signOut: () => Promise<void>;
   changePassword: (currentPassword: string, newPassword: string) => Promise<{ error: Error | null }>;
   updateProgress: (updates: Partial<UserProgress>) => Promise<void>;
-  playGame: (gameId: string, score: number, pointsEarned: number) => Promise<boolean>;
+  playGame: (gameId: string, score: number, pointsEarned: number, level?: string) => Promise<boolean>;
   updateProfile: (updates: Partial<Profile>) => Promise<void>;
   requestAccountDeletion: () => Promise<{ error: Error | null }>;
 }
@@ -249,7 +249,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
   }, [user, progress, supabase]);
 
-  async function playGame(gameId: string, score: number, pointsEarned: number): Promise<boolean> {
+  async function playGame(gameId: string, score: number, pointsEarned: number, level?: string): Promise<boolean> {
     if (!user || !progress) return false;
 
     const currentStats = progress.game_stats[gameId] || { timesPlayed: 0, bestScore: 0 };
@@ -261,12 +261,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       },
     };
 
+    const newLevelProgress = level ? { ...progress.level_progress } : progress.level_progress;
+    if (level && newLevelProgress[level as keyof typeof newLevelProgress]) {
+      const correctAnswers = Math.round(score / 10);
+      newLevelProgress[level as keyof typeof newLevelProgress] = {
+        ...newLevelProgress[level as keyof typeof newLevelProgress],
+        completed: Math.min(
+          newLevelProgress[level as keyof typeof newLevelProgress].completed + correctAnswers,
+          newLevelProgress[level as keyof typeof newLevelProgress].total
+        ),
+        points: newLevelProgress[level as keyof typeof newLevelProgress].points + pointsEarned,
+      };
+    }
+
     await supabase
       .from("user_progress")
       .update({
         game_stats: newGameStats,
         total_points: progress.total_points + pointsEarned,
         games_played: progress.games_played + 1,
+        level_progress: newLevelProgress,
       })
       .eq("user_id", user.id);
 
@@ -277,6 +291,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
             game_stats: newGameStats,
             total_points: prev.total_points + pointsEarned,
             games_played: prev.games_played + 1,
+            level_progress: newLevelProgress,
           }
         : null
     );

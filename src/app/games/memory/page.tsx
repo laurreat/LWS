@@ -101,7 +101,7 @@ export default function MemoryPage() {
     if (selectedLevel && !hasFinishedTriggered) {
       setHasFinishedTriggered(true);
       const finalScore = Math.max(0, 120 - moves * 5);
-      playGame("memory", finalScore, finalScore);
+      playGame("memory", finalScore, finalScore, selectedLevel);
       if (user) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
   }, [selectedLevel, moves, playGame, user, hasFinishedTriggered]);

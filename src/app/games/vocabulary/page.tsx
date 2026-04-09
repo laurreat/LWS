@@ -90,7 +90,7 @@ export default function VocabularyPage() {
     if (selectedLevel && !hasFinishedTriggered) {
       setHasFinishedTriggered(true);
       const pointsEarned = score;
-      playGame("vocabulary", score, pointsEarned);
+      playGame("vocabulary", score, pointsEarned, selectedLevel);
       
       if (score >= 80) {
         confetti({
@@ -124,7 +124,7 @@ export default function VocabularyPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <LevelBadge level="A1" />
-                  <p className="text-gray-600 dark:text-gray-300 mt-2">100 palabras básicas</p>
+                  <p className="text-gray-600 dark:text-gray-300 mt-2">300 palabras básicas</p>
                 </div>
                 <span className="text-4xl">🌟</span>
               </div>
@@ -134,7 +134,7 @@ export default function VocabularyPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <LevelBadge level="A2" />
-                  <p className="text-gray-600 dark:text-gray-300 mt-2">100 palabras intermedias</p>
+                  <p className="text-gray-600 dark:text-gray-300 mt-2">400 palabras intermedias</p>
                 </div>
                 <span className="text-4xl">⭐</span>
               </div>
@@ -144,7 +144,7 @@ export default function VocabularyPage() {
               <div className="flex items-center justify-between">
                 <div>
                   <LevelBadge level="B1" />
-                  <p className="text-gray-600 dark:text-gray-300 mt-2">100 palabras avanzadas</p>
+                  <p className="text-gray-600 dark:text-gray-300 mt-2">500 palabras avanzadas</p>
                 </div>
                 <span className="text-4xl">🏆</span>
               </div>
