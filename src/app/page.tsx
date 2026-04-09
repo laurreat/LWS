@@ -101,39 +101,23 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-4 py-16">
         <h2 className="text-3xl font-bold text-center mb-12">📊 Tu Progreso</h2>
         <div className="grid md:grid-cols-3 gap-6">
-          <Card className="text-center">
-            <div className="text-5xl mb-4">🌍</div>
-            <h3 className="text-xl font-bold mb-2">Nivel A1</h3>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-2">
-              <div 
-                className="bg-green-500 h-3 rounded-full transition-all duration-500"
-                style={{ width: `${0}%` }}
-              />
-            </div>
-            <p className="text-sm text-gray-500">0/100 palabras</p>
-          </Card>
-          <Card className="text-center">
-            <div className="text-5xl mb-4">📖</div>
-            <h3 className="text-xl font-bold mb-2">Nivel A2</h3>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-2">
-              <div 
-                className="bg-blue-500 h-3 rounded-full transition-all duration-500"
-                style={{ width: `${0}%` }}
-              />
-            </div>
-            <p className="text-sm text-gray-500">0/100 palabras</p>
-          </Card>
-          <Card className="text-center">
-            <div className="text-5xl mb-4">🏅</div>
-            <h3 className="text-xl font-bold mb-2">Nivel B1</h3>
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-2">
-              <div 
-                className="bg-purple-500 h-3 rounded-full transition-all duration-500"
-                style={{ width: `${0}%` }}
-              />
-            </div>
-            <p className="text-sm text-gray-500">0/100 palabras</p>
-          </Card>
+          {(["A1", "A2", "B1"] as const).map((level) => {
+            const levelData = progress?.level_progress?.[level] ?? { completed: 0, total: level === "A1" ? 300 : level === "A2" ? 400 : 500, points: 0 };
+            const percentage = Math.round((levelData.completed / levelData.total) * 100);
+            return (
+              <Card key={level} className="text-center">
+                <div className="text-5xl mb-4">{level === "A1" ? "🌍" : level === "A2" ? "📖" : "🏅"}</div>
+                <h3 className="text-xl font-bold mb-2">Nivel {level}</h3>
+                <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-2">
+                  <div 
+                    className={`h-3 rounded-full transition-all duration-500 ${level === "A1" ? "bg-green-500" : level === "A2" ? "bg-blue-500" : "bg-purple-500"}`}
+                    style={{ width: `${percentage}%` }}
+                  />
+                </div>
+                <p className="text-sm text-gray-500">{levelData.completed}/{levelData.total} palabras</p>
+              </Card>
+            );
+          })}
         </div>
       </section>
 
