@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback, useMemo } from "react";
+import { useState, useCallback, useMemo, useEffect } from "react";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
 import confetti from "canvas-confetti";
 import { Volume2, Home, Trophy, CheckCircle } from "lucide-react";
@@ -26,6 +26,8 @@ export default function SentencePage() {
   const { speak } = useSpeech();
   const { playGame, user } = useAuth();
 
+  const [hasFinishedTriggered, setHasFinishedTriggered] = useState(false);
+
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_SENTENCES.filter((s) => s.level === level);
     const quiz = generateQuiz(filtered, 10);
@@ -39,6 +41,7 @@ export default function SentencePage() {
     const shuffled = [...firstSentence.words].sort(() => Math.random() - 0.5);
     setShuffledWords(shuffled);
     setGameState("playing");
+    setHasFinishedTriggered(false);
   }, []);
 
   const checkAnswer = useCallback(() => {
@@ -64,13 +67,20 @@ export default function SentencePage() {
   }, [currentIndex, questions]);
 
   const finishGame = useCallback(() => {
-    if (selectedLevel) {
+    if (selectedLevel && !hasFinishedTriggered) {
+      setHasFinishedTriggered(true);
       playGame("sentence", score, score);
       if (score >= 80 && user) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }
     }
-  }, [selectedLevel, score, playGame, user]);
+  }, [selectedLevel, score, playGame, user, hasFinishedTriggered]);
+
+  useEffect(() => {
+    if (gameState === "finished" && !hasFinishedTriggered) {
+      finishGame();
+    }
+  }, [gameState, finishGame, hasFinishedTriggered]);
 
   const handleReorder = (newOrder: string[]) => {
     if (isCorrect === null) {
@@ -79,7 +89,6 @@ export default function SentencePage() {
   };
 
   if (gameState === "finished") {
-    finishGame();
     return (
       <div className="min-h-screen p-4">
         <div className="max-w-2xl mx-auto py-8 text-center">

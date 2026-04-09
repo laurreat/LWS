@@ -26,6 +26,8 @@ export default function ListeningPage() {
   const { speak, stop } = useSpeech();
   const { playGame, user } = useAuth();
 
+  const [hasFinishedTriggered, setHasFinishedTriggered] = useState(false);
+
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_PHRASES.filter((p) => p.level === level);
     const quiz = generateQuiz(filtered, 10);
@@ -35,6 +37,7 @@ export default function ListeningPage() {
     setSelectedAnswer(null);
     setSelectedLevel(level);
     setGameState("playing");
+    setHasFinishedTriggered(false);
   }, []);
 
   const playAudio = useCallback(() => {
@@ -49,12 +52,12 @@ export default function ListeningPage() {
     }
   }, [isPlaying, questions, currentIndex, speak, stop]);
 
-  const handleAnswer = useCallback((index: number) => {
+  const handleAnswer = useCallback((index: number, option: string) => {
     if (selectedAnswer !== null) return;
     setSelectedAnswer(index);
-    const isCorrect = index === 0;
+    const isCorrect = option === questions[currentIndex].translation;
     if (isCorrect) setScore((s) => s + 10);
-  }, [selectedAnswer]);
+  }, [selectedAnswer, questions, currentIndex]);
 
   const nextQuestion = useCallback(() => {
     if (currentIndex < questions.length - 1) {
@@ -66,17 +69,18 @@ export default function ListeningPage() {
   }, [currentIndex, questions.length]);
 
   const finishGame = useCallback(() => {
-    if (selectedLevel) {
+    if (selectedLevel && !hasFinishedTriggered) {
+      setHasFinishedTriggered(true);
       playGame("listening", score, score);
       if (score >= 80 && user) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-  }, [selectedLevel, score, playGame, user]);
+  }, [selectedLevel, score, playGame, user, hasFinishedTriggered]);
 
   useEffect(() => {
-    if (gameState === "finished") {
+    if (gameState === "finished" && !hasFinishedTriggered) {
       finishGame();
     }
-  }, [gameState, finishGame]);
+  }, [gameState, finishGame, hasFinishedTriggered]);
 
   const currentQuestion = questions[currentIndex] || null;
   
@@ -160,13 +164,13 @@ export default function ListeningPage() {
         <div className="space-y-3">
           {options.map((option, index) => {
             const isSelected = selectedAnswer === index;
-            const isCorrect = index === 0;
+            const isCorrect = option === currentQuestion.translation;
             const showResult = selectedAnswer !== null;
 
             return (
               <motion.div key={index} initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: index * 0.05 }}>
                 <button
-                  onClick={() => handleAnswer(index)}
+                  onClick={() => handleAnswer(index, option)}
                   disabled={selectedAnswer !== null}
                   className={`w-full p-4 rounded-xl text-left font-medium transition-all flex items-center justify-between ${
                     showResult

@@ -1,16 +1,16 @@
 import type { UserProgress } from "@/types";
 
 export const defaultProgress: UserProgress = {
-  totalPoints: 0,
+  total_points: 0,
   streak: 0,
-  lastPlayed: "",
-  gamesPlayed: 0,
-  levelProgress: {
+  last_played: "",
+  games_played: 0,
+  level_progress: {
     A1: { completed: 0, total: 100, points: 0 },
     A2: { completed: 0, total: 100, points: 0 },
     B1: { completed: 0, total: 100, points: 0 },
   },
-  gameStats: {},
+  game_stats: {},
   achievements: [],
   settings: {
     theme: "system",

@@ -14,7 +14,7 @@ export const ACHIEVEMENTS: Array<{
     description: "Completa tu primer juego",
     icon: "👣",
     points: 50,
-    condition: (p) => p.gamesPlayed >= 1,
+    condition: (p) => p.games_played >= 1,
   },
   {
     id: "vocab_a1_master",
@@ -22,7 +22,7 @@ export const ACHIEVEMENTS: Array<{
     description: "Domina 50 palabras A1",
     icon: "📚",
     points: 100,
-    condition: (p) => (p.levelProgress.A1?.completed || 0) >= 50,
+    condition: (p) => (p.level_progress?.A1?.completed || 0) >= 50,
   },
   {
     id: "streak_7",
@@ -46,7 +46,7 @@ export const ACHIEVEMENTS: Array<{
     description: "Alcanza 500 puntos totales",
     icon: "🎯",
     points: 50,
-    condition: (p) => p.totalPoints >= 500,
+    condition: (p) => p.total_points >= 500,
   },
   {
     id: "points_1000",
@@ -54,7 +54,7 @@ export const ACHIEVEMENTS: Array<{
     description: "Alcanza 1000 puntos totales",
     icon: "🏆",
     points: 100,
-    condition: (p) => p.totalPoints >= 1000,
+    condition: (p) => p.total_points >= 1000,
   },
   {
     id: "points_5000",
@@ -62,7 +62,7 @@ export const ACHIEVEMENTS: Array<{
     description: "Alcanza 5000 puntos totales",
     icon: "👑",
     points: 500,
-    condition: (p) => p.totalPoints >= 5000,
+    condition: (p) => p.total_points >= 5000,
   },
   {
     id: "all_games",
@@ -70,7 +70,7 @@ export const ACHIEVEMENTS: Array<{
     description: "Juega todos los juegos",
     icon: "🗺️",
     points: 200,
-    condition: (p) => Object.keys(p.gameStats).length >= 8,
+    condition: (p) => Object.keys(p.game_stats || {}).length >= 8,
   },
   {
     id: "perfect_game",
@@ -78,7 +78,7 @@ export const ACHIEVEMENTS: Array<{
     description: "Obtén 100% en un juego",
     icon: "💯",
     points: 150,
-    condition: (p) => Object.values(p.gameStats).some((g) => g.bestScore === 100),
+    condition: (p) => Object.values(p.game_stats || {}).some((g) => g.bestScore === 100),
   },
   {
     id: "level_a1",
@@ -86,7 +86,7 @@ export const ACHIEVEMENTS: Array<{
     description: "Completa el nivel A1",
     icon: "🎓",
     points: 300,
-    condition: (p) => (p.levelProgress.A1?.completed || 0) >= 100,
+    condition: (p) => (p.level_progress?.A1?.completed || 0) >= 100,
   },
   {
     id: "level_a2",
@@ -94,7 +94,7 @@ export const ACHIEVEMENTS: Array<{
     description: "Completa el nivel A2",
     icon: "📖",
     points: 400,
-    condition: (p) => (p.levelProgress.A2?.completed || 0) >= 100,
+    condition: (p) => (p.level_progress?.A2?.completed || 0) >= 100,
   },
   {
     id: "level_b1",
@@ -102,6 +102,6 @@ export const ACHIEVEMENTS: Array<{
     description: "Completa el nivel B1",
     icon: "🏅",
     points: 500,
-    condition: (p) => (p.levelProgress.B1?.completed || 0) >= 100,
+    condition: (p) => (p.level_progress?.B1?.completed || 0) >= 100,
   },
 ];

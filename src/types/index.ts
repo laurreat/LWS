@@ -45,16 +45,16 @@ export interface GameStats {
 }
 
 export interface UserProgress {
-  totalPoints: number;
+  total_points: number;
   streak: number;
-  lastPlayed: string;
-  gamesPlayed: number;
-  levelProgress: {
+  last_played: string | null;
+  games_played: number;
+  level_progress: {
     A1: LevelProgress;
     A2: LevelProgress;
     B1: LevelProgress;
   };
-  gameStats: Record<string, GameStats>;
+  game_stats: Record<string, GameStats>;
   achievements: string[];
   settings: {
     theme: "light" | "dark" | "system";

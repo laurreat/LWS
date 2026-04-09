@@ -24,6 +24,8 @@ export default function GrammarPage() {
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { playGame, user } = useAuth();
 
+  const [hasFinishedTriggered, setHasFinishedTriggered] = useState(false);
+
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_GRAMMAR.filter((q) => q.level === level);
     const quiz = generateQuiz(filtered, 10);
@@ -34,6 +36,7 @@ export default function GrammarPage() {
     setShowExplanation(false);
     setSelectedLevel(level);
     setGameState("playing");
+    setHasFinishedTriggered(false);
   }, []);
 
   const handleAnswer = useCallback((index: number) => {
@@ -56,16 +59,22 @@ export default function GrammarPage() {
   }, [currentIndex, questions.length]);
 
   const finishGame = useCallback(() => {
-    if (selectedLevel) {
+    if (selectedLevel && !hasFinishedTriggered) {
+      setHasFinishedTriggered(true);
       playGame("grammar", score, score);
       if (score >= 80 && user) {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }
     }
-  }, [selectedLevel, score, playGame, user]);
+  }, [selectedLevel, score, playGame, user, hasFinishedTriggered]);
+
+  useEffect(() => {
+    if (gameState === "finished" && !hasFinishedTriggered) {
+      finishGame();
+    }
+  }, [gameState, finishGame, hasFinishedTriggered]);
 
   if (gameState === "finished") {
-    finishGame();
     return (
       <div className="min-h-screen p-4">
         <div className="max-w-2xl mx-auto py-8 text-center">

@@ -37,6 +37,8 @@ export default function MemoryPage() {
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { playGame, user } = useAuth();
 
+  const [hasFinishedTriggered, setHasFinishedTriggered] = useState(false);
+
   const startGame = useCallback((level: GameLevel) => {
     const words = A1_WORDS.filter((w) => true).slice(0, 100);
     setCards(shuffleCards(words));
@@ -45,6 +47,7 @@ export default function MemoryPage() {
     setMoves(0);
     setSelectedLevel(level);
     setGameState("playing");
+    setHasFinishedTriggered(false);
   }, []);
 
   const handleCardClick = useCallback((cardId: number) => {
@@ -95,18 +98,19 @@ export default function MemoryPage() {
   }, [cards]);
 
   const finishGame = useCallback(() => {
-    if (selectedLevel) {
+    if (selectedLevel && !hasFinishedTriggered) {
+      setHasFinishedTriggered(true);
       const finalScore = Math.max(0, 120 - moves * 5);
       playGame("memory", finalScore, finalScore);
       if (user) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-  }, [selectedLevel, moves, playGame, user]);
+  }, [selectedLevel, moves, playGame, user, hasFinishedTriggered]);
 
   useEffect(() => {
-    if (gameState === "finished") {
+    if (gameState === "finished" && !hasFinishedTriggered) {
       finishGame();
     }
-  }, [gameState, finishGame]);
+  }, [gameState, finishGame, hasFinishedTriggered]);
 
   if (gameState === "finished") {
     return (

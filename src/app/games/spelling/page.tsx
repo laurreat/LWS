@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
 import { Volume2, Home, Trophy, CheckCircle, XCircle, RotateCcw } from "lucide-react";
@@ -25,6 +25,7 @@ export default function SpellingPage() {
   const [gameState, setGameState] = useState<"select" | "playing" | "finished">("select");
   const { speak } = useSpeech();
   const { playGame, user } = useAuth();
+  const [hasFinishedTriggered, setHasFinishedTriggered] = useState(false);
 
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_PHRASES.filter((p) => p.level === level);
@@ -36,6 +37,7 @@ export default function SpellingPage() {
     setShowResult(null);
     setSelectedLevel(level);
     setGameState("playing");
+    setHasFinishedTriggered(false);
   }, []);
 
   const checkSpelling = useCallback(() => {
@@ -56,11 +58,18 @@ export default function SpellingPage() {
   }, [currentIndex, questions.length]);
 
   const finishGame = useCallback(() => {
-    if (selectedLevel) {
+    if (selectedLevel && !hasFinishedTriggered) {
+      setHasFinishedTriggered(true);
       playGame("spelling", score, score);
       if (score >= 80 && user) confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
     }
-  }, [selectedLevel, score, playGame, user]);
+  }, [selectedLevel, score, playGame, user, hasFinishedTriggered]);
+
+  useEffect(() => {
+    if (gameState === "finished" && !hasFinishedTriggered) {
+      finishGame();
+    }
+  }, [gameState, finishGame, hasFinishedTriggered]);
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && showResult === null) {
@@ -71,7 +80,6 @@ export default function SpellingPage() {
   };
 
   if (gameState === "finished") {
-    finishGame();
     return (
       <div className="min-h-screen p-4">
         <div className="max-w-2xl mx-auto py-8 text-center">

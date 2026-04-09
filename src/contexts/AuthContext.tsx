@@ -4,33 +4,12 @@ import { createContext, useContext, useEffect, useState, useCallback, useMemo, t
 import { createClient } from "@/lib/supabase";
 import type { User, Session } from "@supabase/supabase-js";
 import { ACHIEVEMENTS } from "@/lib/achievements";
+import type { UserProgress, Profile } from "@/types";
+import { defaultProgress } from "@/lib/defaultProgress";
 
-interface Profile {
-  id: string;
-  username: string | null;
-  name: string | null;
-  created_at: string;
-  updated_at: string;
-}
 
-interface UserProgress {
-  total_points: number;
-  streak: number;
-  last_played: string | null;
-  games_played: number;
-  achievements: string[];
-  settings: {
-    theme: "light" | "dark" | "system";
-    soundEnabled: boolean;
-    speechRate: number;
-  };
-  level_progress: {
-    A1: { completed: number; total: number; points: number };
-    A2: { completed: number; total: number; points: number };
-    B1: { completed: number; total: number; points: number };
-  };
-  game_stats: Record<string, { timesPlayed: number; bestScore: number }>;
-}
+
+
 
 interface AuthContextType {
   user: User | null;
@@ -108,15 +87,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     if (!error && data) {
       setProgress({
-        total_points: data.total_points,
-        streak: data.streak,
-        last_played: data.last_played,
-        games_played: data.games_played,
-        achievements: data.achievements,
-        settings: data.settings,
-        level_progress: data.level_progress,
-        game_stats: data.game_stats,
+        ...defaultProgress,
+        ...data,
       });
+    } else if (error && error.code === "PGRST116" && userId) {
+      // Record not found - this shouldn't happen if trigger is working, 
+      // but good to have a fallback or handle new users
+      setProgress(defaultProgress);
     }
     setLoading(false);
   }
@@ -212,7 +189,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     for (const achievement of ACHIEVEMENTS) {
       if (
         !progress.achievements.includes(achievement.id) &&
-        achievement.condition(progress as any)
+        achievement.condition(progress)
       ) {
         const newAchievements = [...progress.achievements, achievement.id];
         const newPoints = progress.total_points + achievement.points;

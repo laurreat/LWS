@@ -25,6 +25,8 @@ export default function PhrasesPage() {
   const { speak } = useSpeech();
   const { playGame, user } = useAuth();
 
+  const [hasFinishedTriggered, setHasFinishedTriggered] = useState(false);
+
   const startGame = useCallback((level: GameLevel) => {
     const filtered = ALL_PHRASES.filter((p) => p.level === level);
     const quiz = generateQuiz(filtered, 10);
@@ -34,6 +36,7 @@ export default function PhrasesPage() {
     setShowTranslation(false);
     setSelectedLevel(level);
     setGameState("playing");
+    setHasFinishedTriggered(false);
   }, []);
 
   const handleKnow = useCallback(() => {
@@ -62,7 +65,8 @@ export default function PhrasesPage() {
   }, [currentIndex, questions.length]);
 
   const finishGame = useCallback(() => {
-    if (selectedLevel) {
+    if (selectedLevel && !hasFinishedTriggered) {
+      setHasFinishedTriggered(true);
       const pointsEarned = score;
       playGame("phrases", score, pointsEarned);
       
@@ -70,10 +74,15 @@ export default function PhrasesPage() {
         confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
       }
     }
-  }, [selectedLevel, score, playGame, user]);
+  }, [selectedLevel, score, playGame, user, hasFinishedTriggered]);
+
+  useEffect(() => {
+    if (gameState === "finished" && !hasFinishedTriggered) {
+      finishGame();
+    }
+  }, [gameState, finishGame, hasFinishedTriggered]);
 
   if (gameState === "finished") {
-    finishGame();
     return (
       <div className="min-h-screen p-4">
         <div className="max-w-2xl mx-auto py-8 text-center">

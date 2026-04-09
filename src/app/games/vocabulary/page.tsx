@@ -51,6 +51,8 @@ export default function VocabularyPage() {
   const { speak } = useSpeech();
   const { playGame, user } = useAuth();
 
+  const [hasFinishedTriggered, setHasFinishedTriggered] = useState(false);
+
   const startGame = useCallback((level: GameLevel) => {
     const words = WORDS_BY_LEVEL[level];
     const quiz = generateQuiz(words, 10);
@@ -60,6 +62,7 @@ export default function VocabularyPage() {
     setSelectedAnswer(null);
     setSelectedLevel(level);
     setGameState("playing");
+    setHasFinishedTriggered(false);
   }, []);
 
   const handleAnswer = useCallback((index: number) => {
@@ -84,7 +87,8 @@ export default function VocabularyPage() {
   }, [currentIndex, questions.length]);
 
   const finishGame = useCallback(() => {
-    if (selectedLevel) {
+    if (selectedLevel && !hasFinishedTriggered) {
+      setHasFinishedTriggered(true);
       const pointsEarned = score;
       playGame("vocabulary", score, pointsEarned);
       
@@ -96,13 +100,13 @@ export default function VocabularyPage() {
         });
       }
     }
-  }, [selectedLevel, score, playGame]);
+  }, [selectedLevel, score, playGame, hasFinishedTriggered]);
 
   useEffect(() => {
-    if (gameState === "finished") {
+    if (gameState === "finished" && !hasFinishedTriggered) {
       finishGame();
     }
-  }, [gameState, finishGame]);
+  }, [gameState, finishGame, hasFinishedTriggered]);
 
   const currentQuestion = questions[currentIndex];
 
