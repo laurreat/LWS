@@ -102,8 +102,10 @@ export default function HomePage() {
         <h2 className="text-3xl font-bold text-center mb-12">📊 Tu Progreso</h2>
         <div className="grid md:grid-cols-3 gap-6">
           {(["A1", "A2", "B1"] as const).map((level) => {
-            const levelData = progress?.level_progress?.[level] ?? { completed: 0, total: level === "A1" ? 300 : level === "A2" ? 400 : 500, points: 0 };
-            const percentage = Math.round((levelData.completed / levelData.total) * 100);
+            const levelData = progress?.level_progress?.[level];
+            const total = level === "A1" ? 300 : level === "A2" ? 400 : 500;
+            const completed = levelData?.completed ?? 0;
+            const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
             return (
               <Card key={level} className="text-center">
                 <div className="text-5xl mb-4">{level === "A1" ? "🌍" : level === "A2" ? "📖" : "🏅"}</div>
@@ -114,7 +116,7 @@ export default function HomePage() {
                     style={{ width: `${percentage}%` }}
                   />
                 </div>
-                <p className="text-sm text-gray-500">{levelData.completed}/{levelData.total} palabras</p>
+                <p className="text-sm text-gray-500">{completed}/{total} palabras</p>
               </Card>
             );
           })}
