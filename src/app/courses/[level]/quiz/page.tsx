@@ -202,8 +202,20 @@ export default function QuizPage() {
             <span>Pregunta {currentQuestion + 1} de {exercises.length}</span>
             <span className="flex items-center gap-1">
               <Clock className="w-4 h-4" />
-              {Object.keys(answers).length} respondidas
+{Object.keys(answers).length} respondidas
             </span>
+          </div>
+          <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            {(() => {
+              const progress = ((currentQuestion + 1) / exercises.length) * 100;
+              return (
+                <motion.div
+                  className="h-full bg-primary"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progress}%` }}
+                />
+              );
+            })()}
           </div>
           <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
             <motion.div
