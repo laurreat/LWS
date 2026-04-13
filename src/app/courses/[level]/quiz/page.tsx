@@ -217,12 +217,17 @@ export default function QuizPage() {
               );
             })()}
           </div>
-          <div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
-            <motion.div
-              className="h-full bg-primary"
-              initial={{ width: 0 }}
-              animate={{ width: `${((currentQuestion + 1) / exercises.length) * 100)}%` }}
-            />
+<div className="h-2 bg-gray-200 dark:bg-gray-700 rounded-full overflow-hidden">
+            {(() => {
+              const progressBar = ((currentQuestion + 1) / exercises.length) * 100;
+              return (
+                <motion.div
+                  className="h-full bg-primary"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${progressBar}%` }}
+                />
+              );
+            })()}
           </div>
         </div>
 

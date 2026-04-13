@@ -18,7 +18,24 @@
     "afterFiles": [],
     "fallback": []
   },
-  "dynamicRoutes": [],
+  "dynamicRoutes": [
+    {
+      "page": "/courses/[level]",
+      "regex": "^/courses/([^/]+?)(?:/)?$",
+      "routeKeys": {
+        "nxtPlevel": "nxtPlevel"
+      },
+      "namedRegex": "^/courses/(?<nxtPlevel>[^/]+?)(?:/)?$"
+    },
+    {
+      "page": "/courses/[level]/quiz",
+      "regex": "^/courses/([^/]+?)/quiz(?:/)?$",
+      "routeKeys": {
+        "nxtPlevel": "nxtPlevel"
+      },
+      "namedRegex": "^/courses/(?<nxtPlevel>[^/]+?)/quiz(?:/)?$"
+    }
+  ],
   "staticRoutes": [
     {
       "page": "/",
@@ -31,6 +48,12 @@
       "regex": "^/_not\\-found(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/courses",
+      "regex": "^/courses(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/courses(?:/)?$"
     },
     {
       "page": "/forgot-password",
@@ -91,6 +114,12 @@
       "regex": "^/login(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/login(?:/)?$"
+    },
+    {
+      "page": "/profesor",
+      "regex": "^/profesor(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/profesor(?:/)?$"
     },
     {
       "page": "/profile",

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Sparkles, Plus, Wand2, BookOpen, Gamepad2, Settings, Users, BarChart3, Save, Loader2 } from "lucide-react";
 import { useCourses } from "@/hooks/useCourses";
-import { Button, Card, Input, Textarea, Select } from "@/components/ui";
+import { Button, Card } from "@/components/ui";
 import type { AIGame, GameLevel } from "@/types";
 
 interface GameConfig {

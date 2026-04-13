@@ -1,13 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(request: NextRequest) {
+  const { prompt, config } = await request.json();
+
+  // DeepSeek API - Solo variable de entorno
+  const deepseekKey = process.env.DEEPSEEK_API_KEY;
+  const deepseekEndpoint = "https://api.deepseek.com/v1/chat/completions";
+
+  // Si no hay API key, usar fallback
+  if (!deepseekKey) {
+    return NextResponse.json({
+      game: generateMockGame(config),
+      provider: "fallback",
+    });
+  }
+
   try {
-    const { prompt, config } = await request.json();
-
-    // DeepSeek API - Gratis y barato
-    const deepseekKey = process.env.DEEPSEEK_API_KEY || "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";
-    const deepseekEndpoint = "https://api.deepseek.com/v1/chat/completions";
-
     // Try DeepSeek first
     const deepseekResponse = await fetch(deepseekEndpoint, {
       method: "POST",
@@ -54,11 +62,13 @@ Important: Always respond with valid JSON only, no additional text or explanatio
       });
     }
 
-    // Fallback: generate mock data
-    throw new Error("API failed");
+    // Fallback: generate mock data if API fails
+    return NextResponse.json({
+      game: generateMockGame(config),
+      provider: "fallback",
+    });
   } catch (error) {
     console.error("Error:", error);
-    // Return mock data as fallback
     return NextResponse.json({
       game: generateMockGame(config),
       provider: "fallback",

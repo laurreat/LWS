@@ -10,5 +10,9 @@
     "files": [
       "static/chunks/646.f342b7cffc01feb0.js"
     ]
+  },
+  "app\\profesor\\page.tsx -> @/lib/supabase": {
+    "id": 2890,
+    "files": []
   }
 }

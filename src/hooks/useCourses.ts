@@ -156,7 +156,7 @@ export function useCourses() {
       const completed = completedLessons?.length || 0;
       const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
 
-      return { completed, total, percentage } as CourseProgress;
+      return { completed, total, percentage, course_id: courseId } as unknown as CourseProgress;
     } catch (err) {
       return null;
     }
