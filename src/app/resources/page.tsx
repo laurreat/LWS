@@ -168,7 +168,7 @@ ARTE:
    Repasa 10 tarjetas 3 veces al día.
 
 2. APRENDE EN CONTEXTO
-   No memorize单独palabras. Aprende frases completas.
+   No memorize palabras sueltas. Aprende frases completas.
    Ejemplo: No memorize "apple", aprende "An apple a day keeps the doctor away"
 
 3. REPASO ESPACIADO
@@ -209,7 +209,7 @@ Por qué es importante?
 - Te permite comunicarte con hablantes nativos
 - Entiendes películas, música, noticias
 - Desarrollas el "oído" para el idioma
-- Mejora tu pronunciación por模仿
+- Mejora tu pronunciación copiando
 
 Diferencia entre hearing y listening:
 - Hearing (oír): Tu sistema auditivo recibe sonidos
@@ -741,7 +741,7 @@ Usa el corrector de Duolingo o Google para verificar.`,
         title: "Fundamentos de pronunciación", 
         content: `La pronunciación (pronunciation) se refiere a cómo sonar como un hablante nativo.
 
-Diferencia entre字母y sonido:
+Diferencia entre letras y sonido:
 - "word" se escribe con letras W-O-R-D
 - Suena: /wɜːrd/
 
@@ -760,7 +760,7 @@ El objetivo es ser ENTENDIBLE.`,
       { 
         title: "Sonidos difíciles para hispanohablantes", 
         content: `SONIDO /θ/ (como en "think"):
-No existe en español.舌头顶牙齿：
+No existe en español. Pon la lengua entre los dientes:
 - think → /θɪŋk/
 - thanks → /θæŋks/
 - through → /θruː/
