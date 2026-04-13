@@ -320,7 +320,7 @@ PRÁCTICA:
 1. ✗ Querer traducir todo
    ✓ Escucha el "sentido", no palabras individuales
 
-2. ✗ Parar cuando noentiendesuna palabra
+2. Parar cuando no entiendes una palabra
    ✓ Sigue adelante, el contexto te ayuda
 
 3. ✗ Usar subtítulos en español
@@ -496,7 +496,7 @@ REALIDAD: ¡Nunca es tarde! Adults pueden aprender.
 EJERCICIOS PRÁCTICOS:
 
 1. Habla solo/a frente al espejo (10 min/día)
-2. Grábate y escucha (sin juzgarte)
+2. Graba y escucha (sin juzgarte)
 3. Describe lo que estás haciendo en voz alta
 4. Canta canciones en inglés
 5. Imita a hablantes nativos (shadowing)
