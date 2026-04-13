@@ -228,7 +228,7 @@ Diferencia entre hearing y listening:
    "Where do you live?"
    "How old are you?"
 
-3. Númerosteléfono:
+3. Números de teléfono:
    "My phone number is..."
 
 4. Instrucciones simples:
@@ -239,7 +239,7 @@ TÉCNICAS:
 
 ✓ Mira videos con subtítulos en inglés
 ✓ Repite en voz alta lo que escuchas
-✓ Escucha la misma canción 5 vezes
+✓ Escucha la misma canción 5 veces
 ✓ Usa apps como: Spotify, YouTube
 ✓ Práctica con series para niños: Peppa Pig, Dora
 
@@ -278,7 +278,7 @@ RECURSOS RECOMENDADOS:
 
 EJERCICIO:
 Escucha 15 minutos diarios durante 30 días.
-Verás résultats significativos.`,
+Verás resultados significativos.`,
       },
       { 
         title: "Nivel B1 - Comprensión avanzada", 
@@ -876,7 +876,7 @@ EXPRESAR EMOCIONES:
 
 PRÁCTICA:
 1. Imita a nativos con películas
-2. Grávate
+2. Graba y escucha
 3. Compara
 4. Ajusta
 
