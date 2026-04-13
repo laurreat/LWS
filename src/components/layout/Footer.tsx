@@ -1,40 +1,71 @@
 "use client";
 
 import Link from "next/link";
+import { BookOpen, GraduationCap, BarChart2, Sparkles, Heart, Twitter, Mail, Github } from "lucide-react";
 
 export function Footer() {
+  const currentYear = new Date().getFullYear();
+  
   return (
-    <footer className="bg-white dark:bg-surface-dark border-t border-gray-200 dark:border-gray-700 py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex items-center gap-2">
-            <span className="text-xl">📚</span>
-            <span className="font-bold text-gray-900 dark:text-white">Learn With Sena</span>
+    <footer className="bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          {/* Brand */}
+          <div className="md:col-span-1">
+            <Link href="/" className="flex items-center gap-2">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center">
+                <GraduationCap className="w-5 h-5 text-white" />
+              </div>
+              <span className="text-xl font-bold text-gray-900 dark:text-white">SpeakRush</span>
+            </Link>
+            <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+              Aprende inglés de forma interactiva y divertida con nuestra plataforma gamificada.
+            </p>
           </div>
 
-          <nav className="flex flex-wrap justify-center gap-6 text-sm text-gray-600 dark:text-gray-400">
-            <Link href="/" className="hover:text-primary transition-colors">Inicio</Link>
-            <Link href="/games/vocabulary" className="hover:text-primary transition-colors">Juegos</Link>
-            <Link href="/progress" className="hover:text-primary transition-colors">Progreso</Link>
-            <Link href="/resources" className="hover:text-primary transition-colors">Recursos</Link>
-          </nav>
+          {/* Links */}
+          <div>
+            <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Aprendizaje</h4>
+            <ul className="space-y-2">
+              <li><Link href="/courses" className="text-sm text-gray-500 hover:text-primary transition-colors flex items-center gap-2"><BookOpen className="w-4 h-4" /> Cursos</Link></li>
+              <li><Link href="/courses/A1" className="text-sm text-gray-500 hover:text-primary transition-colors">Nivel A1</Link></li>
+              <li><Link href="/courses/A2" className="text-sm text-gray-500 hover:text-primary transition-colors">Nivel A2</Link></li>
+              <li><Link href="/courses/B1" className="text-sm text-gray-500 hover:text-primary transition-colors">Nivel B1</Link></li>
+            </ul>
+          </div>
 
-          <div className="flex items-center gap-4">
-            <a href="https://web.facebook.com/SENA" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-500 transition-colors" aria-label="Facebook SENA">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.77,7.46H14.5v-1.9c0-.9.6-1.1,1-1.1h3V.5h-4.33C10.24.5,9.5,3.44,9.5,5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4Z"/></svg>
-            </a>
-            <a href="https://web.facebook.com/sena.caqueta" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-blue-500 transition-colors" aria-label="Facebook SENA Caquetá">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M18.77,7.46H14.5v-1.9c0-.9.6-1.1,1-1.1h3V.5h-4.33C10.24.5,9.5,3.44,9.5,5.32v2.15h-3v4h3v12h5v-12h3.85l.42-4Z"/></svg>
-            </a>
-            <a href="https://www.youtube.com/@senaregionalcaqueta6518" target="_blank" rel="noopener noreferrer" className="text-gray-400 hover:text-red-500 transition-colors" aria-label="YouTube SENA Caquetá">
-              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 24 24"><path d="M23.5 6.19a3.02 3.02 0 0 0-2.12-2.14C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.38.55A3.02 3.02 0 0 0 .5 6.19 31.4 31.4 0 0 0 0 12a31.4 31.4 0 0 0 .5 5.81 3.02 3.02 0 0 0 2.12 2.14C4.5 20.5 12 20.5 12 20.5s7.5 0 9.38-.55a3.02 3.02 0 0 0 2.12-2.14A31.4 31.4 0 0 0 24 12a31.4 31.4 0 0 0-.5-5.81ZM9.75 15.02V8.98L15.5 12l-5.75 3.02Z"/></svg>
-            </a>
+          <div>
+            <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Recursos</h4>
+            <ul className="space-y-2">
+              <li><Link href="/progress" className="text-sm text-gray-500 hover:text-primary transition-colors flex items-center gap-2"><BarChart2 className="w-4 h-4" /> Mi Progreso</Link></li>
+              <li><Link href="/resources" className="text-sm text-gray-500 hover:text-primary transition-colors flex items-center gap-2"><Sparkles className="w-4 h-4" /> Recursos</Link></li>
+              <li><Link href="/login" className="text-sm text-gray-500 hover:text-primary transition-colors">Iniciar Sesión</Link></li>
+              <li><Link href="/signup" className="text-sm text-gray-500 hover:text-primary transition-colors">Registrarse</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="font-semibold text-gray-900 dark:text-white mb-4">Contacto</h4>
+            <div className="flex gap-4">
+              <a href="#" className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                <Twitter className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                <Mail className="w-5 h-5" />
+              </a>
+              <a href="#" className="w-10 h-10 rounded-full bg-gray-100 dark:bg-gray-800 flex items-center justify-center text-gray-500 hover:text-primary hover:bg-gray-200 dark:hover:bg-gray-700 transition-all">
+                <Github className="w-5 h-5" />
+              </a>
+            </div>
           </div>
         </div>
 
-        <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700 text-center">
+        <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-sm text-gray-500 dark:text-gray-400">
-            Hecho con 💜 para aprender inglés | © 2024 SENA Caquetá
+            &copy; {currentYear} SpeakRush. Todos los derechos reservados.
+          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1">
+            Hecho con <Heart className="w-4 h-4 text-red-500" /> para aprender inglés
           </p>
         </div>
       </div>

@@ -69,6 +69,11 @@ export interface Profile {
   username: string;
   avatar_url?: string;
   updated_at?: string;
+  role?: UserRole;
+}
+
+export interface ProfileWithRole extends Profile {
+  role: UserRole;
 }
 
 export interface Achievement {
@@ -89,4 +94,88 @@ export interface Game {
   icon: string;
   levels: GameLevel[];
   color: string;
+}
+
+// Tipos para el sistema de cursos
+export type UserRole = "admin" | "profesor" | "estudiante";
+
+export interface Course {
+  id: string;
+  title: string;
+  description: string;
+  level: GameLevel;
+  order_num: number;
+  is_active: boolean;
+  progress?: number; // 0-100
+}
+
+export interface Module {
+  id: string;
+  course_id: string;
+  title: string;
+  description: string;
+  order_num: number;
+  is_active: boolean;
+  progress?: number;
+  lessons_count?: number;
+  completed_lessons?: number;
+}
+
+export interface Lesson {
+  id: string;
+  module_id: string;
+  title: string;
+  content: string;
+  order_num: number;
+  lesson_type: "theory" | "exercise" | "quiz";
+  exercises?: Exercise[];
+}
+
+export interface Exercise {
+  id: string;
+  lesson_id: string;
+  question: string;
+  correct_answer: string;
+  options: string[];
+  exercise_type: "multiple_choice" | "fill_blank" | "matching" | "ordering" | "speaking";
+  points: number;
+}
+
+export interface QuizResult {
+  id: string;
+  module_id: string;
+  score: number;
+  total_questions: number;
+  passed: boolean;
+  attempts: number;
+  completed_at: string;
+}
+
+export interface AIGame {
+  id: string;
+  title: string;
+  topic: string;
+  level: GameLevel;
+  game_type: string;
+  content: any;
+}
+
+// Progreso del usuario en cursos
+export interface CourseProgress {
+  course_id: string;
+  completed_modules: number;
+  total_modules: number;
+  percentage: number;
+  started_at?: string;
+  completed_at?: string;
+}
+
+// Estado global del curso
+export interface CourseState {
+  courses: Course[];
+  modules: Module[];
+  currentLesson: Lesson | null;
+  quizResults: QuizResult[];
+  loading: boolean;
+  error: string | null;
 }

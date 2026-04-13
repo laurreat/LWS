@@ -1,4 +1,4 @@
-// Progress tracking system for LWS - Learn With Sena
+// Progress tracking system for SpeakRush
 class ProgressTracker {
     constructor() {
         this.progressKey = "lwsProgress";

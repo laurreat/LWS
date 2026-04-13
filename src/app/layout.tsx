@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const jetbrainsMono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono" });
 
 export const metadata: Metadata = {
-  title: "Learn With Sena - Aprende inglés jugando",
+  title: "SpeakRush - Aprende inglés jugando",
   description: "Plataforma interactiva de aprendizaje de inglés para niños. ¡Juega y aprende!",
   manifest: "/manifest.json",
   icons: {
@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Learn With Sena",
+    title: "SpeakRush",
   },
 };
 
