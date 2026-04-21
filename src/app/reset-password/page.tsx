@@ -122,8 +122,9 @@ export default function ResetPasswordPage() {
           )}
 
           <div>
-            <label className="block text-sm font-medium mb-1">Nueva contraseña</label>
+            <label htmlFor="newPassword" className="block text-sm font-medium mb-1">Nueva contraseña</label>
             <input
+              id="newPassword"
               type="password"
               name="newPassword"
               value={password}
@@ -135,8 +136,9 @@ export default function ResetPasswordPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Confirmar contraseña</label>
+            <label htmlFor="confirmPassword" className="block text-sm font-medium mb-1">Confirmar contraseña</label>
             <input
+              id="confirmPassword"
               type="password"
               name="confirmPassword"
               value={confirmPassword}

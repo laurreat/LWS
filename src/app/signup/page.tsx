@@ -56,8 +56,9 @@ export default function SignUpPage() {
           )}
 
           <div>
-            <label className="block text-sm font-medium mb-1">Nombre completo</label>
+            <label htmlFor="name" className="block text-sm font-medium mb-1">Nombre completo</label>
             <input
+              id="name"
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -68,8 +69,9 @@ export default function SignUpPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Nombre de usuario</label>
+            <label htmlFor="username" className="block text-sm font-medium mb-1">Nombre de usuario</label>
             <input
+              id="username"
               type="text"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
@@ -80,8 +82,9 @@ export default function SignUpPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Email</label>
+            <label htmlFor="email" className="block text-sm font-medium mb-1">Email</label>
             <input
+              id="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -92,8 +95,9 @@ export default function SignUpPage() {
           </div>
 
           <div>
-            <label className="block text-sm font-medium mb-1">Contraseña</label>
+            <label htmlFor="password" className="block text-sm font-medium mb-1">Contraseña</label>
             <input
+              id="password"
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
