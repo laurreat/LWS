@@ -8,6 +8,7 @@ export function useCourses() {
   const supabase = createClient();
   const [courses, setCourses] = useState<Course[]>([]);
   const [modules, setModules] = useState<Module[]>([]);
+  const [lessons, setLessons] = useState<Lesson[]>([]);
   const [currentLesson, setCurrentLesson] = useState<Lesson | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -50,6 +51,24 @@ export function useCourses() {
       setModules(modulesWithCount);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error fetching modules");
+    } finally {
+      setLoading(false);
+    }
+  }, [supabase]);
+
+  const fetchLessonsByModule = useCallback(async (moduleId: string) => {
+    setLoading(true);
+    try {
+      const { data, error } = await supabase
+        .from("lessons")
+        .select("*")
+        .eq("module_id", moduleId)
+        .order("order_num");
+
+      if (error) throw error;
+      setLessons(data || []);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error fetching lessons");
     } finally {
       setLoading(false);
     }
@@ -198,11 +217,13 @@ export function useCourses() {
   return {
     courses,
     modules,
+    lessons,
     currentLesson,
     loading,
     error,
     fetchCourses,
     fetchModules,
+    fetchLessonsByModule,
     fetchLesson,
     completeLesson,
     submitQuiz,
