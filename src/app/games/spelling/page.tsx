@@ -15,6 +15,60 @@ function generateQuiz(phrases: Phrase[], count: number = 10): Phrase[] {
   return [...phrases].sort(() => Math.random() - 0.5).slice(0, count);
 }
 
+function isCorrectSpelling(input: string, correct: string): boolean {
+  const clean = (s: string) => s.toLowerCase().replace(/[.,!?]/g, "").replace(/\s+/g, " ").trim();
+  
+  const i = clean(input);
+  const c = clean(correct);
+  if (i === c) return true;
+
+  const formatInput = (s: string) => s
+    .replace(/\bdont\b/g, "don't")
+    .replace(/\bdoesnt\b/g, "doesn't")
+    .replace(/\bdidnt\b/g, "didn't")
+    .replace(/\bcant\b/g, "can't")
+    .replace(/\bwont\b/g, "won't")
+    .replace(/\bisnt\b/g, "isn't")
+    .replace(/\barent\b/g, "aren't")
+    .replace(/\bwasnt\b/g, "wasn't")
+    .replace(/\bwerent\b/g, "weren't")
+    .replace(/\bhavent\b/g, "haven't")
+    .replace(/\bhasnt\b/g, "hasn't")
+    .replace(/\bhadnt\b/g, "hadn't")
+    .replace(/\bwouldnt\b/g, "wouldn't")
+    .replace(/\bshouldnt\b/g, "shouldn't")
+    .replace(/\bcouldnt\b/g, "couldn't")
+    .replace(/\bmustnt\b/g, "mustn't")
+    .replace(/\bim\b/g, "i'm")
+    .replace(/\bive\b/g, "i've");
+
+  const expand = (s: string) => s
+    .replace(/\bwon't\b/g, "will not")
+    .replace(/\bcan't\b/g, "can not")
+    .replace(/\bcannot\b/g, "can not")
+    .replace(/n't\b/g, " not")
+    .replace(/'m\b/g, " am")
+    .replace(/'re\b/g, " are")
+    .replace(/'ve\b/g, " have")
+    .replace(/'ll\b/g, " will")
+    .replace(/\blet's\b/g, "let us")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  const iExp = expand(formatInput(i));
+  const cExp = expand(c);
+
+  if (iExp === cExp) return true;
+
+  const expandIs = (s: string) => s.replace(/'s\b/g, " is").replace(/'d\b/g, " would");
+  if (expandIs(iExp) === expandIs(cExp)) return true;
+
+  const expandHas = (s: string) => s.replace(/'s\b/g, " has").replace(/'d\b/g, " had");
+  if (expandHas(iExp) === expandHas(cExp)) return true;
+
+  return false;
+}
+
 export default function SpellingPage() {
   const [selectedLevel, setSelectedLevel] = useState<GameLevel | null>(null);
   const [questions, setQuestions] = useState<Phrase[]>([]);
@@ -41,8 +95,8 @@ export default function SpellingPage() {
   }, []);
 
   const checkSpelling = useCallback(() => {
-    const correct = questions[currentIndex].sentence.replace(/[.,!?]/g, "").trim().toLowerCase();
-    const isCorrect = input.toLowerCase().trim() === correct;
+    const correctPhrase = questions[currentIndex].sentence;
+    const isCorrect = isCorrectSpelling(input, correctPhrase);
     setShowResult(isCorrect);
     if (isCorrect) setScore((s) => s + 10);
   }, [input, questions, currentIndex]);
