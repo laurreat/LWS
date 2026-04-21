@@ -33,6 +33,12 @@ export default function HomePage() {
     const params = new URLSearchParams(window.location.search);
     const hashParams = new URLSearchParams(window.location.hash.replace("#", "?"));
     
+    // Redirect correctly if it's a valid recovery link
+    if (hashParams.get("type") === "recovery" || hashParams.has("access_token")) {
+      window.location.href = "/reset-password" + window.location.hash;
+      return;
+    }
+
     const errorCode = params.get("error_code") || hashParams.get("error_code");
     
     if (errorCode === "otp_expired" || errorCode === "access_denied") {
