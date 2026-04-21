@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BookOpen, Trophy, Star, Zap, Target, Mic } from "lucide-react";
+import { BookOpen, Trophy, Star, Zap, Target, Mic, AlertCircle } from "lucide-react";
 import { Card, Button } from "@/components/ui";
+import { Modal } from "@/components/ui/Modal";
 import { useAuth } from "@/contexts/AuthContext";
 
 const games = [
@@ -19,12 +21,44 @@ const games = [
 
 export default function HomePage() {
   const { user, progress } = useAuth();
+  const [showErrorModal, setShowErrorModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  
   const totalPoints = progress?.total_points ?? 0;
   const streak = progress?.streak ?? 0;
   const gamesPlayed = progress?.games_played ?? 0;
 
+  useEffect(() => {
+    // Check for error in both query params and hash
+    const params = new URLSearchParams(window.location.search);
+    const hashParams = new URLSearchParams(window.location.hash.replace("#", "?"));
+    
+    const errorCode = params.get("error_code") || hashParams.get("error_code");
+    
+    if (errorCode === "otp_expired" || errorCode === "access_denied") {
+      setErrorMessage("El enlace de recuperación ha expirado o no es válido. Por favor, solicita un nuevo enlace desde la página de inicio de sesión.");
+      setShowErrorModal(true);
+      
+      // Clean up the URL so it doesn't stay there if they refresh
+      window.history.replaceState({}, document.title, window.location.pathname);
+    }
+  }, []);
+
   return (
     <div className="min-h-screen">
+      <Modal isOpen={showErrorModal} onClose={() => setShowErrorModal(false)} title="Enlace Expirado">
+        <div className="flex flex-col items-center text-center p-4">
+          <AlertCircle className="w-16 h-16 text-red-500 mb-4" />
+          <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg">
+            {errorMessage}
+          </p>
+          <div className="w-full">
+            <Link href="/login" onClick={() => setShowErrorModal(false)}>
+              <Button className="w-full">Ir a Iniciar Sesión</Button>
+            </Link>
+          </div>
+        </div>
+      </Modal>
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-purple-600 to-secondary py-20 px-4">
         <div className="absolute inset-0 opacity-10">
           <div className="absolute top-10 left-10 text-8xl">📚</div>
