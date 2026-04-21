@@ -35,13 +35,19 @@ export function useCourses() {
     try {
       const { data, error } = await supabase
         .from("modules")
-        .select("*, lessons(lessons:count())")
+        .select("*, lessons(count)")
         .eq("course_id", courseId)
         .eq("is_active", true)
         .order("order_num");
 
       if (error) throw error;
-      setModules(data || []);
+      
+      const modulesWithCount = (data || []).map((m: any) => ({
+        ...m,
+        lessons_count: m.lessons?.[0]?.count || 0
+      }));
+
+      setModules(modulesWithCount);
     } catch (err) {
       setError(err instanceof Error ? err.message : "Error fetching modules");
     } finally {

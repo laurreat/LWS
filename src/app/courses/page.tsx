@@ -35,11 +35,10 @@ const itemVariants = {
 };
 
 export default function CoursesPage() {
-  const { courses, loading, error, fetchCourses, fetchModules, getCourseProgress } = useCourses();
+  const { courses, modules, loading, error, fetchCourses, fetchModules, getCourseProgress } = useCourses();
   const [selectedCourse, setSelectedCourse] = useState<Course | null>(null);
   const [courseProgress, setCourseProgress] = useState<Record<string, number>>({});
   const [animatedProgress, setAnimatedProgress] = useState<Record<string, number>>({});
-  const [localModules, setLocalModules] = useState<Module[]>([]);
 
   useEffect(() => {
     fetchCourses();
@@ -84,7 +83,6 @@ export default function CoursesPage() {
 
   const handleBack = () => {
     setSelectedCourse(null);
-    setLocalModules([]);
   };
 
   if (loading && !selectedCourse) {
@@ -224,7 +222,7 @@ export default function CoursesPage() {
               </Button>
 
               <div className="grid gap-4">
-                {localModules.map((module, index) => (
+                {modules.map((module, index) => (
                   <ModuleCard
                     key={module.id}
                     module={module}
@@ -234,7 +232,7 @@ export default function CoursesPage() {
                 ))}
               </div>
 
-              {localModules.length === 0 && !loading && (
+              {modules.length === 0 && !loading && (
                 <div className="text-center py-16">
                   <FileText className="w-16 h-16 text-gray-300 mx-auto mb-4" />
                   <p className="text-gray-500">
