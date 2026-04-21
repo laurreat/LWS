@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useCourses } from "@/hooks/useCourses";
 import { Button, Card } from "@/components/ui";
 import type { Module, Lesson } from "@/types";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 export default function LessonPage() {
   const params = useParams();
@@ -97,12 +99,12 @@ export default function LessonPage() {
               {currentLesson?.title || "Cargando..."}
             </h2>
 
-            <div
-              className="prose dark:prose-invert max-w-none mb-8"
-              dangerouslySetInnerHTML={{
-                __html: currentLesson?.content || "",
-              }}
-            />
+
+            <div className="prose dark:prose-invert max-w-none mb-8 prose-headings:text-primary prose-a:text-primary prose-strong:text-primary dark:prose-headings:text-primary-dark dark:prose-a:text-primary-dark dark:prose-strong:text-primary-dark">
+              <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                {currentLesson?.content || ""}
+              </ReactMarkdown>
+            </div>
 
             <div className="flex justify-between pt-6 border-t border-gray-200 dark:border-gray-700">
               <Button
