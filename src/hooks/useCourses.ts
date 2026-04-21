@@ -98,7 +98,7 @@ export function useCourses() {
   const completeLesson = useCallback(async (lessonId: string, score?: number) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
+      if (!user) return true;
 
       const { error } = await supabase
         .from("user_progress")
@@ -121,7 +121,6 @@ export function useCourses() {
   const submitQuiz = useCallback(async (moduleId: string, answers: { exerciseId: string; answer: string }[]) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
-      if (!user) throw new Error("Not authenticated");
 
       // Calculate score
       let correct = 0;
@@ -142,18 +141,20 @@ export function useCourses() {
       const score = Math.round((correct / answers.length) * 100);
       const passed = score >= 70; // 70% to pass
 
-      // Save result
-      const { error } = await supabase
-        .from("quiz_results")
-        .insert({
-          user_id: user.id,
-          module_id: moduleId,
-          score,
-          total_questions: answers.length,
-          passed,
-        });
+      // Save result only if authenticated
+      if (user) {
+        const { error } = await supabase
+          .from("quiz_results")
+          .insert({
+            user_id: user.id,
+            module_id: moduleId,
+            score,
+            total_questions: answers.length,
+            passed,
+          });
 
-      if (error) throw error;
+        if (error) throw error;
+      }
 
       return { score, passed, correct, total: answers.length };
     } catch (err) {
