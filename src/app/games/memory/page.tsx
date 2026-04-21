@@ -57,32 +57,41 @@ export default function MemoryPage() {
     if (cards[cardIndex].isMatched || cards[cardIndex].isFlipped) return;
 
     const newCards = [...cards];
-    newCards[cardIndex].isFlipped = true;
+    newCards[cardIndex] = { ...newCards[cardIndex], isFlipped: true };
     setCards(newCards);
     setFlippedCards([...flippedCards, cardId]);
   }, [cards, flippedCards]);
 
   useEffect(() => {
     if (flippedCards.length === 2) {
-      const [first, second] = flippedCards;
-      const card1 = cards[first];
-      const card2 = cards[second];
+      const [firstId, secondId] = flippedCards;
+      const firstIndex = cards.findIndex((c) => c.id === firstId);
+      const secondIndex = cards.findIndex((c) => c.id === secondId);
+      
+      const card1 = cards[firstIndex];
+      const card2 = cards[secondIndex];
       
       setMoves((m) => m + 1);
 
       if (card1.word.id === card2.word.id) {
-        const newCards = [...cards];
-        newCards[first].isMatched = true;
-        newCards[second].isMatched = true;
-        setCards(newCards);
+        setCards((prev) => {
+          const newCards = [...prev];
+          newCards[firstIndex] = { ...newCards[firstIndex], isMatched: true };
+          newCards[secondIndex] = { ...newCards[secondIndex], isMatched: true };
+          return newCards;
+        });
         setScore((s) => s + 20);
         setFlippedCards([]);
       } else {
         setTimeout(() => {
-          const newCards = [...cards];
-          newCards[first].isFlipped = false;
-          newCards[second].isFlipped = false;
-          setCards(newCards);
+          setCards((prev) => {
+            const newCards = [...prev];
+            const idx1 = newCards.findIndex((c) => c.id === firstId);
+            const idx2 = newCards.findIndex((c) => c.id === secondId);
+            if (idx1 !== -1) newCards[idx1] = { ...newCards[idx1], isFlipped: false };
+            if (idx2 !== -1) newCards[idx2] = { ...newCards[idx2], isFlipped: false };
+            return newCards;
+          });
           setFlippedCards([]);
         }, 1000);
       }
