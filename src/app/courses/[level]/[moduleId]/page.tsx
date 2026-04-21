@@ -28,9 +28,9 @@ export default function ModulePage() {
       .from("modules")
       .select("*")
       .eq("id", moduleId)
-      .single()
+      .limit(1)
       .then(({ data }) => {
-        if (data) setModule(data);
+        if (data && data.length > 0) setModule(data[0]);
       });
 
     // Fetch lessons

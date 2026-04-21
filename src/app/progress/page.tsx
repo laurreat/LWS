@@ -67,7 +67,7 @@ export default function ProgressPage() {
         <div className="grid md:grid-cols-3 gap-4 mb-8">
           {(["A1", "A2", "B1"] as const).map((level) => {
             const progress = levelProgress[level];
-            const percentage = Math.round((progress.completed / progress.total) * 100);
+            const percentage = progress.total > 0 ? Math.round((progress.completed / progress.total) * 100) : 0;
             return (
               <Card key={level}>
                 <div className="flex items-center justify-between mb-2">

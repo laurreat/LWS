@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   BookOpen, HelpCircle, ArrowRight, ArrowLeft,
-  Trophy, CheckCircle, ChevronRight
+  Trophy, CheckCircle, ChevronRight, Volume2, VolumeX
 } from "lucide-react";
 import Link from "next/link";
 import { useCourses } from "@/hooks/useCourses";
@@ -33,6 +33,43 @@ export default function LessonPage() {
   const currentIndex = lessons.findIndex(l => l.id === lessonId);
   const isLast       = currentIndex === lessons.length - 1;
   const isQuiz       = currentLesson?.lesson_type === "quiz";
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false);
+
+  useEffect(() => {
+    // Stop any ongoing speech when component unmounts or changes lesson
+    return () => {
+      if (window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [lessonId]);
+
+  const toggleAudio = () => {
+    if (!window.speechSynthesis) return;
+
+    if (isPlayingAudio) {
+      window.speechSynthesis.cancel();
+      setIsPlayingAudio(false);
+      return;
+    }
+
+    if (currentLesson?.content) {
+      // Very basic markdown stripping for TTS
+      const plainText = currentLesson.content.replace(/[#*_~`>]/g, "").replace(/\[.*?\]\(.*?\)/g, "");
+      const utterance = new SpeechSynthesisUtterance(plainText);
+      
+      // Determine language based on level or just use default (es-ES / en-US)
+      // Since it's an English learning platform, the content might be mixed.
+      // We can set it to a standard or let the browser guess.
+      utterance.lang = "es-ES"; 
+      
+      utterance.onend = () => setIsPlayingAudio(false);
+      utterance.onerror = () => setIsPlayingAudio(false);
+
+      window.speechSynthesis.speak(utterance);
+      setIsPlayingAudio(true);
+    }
+  };
 
   const handleNext = async () => {
     if (currentLesson) await completeLesson(currentLesson.id);
@@ -157,9 +194,23 @@ export default function LessonPage() {
 
               {/* Lesson content */}
               <div className="p-8">
-                <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 leading-tight">
-                  {currentLesson?.title || "Cargando..."}
-                </h1>
+                <div className="flex items-center justify-between mb-6">
+                  <h1 className="text-2xl font-bold text-gray-900 dark:text-white leading-tight">
+                    {currentLesson?.title || "Cargando..."}
+                  </h1>
+                  {!isQuiz && (
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={toggleAudio}
+                      className={`flex items-center gap-2 ${isPlayingAudio ? "text-primary border-primary" : ""}`}
+                      title={isPlayingAudio ? "Detener lectura" : "Leer en voz alta"}
+                    >
+                      {isPlayingAudio ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+                      <span className="hidden sm:inline">{isPlayingAudio ? "Detener" : "Escuchar"}</span>
+                    </Button>
+                  )}
+                </div>
 
                 <div className="prose dark:prose-invert max-w-none
                   prose-headings:font-bold prose-headings:text-gray-900 dark:prose-headings:text-white

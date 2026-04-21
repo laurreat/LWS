@@ -78,11 +78,13 @@ export function useCourses() {
     setLoading(true);
     try {
       // Fetch lesson with exercises
-      const { data: lesson, error: lessonError } = await supabase
+      const { data: records, error: lessonError } = await supabase
         .from("lessons")
         .select("*, exercises(*)")
         .eq("id", lessonId)
-        .single();
+        .limit(1);
+
+      const lesson = records?.[0];
 
       if (lessonError) throw lessonError;
       setCurrentLesson(lesson);
@@ -124,11 +126,13 @@ export function useCourses() {
       // Calculate score
       let correct = 0;
       for (const answer of answers) {
-        const { data: exercise } = await supabase
+        const { data: records } = await supabase
           .from("exercises")
           .select("correct_answer")
           .eq("id", answer.exerciseId)
-          .single();
+          .limit(1);
+        
+        const exercise = records?.[0];
         
         if (exercise && exercise.correct_answer === answer.answer) {
           correct++;
@@ -192,11 +196,13 @@ export function useCourses() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return "estudiante";
 
-      const { data: profile } = await supabase
+      const { data: records } = await supabase
         .from("profiles")
         .select("role")
         .eq("id", user.id)
-        .single();
+        .limit(1);
+
+      const profile = records?.[0];
 
       return (profile?.role as UserRole) || "estudiante";
     } catch {

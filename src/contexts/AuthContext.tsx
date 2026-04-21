@@ -67,11 +67,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   async function fetchProfile(userId: string) {
-    const { data, error } = await supabase
+    const { data: records, error } = await supabase
       .from("profiles")
       .select("*")
       .eq("id", userId)
-      .single();
+      .limit(1);
+
+    const data = records?.[0];
 
     if (!error && data) {
       setProfile(data);
@@ -79,20 +81,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function fetchProgress(userId: string) {
-    const { data, error } = await supabase
+    const { data: records, error } = await supabase
       .from("user_progress")
       .select("*")
       .eq("user_id", userId)
-      .single();
+      .limit(1);
+
+    const data = records?.[0];
 
     if (!error && data) {
       setProgress({
         ...defaultProgress,
         ...data,
       });
-    } else if (error && error.code === "PGRST116" && userId) {
-      // Record not found - this shouldn't happen if trigger is working, 
-      // but good to have a fallback or handle new users
+    } else if (!error && !data && userId) {
+      // Record not found - fallback for new users without progress yet
       setProgress(defaultProgress);
     }
     setLoading(false);
