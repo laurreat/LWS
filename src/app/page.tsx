@@ -7,20 +7,20 @@ import {
   BookOpen, Gamepad2, Trophy, Star, Zap, Target, Mic, 
   AlertCircle, PenTool, GraduationCap, Sparkles, BarChart3, Globe, Play, Award
 } from "lucide-react";
-import { Card, Button } from "@/components/ui";
+import { Card, Button, LevelBadge } from "@/components/ui";
 import { Modal } from "@/components/ui/Modal";
 import { useAuth } from "@/contexts/AuthContext";
 
 // Moved outside component to prevent recreation on each render (react-best-practices)
 const games = [
-  { id: "vocabulary", name: "Vocabulary", icon: BookOpen, color: "from-violet-500 to-purple-500", description: "Aprende palabras nuevas" },
-  { id: "phrases", name: "Phrases", icon: Target, color: "from-cyan-500 to-blue-500", description: "Frases completas" },
-  { id: "grammar", name: "Grammar", icon: Zap, color: "from-amber-500 to-orange-500", description: "Gramática en inglés" },
-  { id: "sentence", name: "Sentence", icon: PenTool, color: "from-emerald-500 to-teal-500", description: "Organiza oraciones" },
-  { id: "listening", name: "Listening", icon: Mic, color: "from-pink-500 to-rose-500", description: "Practica tu oído" },
-  { id: "speaking", name: "Speaking", icon: Mic, color: "from-indigo-500 to-violet-500", description: "Habla en inglés" },
-  { id: "spelling", name: "Spelling", icon: PenTool, color: "from-green-500 to-emerald-500", description: "Practica spelling" },
-  { id: "memory", name: "Memory", icon: Gamepad2, color: "from-yellow-500 to-amber-500", description: "Juego de memoria" },
+  { id: "vocabulary", name: "Vocabulary", icon: BookOpen, color: "from-violet-500 to-purple-500", description: "Aprende palabras nuevas", levels: ["A1", "A2", "B1"] },
+  { id: "phrases", name: "Phrases", icon: Target, color: "from-cyan-500 to-blue-500", description: "Frases completas", levels: ["A1", "A2", "B1"] },
+  { id: "grammar", name: "Grammar", icon: Zap, color: "from-amber-500 to-orange-500", description: "Gramática en inglés", levels: ["A1", "A2", "B1"] },
+  { id: "sentence", name: "Sentence", icon: PenTool, color: "from-emerald-500 to-teal-500", description: "Organiza oraciones", levels: ["A1", "A2", "B1"] },
+  { id: "listening", name: "Listening", icon: Mic, color: "from-pink-500 to-rose-500", description: "Practica tu oído", levels: ["A1", "A2", "B1"] },
+  { id: "speaking", name: "Speaking", icon: Mic, color: "from-indigo-500 to-violet-500", description: "Habla en inglés", levels: ["A1", "A2", "B1"] },
+  { id: "spelling", name: "Spelling", icon: PenTool, color: "from-green-500 to-emerald-500", description: "Practica spelling", levels: ["A1", "A2", "B1"] },
+  { id: "memory", name: "Memory", icon: Gamepad2, color: "from-yellow-500 to-amber-500", description: "Juego de memoria", levels: ["A1", "A2", "B1"] },
 ];
 
 export default function HomePage() {
@@ -129,7 +129,14 @@ export default function HomePage() {
                   <div className="text-center text-white">
                     <game.icon className="w-12 h-12 mx-auto mb-3" />
                     <h3 className="text-xl font-bold mb-1">{game.name}</h3>
-                    <p className="text-sm text-white/80">{game.description}</p>
+                    <p className="text-sm text-white/80 mb-3">{game.description}</p>
+                    <div className="flex justify-center gap-1.5 flex-wrap">
+                      {game.levels?.map((level) => (
+                        <span key={level} className="text-xs bg-white/20 backdrop-blur-sm px-2 py-0.5 rounded-full">
+                          {level}
+                        </span>
+                      ))}
+                    </div>
                   </div>
                 </Card>
               </Link>
