@@ -78,15 +78,15 @@ export function Navbar() {
               </div>
             )}
 
-            <Button variant="ghost" size="sm" className="p-2">
-              {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
-            </Button>
-
-            {mounted && (
-              <Button variant="ghost" size="sm" onClick={toggleTheme} className="p-2">
-                {resolvedTheme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+            <Button variant="ghost" size="sm" className="p-2" aria-label={soundEnabled ? "Desactivar sonido" : "Activar sonido"}>
+                {soundEnabled ? <Volume2 className="w-5 h-5" /> : <VolumeX className="w-5 h-5" />}
               </Button>
-            )}
+
+              {mounted && (
+                <Button variant="ghost" size="sm" onClick={toggleTheme} className="p-2" aria-label={resolvedTheme === "dark" ? "Cambiar a modo claro" : "Cambiar a modo oscuro"}>
+                  {resolvedTheme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+                </Button>
+              )}
 
             {user ? (
               <div className="flex items-center gap-2">
@@ -95,11 +95,11 @@ export function Navbar() {
                   <span className="font-medium text-primary">{profile?.username || user.email?.split("@")[0]}</span>
                 </div>
                 <Link href="/profile">
-                  <Button variant="ghost" size="sm" className="p-2">
+                  <Button variant="ghost" size="sm" className="p-2" aria-label="Mi perfil">
                     <User className="w-5 h-5" />
                   </Button>
                 </Link>
-                <Button variant="ghost" size="sm" onClick={handleSignOut} className="p-2">
+                <Button variant="ghost" size="sm" onClick={handleSignOut} className="p-2" aria-label="Cerrar sesión">
                   <LogOut className="w-5 h-5" />
                 </Button>
               </div>
@@ -114,14 +114,16 @@ export function Navbar() {
               </div>
             )}
 
-            <Button
-              variant="ghost"
-              size="sm"
-              className="md:hidden p-2"
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </Button>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="md:hidden p-2"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-expanded={mobileMenuOpen}
+                aria-label={mobileMenuOpen ? "Cerrar menú" : "Abrir menú"}
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </Button>
           </div>
         </div>
       </div>

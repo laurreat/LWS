@@ -151,13 +151,28 @@ export interface QuizResult {
   completed_at: string;
 }
 
+export interface AIGameQuestion {
+  question: string;
+  options: string[];
+  correctIndex?: number;
+  correct_answer?: string;
+  points?: number;
+}
+
+export interface AIGameContent {
+  questions?: AIGameQuestion[];
+  words?: string[];
+  sentences?: string[];
+  [key: string]: unknown;
+}
+
 export interface AIGame {
   id: string;
   title: string;
   topic: string;
   level: GameLevel;
   game_type: string;
-  content: any;
+  content: AIGameContent;
 }
 
 // Progreso del usuario en cursos

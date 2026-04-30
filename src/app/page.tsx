@@ -8,6 +8,7 @@ import { Card, Button } from "@/components/ui";
 import { Modal } from "@/components/ui/Modal";
 import { useAuth } from "@/contexts/AuthContext";
 
+// Moved outside component to prevent recreation on each render (react-best-practices)
 const games = [
   { id: "vocabulary", name: "Vocabulary", icon: BookOpen, color: "from-violet-500 to-purple-500", description: "Aprende palabras nuevas" },
   { id: "phrases", name: "Phrases", icon: Target, color: "from-cyan-500 to-blue-500", description: "Frases completas" },

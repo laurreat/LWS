@@ -5,3 +5,8 @@ dist/
 .env*.local
 .DS_Store
 *.log
+
+# Local skills - not needed in repository
+.agents/
+.claude/
+skills-lock.json
