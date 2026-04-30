@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { BookOpen, Trophy, Star, Zap, Target, Mic, AlertCircle } from "lucide-react";
+import { 
+  BookOpen, Gamepad2, Trophy, Star, Zap, Target, Mic, 
+  AlertCircle, PenTool, GraduationCap, Sparkles, BarChart3, Globe, Play, Award
+} from "lucide-react";
 import { Card, Button } from "@/components/ui";
 import { Modal } from "@/components/ui/Modal";
 import { useAuth } from "@/contexts/AuthContext";
@@ -13,11 +16,11 @@ const games = [
   { id: "vocabulary", name: "Vocabulary", icon: BookOpen, color: "from-violet-500 to-purple-500", description: "Aprende palabras nuevas" },
   { id: "phrases", name: "Phrases", icon: Target, color: "from-cyan-500 to-blue-500", description: "Frases completas" },
   { id: "grammar", name: "Grammar", icon: Zap, color: "from-amber-500 to-orange-500", description: "Gramática en inglés" },
-  { id: "sentence", name: "Sentence", icon: Star, color: "from-emerald-500 to-teal-500", description: "Organiza oraciones" },
+  { id: "sentence", name: "Sentence", icon: PenTool, color: "from-emerald-500 to-teal-500", description: "Organiza oraciones" },
   { id: "listening", name: "Listening", icon: Mic, color: "from-pink-500 to-rose-500", description: "Practica tu oído" },
   { id: "speaking", name: "Speaking", icon: Mic, color: "from-indigo-500 to-violet-500", description: "Habla en inglés" },
-  { id: "spelling", name: "Spelling", icon: Star, color: "from-green-500 to-emerald-500", description: "Practica spelling" },
-  { id: "memory", name: "Memory", icon: Trophy, color: "from-yellow-500 to-amber-500", description: "Juego de memoria" },
+  { id: "spelling", name: "Spelling", icon: PenTool, color: "from-green-500 to-emerald-500", description: "Practica spelling" },
+  { id: "memory", name: "Memory", icon: Gamepad2, color: "from-yellow-500 to-amber-500", description: "Juego de memoria" },
 ];
 
 export default function HomePage() {
@@ -61,10 +64,10 @@ export default function HomePage() {
       </Modal>
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-purple-600 to-secondary py-20 px-4">
         <div className="absolute inset-0 opacity-10" aria-hidden="true">
-          <div className="absolute top-10 left-10 text-8xl" role="presentation">📚</div>
-          <div className="absolute top-20 right-20 text-6xl" role="presentation">✏️</div>
-          <div className="absolute bottom-10 left-1/4 text-7xl" role="presentation">🎓</div>
-          <div className="absolute bottom-20 right-1/3 text-5xl" role="presentation">🌟</div>
+          <div className="absolute top-10 left-10"><BookOpen className="w-20 h-20 text-white" /></div>
+          <div className="absolute top-20 right-20"><PenTool className="w-16 h-16 text-white" /></div>
+          <div className="absolute bottom-10 left-1/4"><GraduationCap className="w-20 h-20 text-white" /></div>
+          <div className="absolute bottom-20 right-1/3"><Sparkles className="w-14 h-14 text-white" /></div>
         </div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -109,7 +112,10 @@ export default function HomePage() {
       </section>
 
       <section className="max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">🎮 ¡Elige tu juego!</h2>
+        <div className="flex items-center justify-center gap-3 mb-12">
+          <Gamepad2 className="w-8 h-8 text-primary" />
+          <h2 className="text-3xl font-bold">¡Elige tu juego!</h2>
+        </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
           {games.map((game, index) => (
             <motion.div
@@ -133,7 +139,10 @@ export default function HomePage() {
       </section>
 
       <section className="max-w-7xl mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">📊 Tu Progreso</h2>
+        <div className="flex items-center justify-center gap-3 mb-12">
+          <BarChart3 className="w-8 h-8 text-primary" />
+          <h2 className="text-3xl font-bold">Tu Progreso</h2>
+        </div>
         <div className="grid md:grid-cols-3 gap-6">
           {(["A1", "A2", "B1"] as const).map((level) => {
             const levelData = progress?.level_progress?.[level];
@@ -142,7 +151,11 @@ export default function HomePage() {
             const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
             return (
               <Card key={level} className="text-center">
-                <div className="text-5xl mb-4">{level === "A1" ? "🌍" : level === "A2" ? "📖" : "🏅"}</div>
+                <div className="mb-4">
+                  {level === "A1" ? <Globe className="w-12 h-12 mx-auto text-green-500" /> : 
+                   level === "A2" ? <BookOpen className="w-12 h-12 mx-auto text-blue-500" /> : 
+                   <Award className="w-12 h-12 mx-auto text-purple-500" />}
+                </div>
                 <h3 className="text-xl font-bold mb-2">Nivel {level}</h3>
                 <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3 mb-2">
                   <div 
@@ -159,13 +172,16 @@ export default function HomePage() {
 
       <section className="bg-gradient-to-r from-primary/10 to-secondary/10 py-16">
         <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">🚀 ¿Listo para empezar?</h2>
+          <div className="flex items-center justify-center gap-3 mb-6">
+            <Play className="w-8 h-8 text-primary" />
+            <h2 className="text-3xl font-bold">¿Listo para empezar?</h2>
+          </div>
           <p className="text-xl text-gray-600 dark:text-gray-300 mb-8">
             ¡Practica todos los días y conviértete en un experto del inglés!
           </p>
           <Link href="/games/vocabulary">
             <Button size="lg" className="text-lg px-8 py-4">
-              ¡Comenzar ahora! 🎮
+              ¡Comenzar ahora! <Gamepad2 className="w-5 h-5 inline" />
             </Button>
           </Link>
         </div>
