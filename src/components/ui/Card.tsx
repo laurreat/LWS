@@ -1,6 +1,6 @@
 "use client";
 
-import { HTMLAttributes, forwardRef } from "react";
+import { HTMLAttributes, forwardRef, memo } from "react";
 import { cn } from "@/lib/utils";
 
 interface CardProps extends HTMLAttributes<HTMLDivElement> {
@@ -8,10 +8,10 @@ interface CardProps extends HTMLAttributes<HTMLDivElement> {
   hover?: boolean;
 }
 
-export const Card = forwardRef<HTMLDivElement, CardProps>(
+export const Card = memo(forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = "default", hover = false, children, ...props }, ref) => {
     const baseStyles = "rounded-2xl p-6 transition-all duration-300";
-    
+     
     const variants = {
       default: "bg-white dark:bg-surface-dark shadow-md",
       elevated: "bg-white dark:bg-surface-dark shadow-xl",
@@ -33,6 +33,6 @@ export const Card = forwardRef<HTMLDivElement, CardProps>(
       </div>
     );
   }
-);
+));
 
 Card.displayName = "Card";

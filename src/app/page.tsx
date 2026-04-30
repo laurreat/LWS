@@ -21,7 +21,7 @@ const games = [
 ];
 
 export default function HomePage() {
-  const { user, progress } = useAuth();
+  const { user, progress, loading } = useAuth();
   const [showErrorModal, setShowErrorModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   
@@ -29,29 +29,22 @@ export default function HomePage() {
   const streak = progress?.streak ?? 0;
   const gamesPlayed = progress?.games_played ?? 0;
 
-  useEffect(() => {
-    // Check for error in both query params and hash
-    const params = new URLSearchParams(window.location.search);
-    const hashParams = new URLSearchParams(window.location.hash.replace("#", "?"));
-    
-    // Redirect correctly if it's a valid recovery link
-    if (hashParams.get("type") === "recovery" || hashParams.has("access_token")) {
-      window.location.href = "/reset-password" + window.location.hash;
-      return;
-    }
-
-    const errorCode = params.get("error_code") || hashParams.get("error_code");
-    
-    if (errorCode === "otp_expired" || errorCode === "access_denied") {
-      setErrorMessage("El enlace de recuperación ha expirado o no es válido. Por favor, solicita un nuevo enlace desde la página de inicio de sesión.");
-      setShowErrorModal(true);
-      
-      // Clean up the URL so it doesn't stay there if they refresh
-      window.history.replaceState({}, document.title, window.location.pathname);
-    }
-  }, []);
-
-  return (
+  if (loading) {
+    return (
+      <div className="min-h-screen max-w-7xl mx-auto px-4 py-16">
+        <div className="animate-pulse space-y-8">
+          <div className="h-32 bg-gray-200 dark:bg-gray-700 rounded-2xl" />
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+            {[1,2,3,4,5,6,7,8].map(i => (
+              <div key={i} className="h-40 bg-gray-200 dark:bg-gray-700 rounded-2xl" />
+            ))}
+          </div>
+             </div>
+      </div>
+    );
+  }
+  
+   return (
     <div className="min-h-screen">
       <Modal isOpen={showErrorModal} onClose={() => setShowErrorModal(false)} title="Enlace Expirado">
         <div className="flex flex-col items-center text-center p-4">
@@ -67,11 +60,11 @@ export default function HomePage() {
         </div>
       </Modal>
       <section className="relative overflow-hidden bg-gradient-to-br from-primary via-purple-600 to-secondary py-20 px-4">
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 left-10 text-8xl">📚</div>
-          <div className="absolute top-20 right-20 text-6xl">✏️</div>
-          <div className="absolute bottom-10 left-1/4 text-7xl">🎓</div>
-          <div className="absolute bottom-20 right-1/3 text-5xl">🌟</div>
+        <div className="absolute inset-0 opacity-10" aria-hidden="true">
+          <div className="absolute top-10 left-10 text-8xl" role="presentation">📚</div>
+          <div className="absolute top-20 right-20 text-6xl" role="presentation">✏️</div>
+          <div className="absolute bottom-10 left-1/4 text-7xl" role="presentation">🎓</div>
+          <div className="absolute bottom-20 right-1/3 text-5xl" role="presentation">🌟</div>
         </div>
         
         <div className="max-w-4xl mx-auto text-center relative z-10">

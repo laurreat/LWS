@@ -78,9 +78,16 @@ export default function RootLayout({
         />
       </head>
       <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans bg-background-light dark:bg-background-dark text-gray-900 dark:text-white min-h-screen flex flex-col`}>
+        {/* Skip to content link for keyboard accessibility (accessibility skill) */}
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-primary focus:text-white focus:rounded-lg"
+        >
+          Saltar al contenido principal
+        </a>
         <AuthProvider>
           <Navbar />
-          <main className="flex-1">{children}</main>
+          <main id="main-content" className="flex-1">{children}</main>
           <Footer />
         </AuthProvider>
       </body>
