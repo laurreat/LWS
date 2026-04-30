@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
-import { BookOpen, HelpCircle, ArrowRight, ArrowLeft, CheckCircle, Clock } from "lucide-react";
+import { BookOpen, HelpCircle, ArrowRight, ArrowLeft, CheckCircle, Clock, Play, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { useCourses } from "@/hooks/useCourses";
 import { Button, Card } from "@/components/ui";
