@@ -127,7 +127,9 @@ export default function SentencePage() {
         >
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 rounded-full mb-4">
-              <ListOrdered className="w-5 h-5 text-emerald-500" />
+              <svg className="w-5 h-5 text-emerald-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M8 6h13M8 12h13M8 18h13" strokeLinecap="round" />
+              </svg>
               <span className="text-sm font-medium text-emerald-600">Oraciones</span>
             </div>
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
