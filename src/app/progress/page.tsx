@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Trophy, Star, Zap, Target, Trash2, Award, Lock } from "lucide-react";
 import Link from "next/link";
