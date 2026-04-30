@@ -9,8 +9,16 @@ import { useAuth } from "@/contexts/AuthContext";
 import { ACHIEVEMENTS } from "@/lib/achievements";
 
 export default function ProgressPage() {
-  const { user, progress } = useAuth();
+  const { user, progress, loading } = useAuth();
   const [showResetModal, setShowResetModal] = useState(false);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
@@ -25,6 +33,14 @@ export default function ProgressPage() {
             <Button>Iniciar Sesión</Button>
           </Link>
         </Card>
+      </div>
+    );
+  }
+
+  if (!progress) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
       </div>
     );
   }
