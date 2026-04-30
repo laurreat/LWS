@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { Menu, X, Sun, Moon, Volume2, VolumeX, LogOut, User, BookOpen, GraduationCap, Library, Sparkles, Award } from "lucide-react";
+import { Menu, X, Sun, Moon, Volume2, VolumeX, LogOut, User, Mic, BookOpen, GraduationCap, Library, Sparkles, Award } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 import { useAuth } from "@/contexts/AuthContext";
 import { Button } from "@/components/ui";
@@ -37,8 +37,10 @@ export function Navbar() {
     <nav className="sticky top-0 z-50 bg-white/90 dark:bg-surface-dark/90 backdrop-blur-xl border-b border-gray-200/50 dark:border-gray-700/50 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
-          <Link href="/" className="flex items-center gap-2">
-            <span className="text-2xl">📚</span>
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/25 group-hover:shadow-xl group-hover:shadow-primary/30 transition-all">
+              <Mic className="w-5 h-5 text-white" />
+            </div>
             <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
               SpeakRush
             </span>

@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, GraduationCap, BarChart2, Sparkles, Heart, Twitter, Mail, Github } from "lucide-react";
+import { BookOpen, Mic, GraduationCap, BarChart2, Sparkles, Heart, Twitter, Mail, Github } from "lucide-react";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -14,7 +14,7 @@ export function Footer() {
           <div className="md:col-span-1">
             <Link href="/" className="flex items-center gap-2 group">
               <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-lg shadow-primary/25 group-hover:shadow-xl group-hover:shadow-primary/30 transition-all">
-                <GraduationCap className="w-5 h-5 text-white" />
+                <Mic className="w-5 h-5 text-white" />
               </div>
               <span className="text-xl font-bold bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">SpeakRush</span>
             </Link>
