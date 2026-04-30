@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
-import { Volume2, Home, Trophy, CheckCircle, XCircle } from "lucide-react";
+import { Volume2, Home, Trophy, CheckCircle, XCircle, Quote, MessageSquare, FileText, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
 import { useSpeech } from "@/hooks/useSpeech";
@@ -113,24 +113,61 @@ export default function PhrasesPage() {
 
   if (gameState === "select") {
     return (
-      <div className="min-h-screen p-4">
-        <div className="max-w-2xl mx-auto py-8">
-          <h1 className="text-3xl font-bold text-center mb-8">💬 Phrases Quiz</h1>
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">¿Conoces estas frases?</p>
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-2xl mx-auto py-8"
+        >
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-secondary/10 rounded-full mb-4">
+              <MessageSquare className="w-5 h-5 text-secondary" />
+              <span className="text-sm font-medium text-secondary">Frases</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+              Quiz de Frases
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400">
+              ¿Conoces estas frases?
+            </p>
+          </div>
+          
           <div className="space-y-4">
-            {(["A1", "A2", "B1"] as GameLevel[]).map((level) => (
-              <Card key={level} hover className="cursor-pointer" onClick={() => startGame(level)}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <LevelBadge level={level} />
-                    <p className="text-gray-600 dark:text-gray-300 mt-2">Frases {level === "A1" ? "básicas" : level === "A2" ? "intermedias" : "avanzadas"}</p>
+            {([
+              { level: "A1" as GameLevel, icon: Quote, label: "Principiante", desc: "Frases básicas", color: "from-green-500 to-emerald-500" },
+              { level: "A2" as GameLevel, icon: MessageSquare, label: "Elemental", desc: "Frases intermedias", color: "from-blue-500 to-cyan-500" },
+              { level: "B1" as GameLevel, icon: FileText, label: "Intermedio", desc: "Frases avanzadas", color: "from-purple-500 to-violet-500" },
+            ]).map((item, index) => (
+              <motion.div
+                key={item.level}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card 
+                  hover 
+                  className={`cursor-pointer border-2 border-transparent hover:border-secondary/20 transition-all duration-300`}
+                  onClick={() => startGame(item.level)}
+                >
+                  <div className="flex items-center gap-4 p-2">
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center flex-shrink-0`}>
+                      <item.icon className="w-7 h-7 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <LevelBadge level={item.level} />
+                        <span className="text-gray-400">|</span>
+                        <span className="text-gray-500 dark:text-gray-400">{item.label}</span>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{item.desc}</p>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-gray-400" />
                   </div>
-                  <span className="text-4xl">{level === "A1" ? "🌟" : level === "A2" ? "⭐" : "🏆"}</span>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }
