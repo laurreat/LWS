@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
-import { Home, Trophy, CheckCircle, XCircle, Info } from "lucide-react";
+import { Home, Trophy, CheckCircle, XCircle, Info, Brain, GraduationCap, Award, ChevronRight, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
 import { useAuth } from "@/contexts/AuthContext";
@@ -76,53 +76,140 @@ export default function GrammarPage() {
 
   if (gameState === "finished") {
     return (
-      <div className="min-h-screen p-4">
-        <div className="max-w-2xl mx-auto py-8 text-center">
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-8xl mb-6">
-            {score >= 80 ? "🎉" : score >= 50 ? "👍" : "💪"}
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-2xl mx-auto py-8 text-center"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center text-6xl"
+            style={{ 
+              background: score >= 80 ? "linear-gradient(to br, #10b981, #34d399)" : 
+                         score >= 50 ? "linear-gradient(to br, #3b82f6, #60a5fa)" : 
+                         "linear-gradient(to br, #ef4444, #f87171)"
+            }}
+          >
+            {score >= 80 ? <Trophy className="w-10 h-10 text-white" /> : 
+             score >= 50 ? <span className="text-4xl">👍</span> : 
+             <span className="text-4xl">💪</span>}
           </motion.div>
-          <h1 className="text-4xl font-bold mb-4">¡Juego Terminado!</h1>
-          <Card className="mb-8">
-            <div className="flex justify-around">
-              <div>
-                <p className="text-4xl font-bold text-primary">{score}</p>
-                <p className="text-gray-500">Puntos</p>
+          
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+            ¡Juego Terminado!
+          </h1>
+          
+          <Card className="border-0 shadow-2xl mb-8">
+            <div className="p-6">
+              <div className="grid grid-cols-3 gap-6 mb-6">
+                <div>
+                  <p className="text-4xl font-bold text-primary">{score}</p>
+                  <p className="text-sm text-gray-500">Puntos</p>
+                </div>
+                <div>
+                  <p className="text-4xl font-bold text-success">{Math.round(score / 10)}/10</p>
+                  <p className="text-sm text-gray-500">Correctas</p>
+                </div>
+                <div>
+                  <LevelBadge level={selectedLevel!} size="lg" />
+                  <p className="text-sm text-gray-500 mt-1">Nivel</p>
+                </div>
               </div>
-              <div>
-                <p className="text-4xl font-bold text-success">{Math.round(score / 10)}/10</p>
-                <p className="text-gray-500">Correctas</p>
+            
+              {/* Progress bar */}
+              <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-3 mb-4">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-amber-500 to-orange-500 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${score}%` }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                />
               </div>
+            
+              <p className="text-gray-600 dark:text-gray-400">
+                {score >= 80 ? "¡Excelente trabajo! Sigue así." : 
+                 score >= 50 ? "Buen trabajo, sigue practicando." : 
+                 "Necesitas practicar más este nivel."}
+              </p>
             </div>
           </Card>
+
           <div className="flex gap-4 justify-center">
-            <Link href="/"><Button variant="outline"><Home className="w-4 h-4 mr-2" />Inicio</Button></Link>
-            <Button onClick={() => startGame(selectedLevel!)}><Trophy className="w-4 h-4 mr-2" />Jugar de nuevo</Button>
+            <Link href="/">
+              <Button variant="outline" size="lg">
+                <Home className="w-4 h-4 mr-2" />
+                Inicio
+              </Button>
+            </Link>
+            <Button onClick={() => startGame(selectedLevel!)} size="lg">
+              <RefreshCw className="w-4 h-4 mr-2" />
+              Jugar de nuevo
+            </Button>
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }
 
   if (gameState === "select") {
     return (
-      <div className="min-h-screen p-4">
-        <div className="max-w-2xl mx-auto py-8">
-          <h1 className="text-3xl font-bold text-center mb-8">📝 Grammar Quiz</h1>
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">¿Cuál es la respuesta correcta?</p>
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-2xl mx-auto py-8"
+        >
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-amber-500/10 rounded-full mb-4">
+              <Info className="w-5 h-5 text-amber-500" />
+              <span className="text-sm font-medium text-amber-600">Gramática</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+              Quiz de Gramática
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400">
+              ¿Cuál es la respuesta correcta?
+            </p>
+          </div>
+          
           <div className="space-y-4">
-            {(["A1", "A2", "B1"] as GameLevel[]).map((level) => (
-              <Card key={level} hover className="cursor-pointer" onClick={() => startGame(level)}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <LevelBadge level={level} />
-                    <p className="text-gray-600 dark:text-gray-300 mt-2">30 preguntas de gramática</p>
+            {([
+              { level: "A1" as GameLevel, icon: Brain, label: "Principiante", desc: "30 preguntas básicas", color: "from-green-500 to-emerald-500" },
+              { level: "A2" as GameLevel, icon: GraduationCap, label: "Elemental", desc: "30 preguntas intermedias", color: "from-blue-500 to-cyan-500" },
+              { level: "B1" as GameLevel, icon: Award, label: "Intermedio", desc: "30 preguntas avanzadas", color: "from-purple-500 to-violet-500" },
+            ]).map((item, index) => (
+              <motion.div
+                key={item.level}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card 
+                  hover 
+                  className={`cursor-pointer border-2 border-transparent hover:border-amber-500/20 transition-all duration-300`}
+                  onClick={() => startGame(item.level)}
+                >
+                  <div className="flex items-center gap-4 p-2">
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center flex-shrink-0`}>
+                      <item.icon className="w-7 h-7 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <LevelBadge level={item.level} />
+                        <span className="text-gray-400">|</span>
+                        <span className="text-gray-500 dark:text-gray-400">{item.label}</span>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{item.desc}</p>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-gray-400" />
                   </div>
-                  <span className="text-4xl">{level === "A1" ? "🌟" : level === "A2" ? "⭐" : "🏆"}</span>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }

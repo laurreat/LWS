@@ -3,7 +3,7 @@
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { motion, AnimatePresence, Reorder } from "framer-motion";
 import confetti from "canvas-confetti";
-import { Volume2, Home, Trophy, CheckCircle } from "lucide-react";
+import { Volume2, Home, Trophy, CheckCircle, XCircle, RotateCcw, ChevronRight, Brain, GraduationCap, Award } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
 import { useSpeech } from "@/hooks/useSpeech";
@@ -119,24 +119,61 @@ export default function SentencePage() {
 
   if (gameState === "select") {
     return (
-      <div className="min-h-screen p-4">
-        <div className="max-w-2xl mx-auto py-8">
-          <h1 className="text-3xl font-bold text-center mb-8">🧩 Organize the Sentence</h1>
-          <p className="text-center text-gray-600 dark:text-gray-300 mb-8">Ordena las palabras para formar una oración</p>
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-2xl mx-auto py-8"
+        >
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 rounded-full mb-4">
+              <ListOrdered className="w-5 h-5 text-emerald-500" />
+              <span className="text-sm font-medium text-emerald-600">Oraciones</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+              Organizar Oraciones
+            </h1>
+            <p className="text-lg text-gray-600 dark:text-gray-400">
+              Ordena las palabras para formar una oración
+            </p>
+          </div>
+          
           <div className="space-y-4">
-            {(["A1", "A2", "B1"] as GameLevel[]).map((level) => (
-              <Card key={level} hover className="cursor-pointer" onClick={() => startGame(level)}>
-                <div className="flex items-center justify-between">
-                  <div>
-                    <LevelBadge level={level} />
-                    <p className="text-gray-600 dark:text-gray-300 mt-2">Oraciones {level === "A1" ? "simples" : level === "A2" ? "intermedias" : "avanzadas"}</p>
+            {([
+              { level: "A1" as GameLevel, icon: Brain, label: "Principiante", desc: "Oraciones simples", color: "from-green-500 to-emerald-500" },
+              { level: "A2" as GameLevel, icon: GraduationCap, label: "Elemental", desc: "Oraciones intermedias", color: "from-blue-500 to-cyan-500" },
+              { level: "B1" as GameLevel, icon: Award, label: "Intermedio", desc: "Oraciones avanzadas", color: "from-purple-500 to-violet-500" },
+            ]).map((item, index) => (
+              <motion.div
+                key={item.level}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+              >
+                <Card 
+                  hover 
+                  className={`cursor-pointer border-2 border-transparent hover:border-emerald-500/20 transition-all duration-300`}
+                  onClick={() => startGame(item.level)}
+                >
+                  <div className="flex items-center gap-4 p-2">
+                    <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center flex-shrink-0`}>
+                      <item.icon className="w-7 h-7 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-1">
+                        <LevelBadge level={item.level} />
+                        <span className="text-gray-400">|</span>
+                        <span className="text-gray-500 dark:text-gray-400">{item.label}</span>
+                      </div>
+                      <p className="text-sm text-gray-600 dark:text-gray-400">{item.desc}</p>
+                    </div>
+                    <ChevronRight className="w-5 h-5 text-gray-400" />
                   </div>
-                  <span className="text-4xl">{level === "A1" ? "🌟" : level === "A2" ? "⭐" : "🏆"}</span>
-                </div>
-              </Card>
+                </Card>
+              </motion.div>
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -165,9 +202,9 @@ export default function SentencePage() {
           </Button>
         </Card>
 
-        <Reorder.Group axis="y" values={shuffledWords} onReorder={handleReorder} className="space-y-2 mb-8 min-h-[200px]">
-          {shuffledWords.map((word) => (
-            <Reorder.Item key={word} value={word}>
+         <Reorder.Group axis="y" values={shuffledWords} onReorder={handleReorder} className="space-y-2 mb-8 min-h-[200px]">
+           {shuffledWords.map((word) => (
+              <Reorder.Item key={word} value={word}>
               <motion.div
                 layout
                 className={`p-4 rounded-xl cursor-grab active:cursor-grabbing font-medium text-center ${

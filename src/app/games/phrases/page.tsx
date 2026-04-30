@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect } from "react";
 import { motion } from "framer-motion";
 import confetti from "canvas-confetti";
-import { Volume2, Home, Trophy, CheckCircle, XCircle, Quote, MessageSquare, FileText, ChevronRight } from "lucide-react";
+import { Volume2, Home, Trophy, CheckCircle, XCircle, Quote, MessageSquare, FileText, ChevronRight, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
 import { useSpeech } from "@/hooks/useSpeech";
@@ -84,29 +84,79 @@ export default function PhrasesPage() {
 
   if (gameState === "finished") {
     return (
-      <div className="min-h-screen p-4">
-        <div className="max-w-2xl mx-auto py-8 text-center">
-          <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }} className="text-8xl mb-6">
-            {score >= 80 ? "🎉" : score >= 50 ? "👍" : "💪"}
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-2xl mx-auto py-8 text-center"
+        >
+          <motion.div
+            initial={{ scale: 0 }}
+            animate={{ scale: 1 }}
+            className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center text-6xl"
+            style={{ 
+              background: score >= 80 ? "linear-gradient(to br, #10b981, #34d399)" : 
+                           score >= 50 ? "linear-gradient(to br, #3b82f6, #60a5fa)" : 
+                           "linear-gradient(to br, #ef4444, #f87171)"
+            }}
+          >
+            {score >= 80 ? <Trophy className="w-10 h-10 text-white" /> : 
+             score >= 50 ? <span className="text-4xl">👍</span> : 
+             <span className="text-4xl">💪</span>}
           </motion.div>
-          <h1 className="text-4xl font-bold mb-4">¡Juego Terminado!</h1>
-          <Card className="mb-8">
-            <div className="flex justify-around">
-              <div>
-                <p className="text-4xl font-bold text-primary">{score}</p>
-                <p className="text-gray-500">Puntos</p>
+          
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+            ¡Juego Terminado!
+          </h1>
+          
+          <Card className="border-0 shadow-2xl mb-8">
+            <div className="p-6">
+              <div className="grid grid-cols-3 gap-6 mb-6">
+                <div>
+                  <p className="text-4xl font-bold text-primary">{score}</p>
+                  <p className="text-sm text-gray-500">Puntos</p>
+                </div>
+                <div>
+                  <p className="text-4xl font-bold text-success">{Math.round(score / 10)}/10</p>
+                  <p className="text-sm text-gray-500">Correctas</p>
+                </div>
+                <div>
+                  <LevelBadge level={selectedLevel!} size="lg" />
+                  <p className="text-sm text-gray-500 mt-1">Nivel</p>
+                </div>
               </div>
-              <div>
-                <p className="text-4xl font-bold text-success">{Math.round(score / 10)}/10</p>
-                <p className="text-gray-500">Correctas</p>
+            
+              {/* Progress bar */}
+              <div className="w-full bg-gray-100 dark:bg-gray-700 rounded-full h-3 mb-4">
+                <motion.div
+                  className="h-full bg-gradient-to-r from-secondary to-cyan-500 rounded-full"
+                  initial={{ width: 0 }}
+                  animate={{ width: `${score}%` }}
+                  transition={{ duration: 1, ease: "easeOut" }}
+                />
               </div>
+            
+              <p className="text-gray-600 dark:text-gray-400">
+                {score >= 80 ? "¡Excelente trabajo! Sigue así." : 
+                 score >= 50 ? "Buen trabajo, sigue practicando." : 
+                 "Necesitas practicar más este nivel."}
+              </p>
             </div>
           </Card>
+
           <div className="flex gap-4 justify-center">
-            <Link href="/"><Button variant="outline"><Home className="w-4 h-4 mr-2" />Inicio</Button></Link>
-            <Button onClick={() => startGame(selectedLevel!)}><Trophy className="w-4 h-4 mr-2" />Jugar de nuevo</Button>
+            <Link href="/">
+              <Button variant="outline" size="lg">
+                <Home className="w-5 h-5 mr-2" />
+                Inicio
+              </Button>
+            </Link>
+            <Button onClick={() => startGame(selectedLevel!)} size="lg">
+              <RefreshCw className="w-5 h-5 mr-2" />
+              Jugar de nuevo
+            </Button>
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }
