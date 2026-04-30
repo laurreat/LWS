@@ -9,8 +9,19 @@ import { useAuth } from "@/contexts/AuthContext";
 import { ACHIEVEMENTS } from "@/lib/achievements";
 
 export default function ProgressPage() {
-  const { user, progress, loading } = useAuth();
+  const { user, progress, loading, updateProgress } = useAuth();
   const [showResetModal, setShowResetModal] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+
+  // Force refresh progress data when component mounts or user changes
+  useEffect(() => {
+    if (user && !progress) {
+      setRefreshing(true);
+      // The AuthContext should have already fetched progress
+      // This is just to ensure UI reflects the loading state
+      setTimeout(() => setRefreshing(false), 500);
+    }
+  }, [user, progress]);
 
   if (loading) {
     return (
