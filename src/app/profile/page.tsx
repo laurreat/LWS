@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -55,6 +55,14 @@ export default function ProfilePage() {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [changingPassword, setChangingPassword] = useState(false);
   const [activeTab, setActiveTab] = useState<"profile" | "progress" | "security">("profile");
+
+  // Update form state when profile loads
+  useEffect(() => {
+    if (profile) {
+      setName(profile.name || "");
+      setUsername(profile.username || "");
+    }
+  }, [profile]);
 
   const role = (profile?.role as UserRole) || "estudiante";
 

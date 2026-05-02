@@ -62,7 +62,7 @@ interface AchievementCardProps {
 }
 
 function AchievementCard({ achievement, unlocked, index }: AchievementCardProps) {
-  const Icon = achievement.icon;
+  const IconComponent = achievement.icon;
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.8 }}
@@ -74,8 +74,8 @@ function AchievementCard({ achievement, unlocked, index }: AchievementCardProps)
           : "bg-gray-100 dark:bg-gray-800 opacity-50"
       }`}
     >
-      <div className={`mb-2 ${unlocked ? "" : "grayscale"}`}>
-        <Icon className={`w-8 h-8 mx-auto ${unlocked ? "text-amber-600" : "text-gray-400"}`} />
+      <div className={`mb-2 flex justify-center ${unlocked ? "" : "grayscale"}`}>
+        <IconComponent size={32} className={unlocked ? "text-amber-600" : "text-gray-400"} />
       </div>
       <h3 className="font-bold text-sm mb-1">{achievement.name}</h3>
       <p className="text-xs text-gray-500 dark:text-gray-400">{achievement.description}</p>
