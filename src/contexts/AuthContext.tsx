@@ -66,6 +66,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return () => subscription.unsubscribe();
   }, []);
 
+  // Real-time subscription for progress updates
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel(`user_progress:${user.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'user_progress',
+          filter: `user_id=eq.${user.id}`,
+        },
+        (payload) => {
+          if (payload.new) {
+            setProgress((prev) => ({
+              ...defaultProgress,
+              ...prev,
+              ...payload.new,
+            }));
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, supabase]);
+
   async function fetchProfile(userId: string) {
     const { data: records, error } = await supabase
       .from("profiles")
