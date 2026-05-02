@@ -169,7 +169,7 @@ export function useCourses() {
       if (!user) return null;
 
       // Step 1: Get module IDs for this course
-      const { data: courseModules, error: modulesError } = await supabase`
+      const { data: courseModules, error: modulesError } = await supabase
         .from("modules")
         .select("id")
         .eq("course_id", courseId);
@@ -186,7 +186,7 @@ export function useCourses() {
       const moduleIds = courseModules.map((m: any) => m.id);
 
       // Step 2: Get total modules count
-      const { count: total, error: countError } = await supabase`
+      const { count: total, error: countError } = await supabase
         .from("modules")
         .select("*", { count: "exact" })
         .eq("course_id", courseId);
@@ -194,7 +194,7 @@ export function useCourses() {
       if (countError) throw countError;
 
       // Step 3: Get completed lessons for these modules
-      const { data: completedLessons, error: progressError } = await supabase`
+      const { data: completedLessons, error: progressError } = await supabase
         .from("course_progress")
         .select("lesson_id")
         .eq("user_id", user.id)
