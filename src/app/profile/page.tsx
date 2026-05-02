@@ -59,7 +59,7 @@ export default function ProfilePage() {
   // Update form state when profile loads
   useEffect(() => {
     if (profile) {
-      setName(profile.name || "");
+      setName(profile.full_name || profile.name || "");
       setUsername(profile.username || "");
     }
   }, [profile]);
@@ -119,7 +119,7 @@ export default function ProfilePage() {
 
   const handleSaveProfile = async () => {
     setSaving(true);
-    await updateProfile({ name, username });
+    await updateProfile({ full_name: name, username });
     setSaving(false);
     setSaved(true);
     setTimeout(() => setSaved(false), 2000);
@@ -203,8 +203,11 @@ export default function ProfilePage() {
                   <User className="w-12 h-12 text-primary" />
                 </div>
                 <div className="flex-1 text-center md:text-left">
-                  <h2 className="text-2xl font-bold">{profile?.username || "Usuario"}</h2>
-                  <p className="text-gray-600 dark:text-gray-400 mb-3">{user.email}</p>
+                  <h2 className="text-2xl font-bold">{profile?.full_name || profile?.name || profile?.username || "Usuario"}</h2>
+                  <p className="text-gray-600 dark:text-gray-400 mb-1">{user.email}</p>
+                  {profile?.username && (
+                    <p className="text-sm text-gray-500">@{profile.username}</p>
+                  )}
                   <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-medium ${roleConfig.color}`}>
                     <RoleIcon className="w-4 h-4" />
                     {roleConfig.label}

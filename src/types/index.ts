@@ -65,7 +65,8 @@ export interface UserProgress {
 
 export interface Profile {
   id: string;
-  name: string;
+  full_name?: string;
+  name?: string; // Keep for backward compatibility
   username: string;
   avatar_url?: string;
   updated_at?: string;

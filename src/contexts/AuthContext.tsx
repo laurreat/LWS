@@ -141,7 +141,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     if (!error && data) {
-      setProfile(data);
+      // Map full_name to name for backward compatibility
+      setProfile({
+        ...data,
+        name: data.full_name || data.name || "",
+      });
     } else if (!error && !data) {
       // Profile doesn't exist - create one from user metadata
       console.warn("No profile found for user:", userId);
@@ -151,17 +155,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const name = user?.user_metadata?.name || user?.email?.split('@')[0] || "Usuario";
       const username = user?.user_metadata?.username || user?.email?.split('@')[0] || "user";
       
-      // Create profile
+      // Create profile with full_name (Supabase convention)
       const { data: newProfile, error: createError } = await supabase
         .from("profiles")
-        .insert({ id: userId, name, username })
+        .insert({ id: userId, full_name: name, username })
         .select()
         .single();
       
       if (createError) {
         console.error("Error creating profile:", createError.message);
       } else if (newProfile) {
-        setProfile(newProfile);
+        setProfile({
+          ...newProfile,
+          name: newProfile.full_name || "",
+        });
       }
     }
   }
@@ -192,7 +199,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { error };
   }
 
-  async function signUp(email: string, password: string, name: string, username: string) {
+    async function signUp(email: string, password: string, name: string, username: string) {
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -205,7 +212,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .from("profiles")
         .insert({
           id: data.user.id,
-          name,
+          full_name: name,
           username,
         });
 
@@ -278,9 +285,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function updateProfile(updates: Partial<Profile>) {
     if (!user) return;
 
+    // Map name to full_name for Supabase
+    const dbUpdates: Partial<Profile> = { ...updates };
+    if (updates.name !== undefined) {
+      dbUpdates.full_name = updates.name;
+      delete dbUpdates.name;
+    }
+
     const { error } = await supabase
       .from("profiles")
-      .update(updates)
+      .update(dbUpdates)
       .eq("id", user.id);
 
     if (!error && profile) {
