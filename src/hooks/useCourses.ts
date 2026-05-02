@@ -169,18 +169,25 @@ export function useCourses() {
       if (!user) return null;
 
       // Get total modules in course
-      const { data: totalModules } = await supabase
+      const { data: totalModules, error: totalError } = await supabase
         .from("modules")
         .select("id", { count: "exact" })
         .eq("course_id", courseId);
 
-      // Get completed lessons
-      const { data: completedLessons } = await supabase
-        .from("user_progress")
-        .select("lesson_id, modules!inner(id)")
+      if (totalError) throw totalError;
+
+      // Get completed lessons from course_progress table
+      const { data: completedLessons, error: progressError } = await supabase
+        .from("course_progress")
+        .select("lesson_id, modules!inner(module_id)")
         .eq("user_id", user.id)
         .eq("modules.course_id", courseId)
         .eq("completed", true);
+
+      if (progressError) {
+        console.error("Error fetching course progress:", progressError.message);
+        return null;
+      }
 
       const total = totalModules?.length || 0;
       const completed = completedLessons?.length || 0;
@@ -188,6 +195,7 @@ export function useCourses() {
 
       return { completed, total, percentage, course_id: courseId } as unknown as CourseProgress;
     } catch (err) {
+      console.error("Error in getCourseProgress:", err);
       return null;
     }
   }, [supabase]);
