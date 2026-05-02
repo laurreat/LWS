@@ -168,20 +168,37 @@ export function useCourses() {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) return null;
 
-      // Get total modules in course
-      const { data: totalModules, error: totalError } = await supabase
+      // Step 1: Get module IDs for this course
+      const { data: courseModules, error: modulesError } = await supabase`
         .from("modules")
-        .select("id", { count: "exact" })
+        .select("id")
         .eq("course_id", courseId);
 
-      if (totalError) throw totalError;
+      if (modulesError) {
+        console.error("Error fetching modules for course:", modulesError.message);
+        return null;
+      }
 
-      // Get completed lessons from course_progress table
-      const { data: completedLessons, error: progressError } = await supabase
+      if (!courseModules || courseModules.length === 0) {
+        return { completed: 0, total: 0, percentage: 0, course_id: courseId } as unknown as CourseProgress;
+      }
+
+      const moduleIds = courseModules.map((m: any) => m.id);
+
+      // Step 2: Get total modules count
+      const { count: total, error: countError } = await supabase`
+        .from("modules")
+        .select("*", { count: "exact" })
+        .eq("course_id", courseId);
+
+      if (countError) throw countError;
+
+      // Step 3: Get completed lessons for these modules
+      const { data: completedLessons, error: progressError } = await supabase`
         .from("course_progress")
-        .select("lesson_id, modules!inner(module_id)")
+        .select("lesson_id")
         .eq("user_id", user.id)
-        .eq("modules.course_id", courseId)
+        .in("module_id", moduleIds)
         .eq("completed", true);
 
       if (progressError) {
@@ -189,11 +206,11 @@ export function useCourses() {
         return null;
       }
 
-      const total = totalModules?.length || 0;
       const completed = completedLessons?.length || 0;
-      const percentage = total > 0 ? Math.round((completed / total) * 100) : 0;
+      const totalModules = total || 0;
+      const percentage = totalModules > 0 ? Math.round((completed / totalModules) * 100) : 0;
 
-      return { completed, total, percentage, course_id: courseId } as unknown as CourseProgress;
+      return { completed, total: totalModules, percentage, course_id: courseId } as unknown as CourseProgress;
     } catch (err) {
       console.error("Error in getCourseProgress:", err);
       return null;
