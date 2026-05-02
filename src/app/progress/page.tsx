@@ -87,7 +87,7 @@ function AchievementCard({ achievement, unlocked, index }: AchievementCardProps)
 }
 
 export default function ProgressPage() {
-  const { user, progress, loading } = useAuth();
+  const { user, profile, progress, loading } = useAuth();
   const [activeTab, setActiveTab] = useState<"overview" | "achievements" | "reports">("overview");
 
   const totalPoints = progress?.total_points ?? 0;
@@ -167,10 +167,42 @@ export default function ProgressPage() {
         <motion.h1
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-3xl md:text-4xl font-bold text-center mb-8 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent"
+          className="text-3xl md:text-4xl font-bold text-center mb-8 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent flex items-center justify-center gap-3"
         >
-          📊 Tu Progreso de Aprendizaje
+          <BarChart3 className="w-8 h-8 md:w-10 md:h-10 text-primary" />
+          Tu Progreso de Aprendizaje
         </motion.h1>
+
+        {/* User Profile Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="mb-8"
+        >
+          <Card className="p-6 bg-gradient-to-r from-primary/5 to-purple-600/5 border-primary/20">
+            <div className="flex items-center gap-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary to-purple-600 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                {profile?.name?.charAt(0)?.toUpperCase() || user?.email?.charAt(0)?.toUpperCase() || "?"}
+              </div>
+              <div className="flex-1">
+                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                  {profile?.name || "Usuario"}
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400">
+                  @{profile?.username || "username"}
+                </p>
+                <p className="text-sm text-gray-500 dark:text-gray-500">
+                  {user?.email}
+                </p>
+              </div>
+              <Link href="/profile">
+                <Button variant="outline" size="sm">
+                  Editar perfil
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </motion.div>
 
         {/* Navigation Tabs */}
         <div className="flex justify-center mb-8">
