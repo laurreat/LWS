@@ -30,9 +30,11 @@
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",
     "@types/canvas-confetti": "^1.0.0",
+    "@types/dotenv": "^6.1.1",
     "@types/node": "^20.0.0",
     "@types/react": "^19.0.0",
     "autoprefixer": "^10.0.0",
+    "dotenv": "^17.4.2",
     "postcss": "^8.0.0"
   }
 }
