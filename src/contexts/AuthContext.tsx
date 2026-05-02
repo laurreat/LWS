@@ -97,6 +97,36 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
   }, [user, supabase]);
 
+  // Real-time subscription for profile updates
+  useEffect(() => {
+    if (!user) return;
+
+    const channel = supabase
+      .channel(`profiles:${user.id}`)
+      .on(
+        'postgres_changes',
+        {
+          event: '*',
+          schema: 'public',
+          table: 'profiles',
+          filter: `id=eq.${user.id}`,
+        },
+        (payload) => {
+          if (payload.new) {
+            setProfile((prev) => ({
+              ...prev,
+              ...payload.new,
+            }) as Profile);
+          }
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user, supabase]);
+
   async function fetchProfile(userId: string) {
     const { data: records, error } = await supabase
       .from("profiles")
