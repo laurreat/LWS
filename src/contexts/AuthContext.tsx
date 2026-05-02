@@ -136,8 +136,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const data = records?.[0];
 
+    if (error) {
+      console.error("Error fetching profile:", error.message);
+    }
+
     if (!error && data) {
       setProfile(data);
+    } else if (!error && !data) {
+      // Profile doesn't exist - create one from user metadata
+      console.warn("No profile found for user:", userId);
+      
+      // Get user metadata to extract name and username
+      const { data: { user } } = await supabase.auth.getUser();
+      const name = user?.user_metadata?.name || user?.email?.split('@')[0] || "Usuario";
+      const username = user?.user_metadata?.username || user?.email?.split('@')[0] || "user";
+      
+      // Create profile
+      const { data: newProfile, error: createError } = await supabase
+        .from("profiles")
+        .insert({ id: userId, name, username })
+        .select()
+        .single();
+      
+      if (createError) {
+        console.error("Error creating profile:", createError.message);
+      } else if (newProfile) {
+        setProfile(newProfile);
+      }
     }
   }
 
@@ -168,11 +193,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function signUp(email: string, password: string, name: string, username: string) {
-    const { error } = await supabase.auth.signUp({
+    const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: { data: { name, username } },
     });
+
+    // If signup successful and we have a user, create profile in database
+    if (!error && data.user) {
+      const { error: profileError } = await supabase
+        .from("profiles")
+        .insert({
+          id: data.user.id,
+          name,
+          username,
+        });
+
+      if (profileError) {
+        console.error("Error creating profile:", profileError.message);
+      }
+    }
+
     return { error };
   }
 
