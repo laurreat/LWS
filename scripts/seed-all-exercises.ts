@@ -70,8 +70,10 @@ async function seedAllExercises() {
     const moduleTitle = (lesson as any).modules?.title || 'Unknown'
     const level = (lesson as any).modules?.courses?.level || 'A1'
     
-    // Create 3-5 exercises per quiz
-    const numExercises = 3 + Math.floor(Math.random() * 3)
+    // Create more exercises per quiz based on level
+    let numExercises = 5 // A1 default
+    if (level === 'A2') numExercises = 8
+    if (level === 'B1') numExercises = 12
     
     for (let i = 0; i < numExercises; i++) {
       const exercise = generateExercise(lessonId, moduleTitle, level, i)

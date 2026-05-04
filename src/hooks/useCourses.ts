@@ -118,23 +118,74 @@ export function useCourses() {
     }
   }, [supabase]);
 
-  const submitQuiz = useCallback(async (moduleId: string, answers: { exerciseId: string; answer: string }[]) => {
+  const fetchExercisesByModule = useCallback(async (moduleId: string) => {
+    try {
+      // Get quiz lessons for this module
+      const { data: lessons, error: lessonsError } = await supabase
+        .from("lessons")
+        .select("id")
+        .eq("module_id", moduleId)
+        .eq("lesson_type", "quiz");
+
+      if (lessonsError) throw lessonsError;
+      if (!lessons || lessons.length === 0) return [];
+
+      const lessonIds = lessons.map(l => l.id);
+
+      // Get exercises for these quiz lessons
+      const { data: exercises, error: exercisesError } = await supabase
+        .from("exercises")
+        .select("*")
+        .in("lesson_id", lessonIds);
+
+      if (exercisesError) throw exercisesError;
+
+      // Parse options if it's a string (JSONB)
+      const parsed = (exercises || []).map(ex => ({
+        ...ex,
+        options: typeof ex.options === 'string' ? JSON.parse(ex.options) : ex.options
+      }));
+
+      return parsed;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Error fetching exercises");
+      return [];
+    }
+  }, [supabase]);
+
+  const submitQuiz = useCallback(async (
+    moduleId: string, 
+    answers: { exerciseId: string; answer: string }[],
+    localExercises?: { id: string; correct_answer: string }[]
+  ) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
 
-      // Calculate score
       let correct = 0;
-      for (const answer of answers) {
-        const { data: records } = await supabase
+
+      // If local exercises provided (generated questions), calculate locally
+      if (localExercises && localExercises.length > 0) {
+        for (const answer of answers) {
+          const exercise = localExercises.find(e => e.id === answer.exerciseId);
+          if (exercise && exercise.correct_answer === answer.answer) {
+            correct++;
+          }
+        }
+      } else {
+        // Otherwise fetch from DB
+        const exerciseIds = answers.map(a => a.exerciseId);
+        const { data: exercises, error: fetchError } = await supabase
           .from("exercises")
-          .select("correct_answer")
-          .eq("id", answer.exerciseId)
-          .limit(1);
-        
-        const exercise = records?.[0];
-        
-        if (exercise && exercise.correct_answer === answer.answer) {
-          correct++;
+          .select("id, correct_answer")
+          .in("id", exerciseIds);
+
+        if (fetchError) throw fetchError;
+
+        for (const answer of answers) {
+          const exercise = exercises?.find(e => e.id === answer.exerciseId);
+          if (exercise && exercise.correct_answer === answer.answer) {
+            correct++;
+          }
         }
       }
 
@@ -257,6 +308,7 @@ export function useCourses() {
     fetchModules,
     fetchLessonsByModule,
     fetchLesson,
+    fetchExercisesByModule,
     completeLesson,
     submitQuiz,
     getCourseProgress,
