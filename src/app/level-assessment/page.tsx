@@ -110,7 +110,7 @@ function generateQuestions(): AssessmentQuestion[] {
     });
   });
 
-  return q; // Total: 4 + 2 + 3 + 2 + 3 = 12 questions
+  return q; // Total: 4 + 2 + 3 + 2 + 3 = 14 questions
 }
 
 export default function LevelAssessmentPage() {
@@ -129,7 +129,7 @@ export default function LevelAssessmentPage() {
   const [detected, setDetected] = useState<GameLevel | null>(null);
   const [saving, setSaving] = useState(false);
 
-  const totalQ = 12;
+  const totalQ = 14;
   const currQ = questions[currentIdx];
 
   const start = () => {
@@ -170,9 +170,27 @@ export default function LevelAssessmentPage() {
   };
 
   const finish = useCallback(async () => {
+    // Determine level based on correct answers per level
+    // A1: 6 questions, need >= 4 correct (67%)
+    // A2: 5 questions, need >= 3 correct (60%)
+    // B1: 3 questions, need >= 2 correct (67%)
     let lvl: GameLevel = 'A1';
-    if (correctByLvl.B1 >= 2) lvl = 'B1';
-    else if (correctByLvl.A2 >= 2) lvl = 'A2';
+    
+    if (correctByLvl.A1 >= 4) {
+      // User knows A1, check A2
+      if (correctByLvl.A2 >= 3) {
+        // User knows A2, check B1
+        if (correctByLvl.B1 >= 2) {
+          lvl = 'B1';
+        } else {
+          lvl = 'A2';
+        }
+      } else {
+        lvl = 'A1';
+      }
+    } else {
+      lvl = 'A1';
+    }
 
     setDetected(lvl);
     setState("finished");
@@ -186,10 +204,14 @@ export default function LevelAssessmentPage() {
             A1: { ...userProg.level_progress.A1, unlocked: true },
           }
         };
-        if (lvl === 'A2' || lvl === 'B1') {
+        
+        // Unlock A2 if user demonstrated A1 knowledge
+        if (correctByLvl.A1 >= 4) {
           upd.level_progress.A2 = { ...userProg.level_progress.A2, unlocked: true };
         }
-        if (lvl === 'B1') {
+        
+        // Unlock B1 if user demonstrated A2 knowledge
+        if (correctByLvl.A2 >= 3) {
           upd.level_progress.B1 = { ...userProg.level_progress.B1, unlocked: true };
         }
 
@@ -289,9 +311,9 @@ export default function LevelAssessmentPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8 text-left">
               {[
-                { level: 'A1' as GameLevel, count: 6, desc: 'Preguntas básicas' },
-                { level: 'A2' as GameLevel, count: 5, desc: 'Gramática elemental' },
-                { level: 'B1' as GameLevel, count: 3, desc: 'Retos intermedios' },
+                { level: 'A1' as GameLevel, count: 6, desc: '4 vocabulario, 2 gramática' },
+                { level: 'A2' as GameLevel, count: 5, desc: '3 frases, 2 gramática' },
+                { level: 'B1' as GameLevel, count: 3, desc: '3 gramática' },
               ].map((item, idx) => (
                 <div key={idx} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <LevelBadge level={item.level} size="sm" />
@@ -350,7 +372,7 @@ export default function LevelAssessmentPage() {
         {/* Level indicators */}
         <div className="flex gap-2 mb-8">
           {(['A1', 'A2', 'B1'] as GameLevel[]).map((lv, i) => (
-            <div
+            <div 
               key={i}
               className={`flex-1 h-2 rounded-full ${
                 currQ?.qLevel === lv
@@ -431,7 +453,7 @@ export default function LevelAssessmentPage() {
 
               {/* Submit button */}
               {!showFb && (
-                <Button
+                <Button 
                   onClick={check}
                   disabled={!selected}
                   className="w-full"
