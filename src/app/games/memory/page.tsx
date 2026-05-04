@@ -3,7 +3,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import confetti from "canvas-confetti";
-import { Home, Trophy, RefreshCw, CheckCircle, Clock, Star } from "lucide-react";
+import { Home, Trophy, RefreshCw, CheckCircle, Clock, Star, Gamepad2, Layers, ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { Button, Card, LevelBadge } from "@/components/ui";
 import { useAuth } from "@/contexts/AuthContext";
@@ -36,12 +36,10 @@ function getPairsForLevel(level: GameLevel): number {
 }
 
 function shuffleCards(words: Word[], pairs: number): MemoryCard[] {
-  // Get enough unique words (duplicate if necessary)
   const available = words.length >= pairs 
     ? words.slice(0, pairs) 
     : [...words, ...words].slice(0, pairs);
   
-  // Create pairs by duplicating
   const deck = [...available, ...available]
     .sort(() => Math.random() - 0.5);
   
@@ -119,7 +117,6 @@ export default function MemoryPage() {
       setMoves(prev => prev + 1);
       
       if (firstCard.word.id === secondCard.word.id) {
-        // Match found
         setCards(prev => prev.map(c => 
           c.id === firstId || c.id === secondId 
             ? { ...c, isMatched: true }
@@ -128,7 +125,6 @@ export default function MemoryPage() {
         setScore(prev => prev + 20);
         setFlippedIds([]);
       } else {
-        // No match - flip back after delay
         const timeout = setTimeout(() => {
           setCards(prev => prev.map(c => 
             c.id === firstId || c.id === secondId 
@@ -167,14 +163,12 @@ export default function MemoryPage() {
     }
   }, [gameState, finishGame, hasFinishedTriggered]);
 
-  // Format time
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  // Calculate stars
   const getStars = () => {
     const pairs = getPairsForLevel(selectedLevel!);
     if (moves <= pairs * 2) return 3;
@@ -185,25 +179,23 @@ export default function MemoryPage() {
   if (gameState === "finished") {
     const stars = getStars();
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-yellow-50 to-amber-100 dark:from-gray-900 dark:to-gray-800">
+      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
         <motion.div 
           initial={{ scale: 0, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           className="max-w-md w-full"
         >
-          <Card className="text-center p-8 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm border-0 shadow-xl">
+          <Card className="text-center p-8">
             <motion.div 
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-8xl mb-6"
+              className="mb-6"
             >
-              🎉
+              <Gamepad2 className="w-20 h-20 mx-auto text-primary" />
             </motion.div>
             
-            <h1 className="text-4xl font-bold mb-2 bg-gradient-to-r from-yellow-500 to-amber-500 bg-clip-text text-transparent">
-              ¡Completado!
-            </h1>
+            <h1 className="text-4xl font-bold mb-4">¡Completado!</h1>
             
             <div className="flex justify-center gap-2 mb-6">
               {[1, 2, 3].map(i => (
@@ -249,29 +241,28 @@ export default function MemoryPage() {
 
   if (gameState === "select") {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gradient-to-br from-blue-50 to-purple-100 dark:from-gray-900 dark:to-gray-800">
-        <div className="max-w-lg w-full">
-          <motion.div
-            initial={{ y: -20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            className="text-center mb-8"
-          >
-            <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-primary to-secondary bg-clip-text text-transparent">
-              🧠 Memory Game
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="max-w-2xl mx-auto py-8"
+        >
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-yellow-500/10 rounded-full mb-4">
+              <Layers className="w-5 h-5 text-yellow-500" />
+              <span className="text-sm font-medium text-yellow-600">Memoria</span>
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+              Juego de Memoria
             </h1>
-            <p className="text-lg text-gray-600 dark:text-gray-300">
-              Encuentra las parejas de palabras y mejor tu vocabulario
+            <p className="text-lg text-gray-600 dark:text-gray-400">
+              Encuentra las parejas de palabras
             </p>
-          </motion.div>
+          </div>
           
           <div className="space-y-4">
             {(["A1", "A2", "B1"] as GameLevel[]).map((level, idx) => {
               const pairs = getPairsForLevel(level);
-              const colors = {
-                "A1": "from-green-400 to-emerald-500",
-                "A2": "from-blue-400 to-cyan-500",
-                "B1": "from-purple-400 to-pink-500"
-              };
               return (
                 <motion.div
                   key={level}
@@ -281,24 +272,33 @@ export default function MemoryPage() {
                 >
                   <Card 
                     hover 
-                    className={`cursor-pointer bg-gradient-to-r ${colors[level]} border-0 text-white shadow-lg hover:shadow-xl transition-all`}
+                    className="cursor-pointer"
                     onClick={() => startGame(level)}
                   >
                     <div className="flex items-center justify-between p-2">
-                      <div>
-                        <LevelBadge level={level} className="bg-white/20 text-white border-0" />
-                        <p className="mt-2 font-medium">
-                          {pairs} parejas • Nivel {level}
-                        </p>
+                      <div className="flex items-center gap-4">
+                        <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
+                          level === "A1" ? "bg-green-100 text-green-600" :
+                          level === "A2" ? "bg-blue-100 text-blue-600" :
+                          "bg-purple-100 text-purple-600"
+                        }`}>
+                          <Layers className="w-6 h-6" />
+                        </div>
+                        <div>
+                          <LevelBadge level={level} />
+                          <p className="mt-1 text-gray-600 dark:text-gray-400">
+                            {pairs} parejas • Nivel {level}
+                          </p>
+                        </div>
                       </div>
-                      <span className="text-4xl">🃏</span>
+                      <ChevronRight className="w-5 h-5 text-gray-400" />
                     </div>
                   </Card>
                 </motion.div>
               );
             })}
           </div>
-        </div>
+        </motion.div>
       </div>
     );
   }
@@ -312,7 +312,7 @@ export default function MemoryPage() {
   })();
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-br from-indigo-50 to-purple-100 dark:from-gray-900 dark:to-gray-800">
+    <div className="min-h-screen p-4 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-4xl mx-auto">
         {/* Header */}
         <motion.div 
@@ -321,7 +321,9 @@ export default function MemoryPage() {
           className="flex flex-wrap items-center justify-between mb-6 gap-4"
         >
           <div className="flex items-center gap-4">
-            <LevelBadge level={selectedLevel!} />
+            <div className="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center">
+              <Layers className="w-5 h-5" />
+            </div>
             <div className="flex gap-6">
               <div className="text-center">
                 <p className="text-2xl font-bold text-primary">{score}</p>
@@ -344,7 +346,6 @@ export default function MemoryPage() {
           <Button 
             variant="outline" 
             onClick={() => startGame(selectedLevel!)}
-            className="bg-white/50 dark:bg-gray-800/50"
           >
             <RefreshCw className="w-4 h-4 mr-2" />
             Reiniciar
@@ -375,12 +376,12 @@ export default function MemoryPage() {
                   disabled={card.isMatched}
                   aria-pressed={card.isFlipped || card.isMatched}
                   aria-label={`Card ${index + 1}: ${card.isFlipped || card.isMatched ? card.word.word : 'Hidden card'}`}
-                  className={`w-full h-full rounded-2xl font-bold transition-all duration-300 transform preserve-3d ${
+                  className={`w-full h-full rounded-2xl font-bold transition-all duration-300 ${
                     card.isMatched
-                      ? "bg-gradient-to-br from-green-400 to-emerald-500 text-white shadow-lg cursor-default"
+                      ? "bg-green-100 text-green-700 cursor-default border-2 border-green-300"
                       : card.isFlipped
-                      ? "bg-gradient-to-br from-primary to-secondary text-white shadow-lg rotate-y-180"
-                      : "bg-white dark:bg-gray-700 shadow-md hover:shadow-lg hover:-translate-y-1 border-2 border-gray-200 dark:border-gray-600"
+                      ? "bg-primary/10 text-primary border-2 border-primary"
+                      : "bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-primary hover:shadow-md"
                   }`}
                   style={{ minHeight: '80px', minWidth: '80px' }}
                 >
@@ -391,11 +392,11 @@ export default function MemoryPage() {
                           {card.word.word}
                         </p>
                         {card.isMatched && (
-                          <CheckCircle className="w-6 h-6 mx-auto mt-2 text-white/80" />
+                          <CheckCircle className="w-5 h-5 mx-auto mt-1 text-green-600" />
                         )}
                       </div>
                     ) : (
-                      <span className="text-4xl opacity-50">?</span>
+                      <Layers className="w-8 h-8 opacity-30" />
                     )}
                   </div>
                 </button>
