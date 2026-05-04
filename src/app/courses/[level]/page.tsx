@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useCourses } from "@/hooks/useCourses";
+import { useProgress } from "@/hooks/useProgress";
 import { Card, Button } from "@/components/ui";
 
 const levelMeta: Record<string, {
@@ -77,8 +78,8 @@ export default function LevelPage() {
   const Icon   = meta.icon;
   const course = courses.find(c => c.level?.toUpperCase() === level);
   
-  // Get progress from useAuth for lock check
-  const { progress } = useAuth();
+   // Get progress from useProgress for lock check
+   const { progress } = useProgress();
 
   if (loading && modules.length === 0) {
     return (
@@ -91,23 +92,23 @@ export default function LevelPage() {
     );
   }
 
-  // Check if this level is unlocked
-  const unlocked = (() => {
-    if (!progress?.level_progress) return level === "A1"; // A1 always unlocked
-    const lp = progress.level_progress;
-    if (level === "A1") return true; // A1 always unlocked
-    if (level === "A2") {
-      // A2 needs >= 67% of A1 completed
-      const a1Progress = lp.A1.total > 0 ? (lp.A1.completed / lp.A1.total) * 100 : 0;
-      return a1Progress >= 67;
-    }
-    if (level === "B1") {
-      // B1 needs >= 60% of A2 completed
-      const a2Progress = lp.A2.total > 0 ? (lp.A2.completed / lp.A2.total) * 100 : 0;
-      return a2Progress >= 60;
-    }
-    return false;
-  })();
+   // Check if this level is unlocked
+   const unlocked = (() => {
+     if (!progress?.levelProgress) return level === "A1"; // A1 always unlocked
+     const lp = progress.levelProgress;
+     if (level === "A1") return true; // A1 always unlocked
+     if (level === "A2") {
+       // A2 needs >= 67% of A1 completed
+       const a1Progress = lp.A1.total > 0 ? (lp.A1.completed / lp.A1.total) * 100 : 0;
+       return a1Progress >= 67;
+     }
+     if (level === "B1") {
+       // B1 needs >= 60% of A2 completed
+       const a2Progress = lp.A2.total > 0 ? (lp.A2.completed / lp.A2.total) * 100 : 0;
+       return a2Progress >= 60;
+     }
+     return false;
+   })();
 
   // Get prerequisite level info
   const prereq = (() => {
