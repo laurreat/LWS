@@ -303,7 +303,7 @@ export default function MemoryPage() {
     );
   }
 
-  // Playing state
+  // Playing state - responsive grid that fits viewport
   const gridCols = (() => {
     const pairs = getPairsForLevel(selectedLevel!);
     if (pairs <= 6) return "grid-cols-3";
@@ -312,13 +312,13 @@ export default function MemoryPage() {
   })();
 
   return (
-    <div className="min-h-screen p-4 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
-      <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen flex flex-col p-4 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+      <div className="max-w-4xl mx-auto w-full flex-1 flex flex-col">
         {/* Header */}
         <motion.div 
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
-          className="flex flex-wrap items-center justify-between mb-6 gap-4"
+          className="flex flex-wrap items-center justify-between mb-4 gap-4"
         >
           <div className="flex items-center gap-4">
             <div className="w-10 h-10 rounded-xl bg-yellow-100 text-yellow-600 flex items-center justify-center">
@@ -326,16 +326,16 @@ export default function MemoryPage() {
             </div>
             <div className="flex gap-6">
               <div className="text-center">
-                <p className="text-2xl font-bold text-primary">{score}</p>
+                <p className="text-xl font-bold text-primary">{score}</p>
                 <p className="text-xs text-gray-500">Puntos</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-secondary">{moves}</p>
+                <p className="text-xl font-bold text-secondary">{moves}</p>
                 <p className="text-xs text-gray-500">Movimientos</p>
               </div>
               <div className="text-center">
-                <p className="text-2xl font-bold text-amber-500">
-                  <Clock className="w-5 h-5 inline mr-1" />
+                <p className="text-xl font-bold text-amber-500">
+                  <Clock className="w-4 h-4 inline mr-1" />
                   {formatTime(timer)}
                 </p>
                 <p className="text-xs text-gray-500">Tiempo</p>
@@ -345,6 +345,7 @@ export default function MemoryPage() {
           
           <Button 
             variant="outline" 
+            size="sm"
             onClick={() => startGame(selectedLevel!)}
           >
             <RefreshCw className="w-4 h-4 mr-2" />
@@ -352,61 +353,62 @@ export default function MemoryPage() {
           </Button>
         </motion.div>
         
-        {/* Cards Grid */}
-        <div className={`grid ${gridCols} gap-4`} role="grid" aria-label="Memory cards">
-          <AnimatePresence>
-            {cards.map((card, index) => (
-              <motion.div
-                key={card.id}
-                layout
-                initial={{ scale: 0 }}
-                animate={{ scale: 1 }}
-                transition={{ delay: index * 0.02 }}
-                whileTap={{ scale: 0.95 }}
-                className="aspect-square"
-              >
-                <button
-                  onClick={() => handleCardClick(card.id)}
-                  onKeyDown={(e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                      e.preventDefault();
-                      handleCardClick(card.id);
-                    }
-                  }}
-                  disabled={card.isMatched}
-                  aria-pressed={card.isFlipped || card.isMatched}
-                  aria-label={`Card ${index + 1}: ${card.isFlipped || card.isMatched ? card.word.word : 'Hidden card'}`}
-                  className={`w-full h-full rounded-2xl font-bold transition-all duration-300 ${
-                    card.isMatched
-                      ? "bg-green-100 text-green-700 cursor-default border-2 border-green-300"
-                      : card.isFlipped
-                      ? "bg-primary/10 text-primary border-2 border-primary"
-                      : "bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-primary hover:shadow-md"
-                  }`}
-                  style={{ minHeight: '80px', minWidth: '80px' }}
+        {/* Cards Grid - flex-1 to fill available space */}
+        <div className="flex-1 flex items-center">
+          <div className={`w-full grid ${gridCols} gap-2 md:gap-3`} role="grid" aria-label="Memory cards">
+            <AnimatePresence>
+              {cards.map((card, index) => (
+                <motion.div
+                  key={card.id}
+                  layout
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: index * 0.02 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="w-full"
                 >
-                  <div className="flex items-center justify-center h-full p-2">
-                    {card.isFlipped || card.isMatched ? (
-                      <div className="text-center">
-                        <p className="font-mono text-lg md:text-xl font-bold">
-                          {card.word.word}
-                        </p>
-                        {card.isMatched && (
-                          <CheckCircle className="w-5 h-5 mx-auto mt-1 text-green-600" />
-                        )}
-                      </div>
-                    ) : (
-                      <Layers className="w-8 h-8 opacity-30" />
-                    )}
-                  </div>
-                </button>
-              </motion.div>
-            ))}
-          </AnimatePresence>
+                  <button
+                    onClick={() => handleCardClick(card.id)}
+                    onKeyDown={(e) => {
+                      if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handleCardClick(card.id);
+                      }
+                    }}
+                    disabled={card.isMatched}
+                    aria-pressed={card.isFlipped || card.isMatched}
+                    aria-label={`Card ${index + 1}: ${card.isFlipped || card.isMatched ? card.word.word : 'Hidden card'}`}
+                    className={`w-full h-full min-h-[60px] md:min-h-[70px] rounded-xl font-bold transition-all duration-300 ${
+                      card.isMatched
+                        ? "bg-green-100 text-green-700 cursor-default border-2 border-green-300"
+                        : card.isFlipped
+                        ? "bg-primary/10 text-primary border-2 border-primary"
+                        : "bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 hover:border-primary hover:shadow-md"
+                    }`}
+                  >
+                    <div className="flex items-center justify-center h-full p-1 md:p-2">
+                      {card.isFlipped || card.isMatched ? (
+                        <div className="text-center">
+                          <p className="font-mono text-sm md:text-base font-bold truncate px-1">
+                            {card.word.word}
+                          </p>
+                          {card.isMatched && (
+                            <CheckCircle className="w-3 h-3 md:w-4 md:h-4 mx-auto mt-0.5 text-green-600" />
+                          )}
+                        </div>
+                      ) : (
+                        <Layers className="w-5 h-5 md:w-6 md:h-6 opacity-30" />
+                      )}
+                    </div>
+                  </button>
+                </motion.div>
+              ))}
+            </AnimatePresence>
+          </div>
         </div>
         
         {/* Progress */}
-        <div className="mt-6 text-center">
+        <div className="mt-4 text-center">
           <p className="text-sm text-gray-500">
             {cards.filter(c => c.isMatched).length / 2} / {getPairsForLevel(selectedLevel!)} parejas encontradas
           </p>

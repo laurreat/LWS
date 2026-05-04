@@ -45,7 +45,7 @@ export default function ModulePage() {
   };
 
   const theoryLessons = lessons.filter((l) => l.lesson_type === "theory");
-  const quizLessons = lessons.filter((l) => l.lesson_type === "quiz");
+  const examLessons = lessons.filter((l) => l.lesson_type === "quiz");
 
   if (loading) {
     return (
@@ -105,12 +105,12 @@ export default function ModulePage() {
                     <BookOpen className="w-4 h-4 text-primary" />
                     {theoryLessons.length} {theoryLessons.length === 1 ? "lección" : "lecciones"}
                   </span>
-                  {quizLessons.length > 0 && (
-                    <span className="flex items-center gap-1 text-sm font-medium text-gray-700 dark:text-gray-300">
-                      <HelpCircle className="w-4 h-4 text-accent" />
-                      {quizLessons.length} quiz final
-                    </span>
-                  )}
+                  {examLessons.length > 0 && (
+                      <span className="flex items-center gap-1 text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <HelpCircle className="w-4 h-4 text-accent" />
+                        {examLessons.length} examen final
+                      </span>
+                    )}
                 </div>
               </div>
             </div>

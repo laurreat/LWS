@@ -76,9 +76,9 @@ export default function LessonPage() {
     const next = lessons[currentIndex + 1];
     if (next) {
       router.push(`/courses/${level}/${moduleId}/lesson/${next.id}`);
-    } else {
-      router.push(`/courses/${level}/${moduleId}/quiz`);
-    }
+      } else {
+        router.push(`/courses/${level}/${moduleId}/exam`);
+      }
   };
 
   const handlePrev = () => {
