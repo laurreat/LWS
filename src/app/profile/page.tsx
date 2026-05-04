@@ -25,6 +25,7 @@ import {
   Award,
   ChevronRight,
   Settings,
+  Brain,
 } from "lucide-react";
 import Link from "next/link";
 import { Card, Button, Modal, LevelBadge } from "@/components/ui";
@@ -351,6 +352,28 @@ export default function ProfilePage() {
                   <BookOpen className="w-5 h-5 text-primary" />
                   Acceso a Niveles
                 </h3>
+                
+                {/* Assessment Button */}
+                <div className="mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 rounded-xl border-2 border-purple-200 dark:border-purple-800">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+                        <Brain className="w-5 h-5 text-purple-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium">Examen de Nivel Inicial</p>
+                        <p className="text-sm text-gray-500">Determina tu nivel y desbloquea cursos</p>
+                      </div>
+                    </div>
+                    <Link href="/level-assessment">
+                      <Button size="sm">
+                        <Trophy className="w-4 h-4 mr-2" />
+                        Presentar Examen
+                      </Button>
+                    </Link>
+                  </div>
+                </div>
+                
                 <div className="space-y-4">
                   {levelAccess.map((level, index) => {
                     const Icon = level.isUnlocked ? CheckCircle : XCircle;
@@ -374,13 +397,8 @@ export default function ProfilePage() {
                               <Icon className={`w-5 h-5 ${level.isUnlocked ? "text-green-600" : "text-gray-400"}`} />
                             </div>
                             <div>
-                              <div className="flex items-center gap-2">
-                                <LevelBadge level={level.level} />
-                                <span className="font-medium">{level.name}</span>
-                              </div>
-                              <p className="text-sm text-gray-500">
-                                {level.isUnlocked ? "Desbloqueado" : "Bloqueado"}
-                              </p>
+                              <LevelBadge level={level.level} />
+                              <p className="text-sm text-gray-500">{level.name}</p>
                             </div>
                           </div>
                           <div className="text-right">
@@ -389,17 +407,17 @@ export default function ProfilePage() {
                           </div>
                         </div>
                         <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                          <motion.div
+                          <motion.div 
+                            className={`h-full bg-gradient-to-r ${level.color}`}
                             initial={{ width: 0 }}
                             animate={{ width: `${level.progress}%` }}
                             transition={{ duration: 1, ease: "easeOut" }}
-                            className={`h-full rounded-full bg-gradient-to-r ${level.color}`}
                           />
                         </div>
                         {!level.isUnlocked && (
                           <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
                             <Lock className="w-3 h-3" />
-                            {level.level === "A2"
+                            {level.level === "A2" 
                               ? "Completa el 50% de A1 para desbloquear"
                               : "Completa el 50% de A2 para desbloquear"}
                           </p>
