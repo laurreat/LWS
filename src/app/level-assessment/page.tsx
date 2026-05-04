@@ -26,9 +26,12 @@ function generateQuestions(): AssessmentQuestion[] {
   const q: AssessmentQuestion[] = [];
 
   // A1 Vocabulary (4 questions)
-  const a1Words = A1_WORDS.slice(0, 2);
+  const a1Words = A1_WORDS.slice(0, 4);
   a1Words.forEach((w, idx) => {
-    const others = A1_WORDS.filter(ow => ow.id !== w.id).slice(0, 3).map(ow => ow.translation);
+    const others = A1_WORDS
+      .filter(ow => ow.id !== w.id)
+      .slice(0, 3)
+      .map(ow => ow.translation);
     q.push({
       id: `a1-vocab-${idx}`,
       qLevel: 'A1',
@@ -39,7 +42,7 @@ function generateQuestions(): AssessmentQuestion[] {
     });
   });
 
-  // A1 Grammar
+  // A1 Grammar (2 questions)
   q.push({
     id: 'a1-grammar-1',
     qLevel: 'A1',
@@ -49,10 +52,18 @@ function generateQuestions(): AssessmentQuestion[] {
     points: 10,
   });
 
-  // A2 Phrases (4 questions)
-  const a2Phrases = A2_PHRASES.slice(0, 2);
+  q.push({
+    id: 'a1-grammar-2',
+    qLevel: 'A1',
+    question: 'What is "rojo" in English?',
+    correct_answer: 'red',
+    options: ['red', 'blue', 'green', 'yellow'].sort(() => Math.random() - 0.5),
+    points: 10,
+  });
+
+  // A2 Phrases (3 questions)
+  const a2Phrases = A2_PHRASES.slice(0, 3);
   a2Phrases.forEach((p, idx) => {
-    // Get wrong translations from other A2 phrases
     const otherTranslations = A2_PHRASES
       .filter(op => op.sentence !== p.sentence)
       .slice(0, 3)
@@ -67,18 +78,27 @@ function generateQuestions(): AssessmentQuestion[] {
     });
   });
 
-  // A2 Grammar - Past tense
+  // A2 Grammar (2 questions)
   q.push({
     id: 'a2-grammar-1',
     qLevel: 'A2',
     question: 'Past tense of "go":',
     correct_answer: 'went',
-    options: ['went', 'go', 'goes', 'going'].sort(() => Math.random() - 0.5),
+    options: ['went', 'go', 'gone', 'going'].sort(() => Math.random() - 0.5),
     points: 15,
   });
 
-  // B1 Grammar (4 questions)
-  const b1Grammar = B1_GRAMMAR.slice(0, 2);
+  q.push({
+    id: 'a2-grammar-2',
+    qLevel: 'A2',
+    question: 'Select: "They ___ playing football now"',
+    correct_answer: 'are',
+    options: ['are', 'is', 'was', 'were'].sort(() => Math.random() - 0.5),
+    points: 15,
+  });
+
+  // B1 Grammar (3 questions)
+  const b1Grammar = B1_GRAMMAR.slice(0, 3);
   b1Grammar.forEach((g, idx) => {
     q.push({
       id: `b1-grammar-${idx}`,
@@ -90,17 +110,7 @@ function generateQuestions(): AssessmentQuestion[] {
     });
   });
 
-  // B1 Conditional
-  q.push({
-    id: 'b1-grammar-3',
-    qLevel: 'B1',
-    question: 'Conditional: "If I ___ rich, I would travel"',
-    correct_answer: 'were',
-    options: ['was', 'were', 'am', 'be'],
-    points: 20,
-  });
-
-  return q;
+  return q; // Total: 4 + 2 + 3 + 2 + 3 = 12 questions
 }
 
 export default function LevelAssessmentPage() {
@@ -229,11 +239,15 @@ export default function LevelAssessmentPage() {
               <p className="text-sm text-gray-500 mb-4">Puntuación total</p>
 
               <div className="space-y-2 text-left">
-                {(['A1', 'A2', 'B1'] as GameLevel[]).map((lv, i) => (
-                  <div key={i} className="flex items-center justify-between text-sm">
-                    <LevelBadge level={lv} size="sm" />
-                    <span className={correctByLvl[lv] >= 2 ? 'text-green-600' : 'text-red-600'}>
-                      {correctByLvl[lv]}/4 correctas
+                {[
+                  { level: 'A1' as GameLevel, score: correctByLvl.A1, total: 6 },
+                  { level: 'A2' as GameLevel, score: correctByLvl.A2, total: 5 },
+                  { level: 'B1' as GameLevel, score: correctByLvl.B1, total: 3 },
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-center justify-between text-sm">
+                    <LevelBadge level={item.level} size="sm" />
+                    <span className={item.score >= 2 ? 'text-green-600' : 'text-red-600'}>
+                      {item.score}/{item.total} correctas
                     </span>
                   </div>
                 ))}
@@ -273,17 +287,17 @@ export default function LevelAssessmentPage() {
               Este examen determinará tu nivel de inglés actual y desbloqueará los cursos correspondientes.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-left">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8 text-left">
               {[
-                { l: 'A1' as GameLevel, n: 6, d: 'Preguntas básicas' },
-                { l: 'A2' as GameLevel, n: 4, d: 'Gramática elemental' },
-                { l: 'B1' as GameLevel, n: 2, d: 'Retos intermedios' },
+                { level: 'A1' as GameLevel, count: 6, desc: 'Preguntas básicas' },
+                { level: 'A2' as GameLevel, count: 5, desc: 'Gramática elemental' },
+                { level: 'B1' as GameLevel, count: 3, desc: 'Retos intermedios' },
               ].map((item, idx) => (
                 <div key={idx} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-                  <LevelBadge level={item.l} size="sm" />
+                  <LevelBadge level={item.level} size="sm" />
                   <div>
-                    <p className="font-medium text-sm">{item.n} preguntas</p>
-                    <p className="text-xs text-gray-500">{item.d}</p>
+                    <p className="font-medium text-sm">{item.count} preguntas</p>
+                    <p className="text-xs text-gray-500">{item.desc}</p>
                   </div>
                 </div>
               ))}
@@ -336,23 +350,32 @@ export default function LevelAssessmentPage() {
         {/* Level indicators */}
         <div className="flex gap-2 mb-8">
           {(['A1', 'A2', 'B1'] as GameLevel[]).map((lv, i) => (
-            <div key={i} className={`flex-1 h-2 rounded-full ${
-              currQ?.qLevel === lv
-                ? 'bg-primary'
-                : correctByLvl[lv] > 0
-                ? 'bg-green-500'
-                : 'bg-gray-300 dark:bg-gray-600'
-            }`} />
+            <div
+              key={i}
+              className={`flex-1 h-2 rounded-full ${
+                currQ?.qLevel === lv
+                  ? 'bg-primary'
+                  : correctByLvl[lv] > 0
+                  ? 'bg-green-500'
+                  : 'bg-gray-300 dark:bg-gray-600'
+              }`}
+            />
           ))}
         </div>
 
         {/* Question Card */}
         {currQ && (
-          <motion.div key={currentIdx} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }}>
+          <motion.div
+            key={currentIdx}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+          >
             <Card className="p-8">
               <div className="flex items-center gap-2 mb-4">
                 <LevelBadge level={currQ.qLevel} size="sm" />
-                <span className="text-sm text-gray-500">+{currQ.points} puntos</span>
+                <span className="ml-auto text-sm font-medium text-primary">
+                  +{currQ.points} puntos
+                </span>
               </div>
 
               <h2 className="text-xl font-semibold mb-6">{currQ.question}</h2>
@@ -406,9 +429,13 @@ export default function LevelAssessmentPage() {
                 )}
               </AnimatePresence>
 
-              {/* Next button */}
+              {/* Submit button */}
               {!showFb && (
-                <Button onClick={check} disabled={!selected} className="w-full">
+                <Button
+                  onClick={check}
+                  disabled={!selected}
+                  className="w-full"
+                >
                   Siguiente
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
