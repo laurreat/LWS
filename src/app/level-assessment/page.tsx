@@ -45,30 +45,35 @@ function generateQuestions(): AssessmentQuestion[] {
     qLevel: 'A1',
     question: 'Complete: "I ___ a student"',
     correct_answer: 'am',
-    options: ['am', 'is', 'are', 'be'],
+    options: ['am', 'is', 'are', 'was'].sort(() => Math.random() - 0.5),
     points: 10,
   });
 
   // A2 Phrases (4 questions)
   const a2Phrases = A2_PHRASES.slice(0, 2);
   a2Phrases.forEach((p, idx) => {
+    // Get wrong translations from other A2 phrases
+    const otherTranslations = A2_PHRASES
+      .filter(op => op.sentence !== p.sentence)
+      .slice(0, 3)
+      .map(op => op.translation);
     q.push({
       id: `a2-phrase-${idx}`,
       qLevel: 'A2',
       question: `Translate: "${p.sentence}"`,
       correct_answer: p.translation,
-      options: [p.translation, 'Wrong 1', 'Wrong 2', 'Wrong 3'].sort(() => Math.random() - 0.5),
+      options: [...otherTranslations, p.translation].sort(() => Math.random() - 0.5),
       points: 15,
     });
   });
 
-  // A2 Grammar
+  // A2 Grammar - Past tense
   q.push({
     id: 'a2-grammar-1',
     qLevel: 'A2',
-    question: 'Past of "go":',
+    question: 'Past tense of "go":',
     correct_answer: 'went',
-    options: ['went', 'goed', 'gone', 'goes'],
+    options: ['went', 'go', 'goes', 'going'].sort(() => Math.random() - 0.5),
     points: 15,
   });
 
