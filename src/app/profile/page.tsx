@@ -374,6 +374,23 @@ export default function ProfilePage() {
                   </div>
                 </div>
                 
+                {/* Detected Level Display */}
+                {progress?.level_progress && (
+                  <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border-2 border-blue-200 dark:border-blue-800">
+                    <div className="flex items-center gap-3">
+                      <div className="p-2 rounded-lg bg-blue-100 dark:bg-blue-900/30">
+                        <Trophy className="w-5 h-5 text-blue-600" />
+                      </div>
+                      <div>
+                        <p className="font-medium">Nivel Detectado</p>
+                        {progress.level_progress.A1?.unlocked && <LevelBadge level="A1" size="sm" />}
+                        {progress.level_progress.A2?.unlocked && <LevelBadge level="A2" size="sm" />}
+                        {progress.level_progress.B1?.unlocked && <LevelBadge level="B1" size="sm" />}
+                      </div>
+                    </div>
+                  </div>
+                )}
+                
                 <div className="space-y-4">
                   {levelAccess.map((level, index) => {
                     const Icon = level.isUnlocked ? CheckCircle : XCircle;
@@ -414,12 +431,16 @@ export default function ProfilePage() {
                             transition={{ duration: 1, ease: "easeOut" }}
                           />
                         </div>
-                        {!level.isUnlocked && (
+                        {!level.isUnlocked && level.level === "A2" && (
                           <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
                             <Lock className="w-3 h-3" />
-                            {level.level === "A2" 
-                              ? "Completa el 50% de A1 para desbloquear"
-                              : "Completa el 50% de A2 para desbloquear"}
+                            Necesitas completar el 67% de A1 (4/6 correctas)
+                          </p>
+                        )}
+                        {!level.isUnlocked && level.level === "B1" && (
+                          <p className="text-xs text-gray-500 mt-2 flex items-center gap-1">
+                            <Lock className="w-3 h-3" />
+                            Necesitas completar el 60% de A2 (3/5 correctas)
                           </p>
                         )}
                       </motion.div>

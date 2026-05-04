@@ -25,13 +25,11 @@ interface AssessmentQuestion {
 function generateQuestions(): AssessmentQuestion[] {
   const q: AssessmentQuestion[] = [];
 
-  // A1 Vocabulary (4 questions)
-  const a1Words = A1_WORDS.slice(0, 4);
-  a1Words.forEach((w, idx) => {
-    const others = A1_WORDS
-      .filter(ow => ow.id !== w.id)
-      .slice(0, 3)
-      .map(ow => ow.translation);
+  // A1: Basic vocabulary & Present Simple (6 questions)
+  // Vocab: colors, numbers, basic nouns
+  const a1Sample = [...A1_WORDS].sort(() => Math.random() - 0.5).slice(0, 4);
+  a1Sample.forEach((w, idx) => {
+    const others = A1_WORDS.filter(ow => ow.id !== w.id).slice(0, 3).map(ow => ow.translation);
     q.push({
       id: `a1-vocab-${idx}`,
       qLevel: 'A1',
@@ -42,11 +40,11 @@ function generateQuestions(): AssessmentQuestion[] {
     });
   });
 
-  // A1 Grammar (2 questions)
+  // A1 Grammar: Present Simple, Articles, Prepositions
   q.push({
     id: 'a1-grammar-1',
     qLevel: 'A1',
-    question: 'Complete: "I ___ a student"',
+    question: 'Complete: "I ___ a student from Mexico."',
     correct_answer: 'am',
     options: ['am', 'is', 'are', 'was'].sort(() => Math.random() - 0.5),
     points: 10,
@@ -55,51 +53,49 @@ function generateQuestions(): AssessmentQuestion[] {
   q.push({
     id: 'a1-grammar-2',
     qLevel: 'A1',
-    question: 'What is "rojo" in English?',
-    correct_answer: 'red',
-    options: ['red', 'blue', 'green', 'yellow'].sort(() => Math.random() - 0.5),
+    question: 'Choose the correct article: "___ apple" (starts with vowel)',
+    correct_answer: 'an',
+    options: ['a', 'an', 'the', 'some'].sort(() => Math.random() - 0.5),
     points: 10,
   });
 
-  // A2 Phrases (3 questions)
-  const a2Phrases = A2_PHRASES.slice(0, 3);
-  a2Phrases.forEach((p, idx) => {
-    const otherTranslations = A2_PHRASES
-      .filter(op => op.sentence !== p.sentence)
-      .slice(0, 3)
-      .map(op => op.translation);
+  // A2: Present Continuous, Past Simple, Comparatives (5 questions)
+  // A2 Phrases: Present continuous, past simple
+  const a2Sample = [...A2_PHRASES].sort(() => Math.random() - 0.5).slice(0, 3);
+  a2Sample.forEach((p, idx) => {
+    const others = A2_PHRASES.filter(op => op.sentence !== p.sentence).slice(0, 3).map(op => op.translation);
     q.push({
       id: `a2-phrase-${idx}`,
       qLevel: 'A2',
-      question: `Translate: "${p.sentence}"`,
+      question: `Translate to Spanish: "${p.sentence}"`,
       correct_answer: p.translation,
-      options: [...otherTranslations, p.translation].sort(() => Math.random() - 0.5),
+      options: [...others, p.translation].sort(() => Math.random() - 0.5),
       points: 15,
     });
   });
 
-  // A2 Grammar (2 questions)
+  // A2 Grammar: Past tense, comparatives
   q.push({
     id: 'a2-grammar-1',
     qLevel: 'A2',
     question: 'Past tense of "go":',
     correct_answer: 'went',
-    options: ['went', 'go', 'gone', 'going'].sort(() => Math.random() - 0.5),
+    options: ['go', 'went', 'gone', 'going'].sort(() => Math.random() - 0.5),
     points: 15,
   });
 
   q.push({
     id: 'a2-grammar-2',
     qLevel: 'A2',
-    question: 'Select: "They ___ playing football now"',
+    question: 'Select: "They ___ playing football now."',
     correct_answer: 'are',
     options: ['are', 'is', 'was', 'were'].sort(() => Math.random() - 0.5),
     points: 15,
   });
 
-  // B1 Grammar (3 questions)
-  const b1Grammar = B1_GRAMMAR.slice(0, 3);
-  b1Grammar.forEach((g, idx) => {
+  // B1: Conditionals, Passive Voice, Modals (3 questions)
+  const b1Sample = [...B1_GRAMMAR].sort(() => Math.random() - 0.5).slice(0, 3);
+  b1Sample.forEach((g, idx) => {
     q.push({
       id: `b1-grammar-${idx}`,
       qLevel: 'B1',
@@ -170,16 +166,16 @@ export default function LevelAssessmentPage() {
   };
 
   const finish = useCallback(async () => {
-    // Determine level based on correct answers per level
-    // A1: 6 questions, need >= 4 correct (67%)
-    // A2: 5 questions, need >= 3 correct (60%)
-    // B1: 3 questions, need >= 2 correct (67%)
+    // Determine level: Need 67% correct per level to unlock
+    // A1: 6 questions, need >= 4 correct
+    // A2: 5 questions, need >= 3 correct  
+    // B1: 3 questions, need >= 2 correct
     let lvl: GameLevel = 'A1';
     
     if (correctByLvl.A1 >= 4) {
-      // User knows A1, check A2
+      // Passed A1, check A2
       if (correctByLvl.A2 >= 3) {
-        // User knows A2, check B1
+        // Passed A2, check B1
         if (correctByLvl.B1 >= 2) {
           lvl = 'B1';
         } else {
@@ -268,7 +264,7 @@ export default function LevelAssessmentPage() {
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-center justify-between text-sm">
                     <LevelBadge level={item.level} size="sm" />
-                    <span className={item.score >= 2 ? 'text-green-600' : 'text-red-600'}>
+                    <span className={item.score >= (item.total >= 5 ? 3 : 4) ? 'text-green-600' : 'text-red-600'}>
                       {item.score}/{item.total} correctas
                     </span>
                   </div>
@@ -309,11 +305,11 @@ export default function LevelAssessmentPage() {
               Este examen determinará tu nivel de inglés actual y desbloqueará los cursos correspondientes.
             </p>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-3 mb-8 text-left">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 text-left">
               {[
                 { level: 'A1' as GameLevel, count: 6, desc: '4 vocabulario, 2 gramática' },
                 { level: 'A2' as GameLevel, count: 5, desc: '3 frases, 2 gramática' },
-                { level: 'B1' as GameLevel, count: 3, desc: '3 gramática' },
+                { level: 'B1' as GameLevel, count: 3, desc: '3 gramática compleja' },
               ].map((item, idx) => (
                 <div key={idx} className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
                   <LevelBadge level={item.level} size="sm" />
