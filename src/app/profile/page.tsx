@@ -57,7 +57,6 @@ export default function ProfilePage() {
   const [changingPassword, setChangingPassword] = useState(false);
   const [activeTab, setActiveTab] = useState<"profile" | "progress" | "security">("profile");
 
-  // Update form state when profile loads
   useEffect(() => {
     if (profile) {
       setName(profile.full_name || profile.name || "");
@@ -81,7 +80,6 @@ export default function ProfilePage() {
   const roleConfig = getRoleConfig(role);
   const RoleIcon = roleConfig.icon;
 
-  // Calculate level access
   const levelAccess = useMemo((): LevelAccess[] => {
     const lp = progress?.level_progress || { A1: { completed: 0, total: 1 }, A2: { completed: 0, total: 1 }, B1: { completed: 0, total: 1 } };
 
@@ -113,9 +111,9 @@ export default function ProfilePage() {
     ];
   }, [progress?.level_progress]);
 
-  const totalPoints = progress?.total_points ?? 0;
+  const total_points = progress?.total_points ?? 0;
   const streak = progress?.streak ?? 0;
-  const gamesPlayed = progress?.games_played ?? 0;
+  const games_played = progress?.games_played ?? 0;
   const achievements = progress?.achievements ?? [];
 
   const handleSaveProfile = async () => {
@@ -213,10 +211,31 @@ export default function ProfilePage() {
                     <RoleIcon className="w-4 h-4" />
                     {roleConfig.label}
                   </div>
+                  {/* Level Badge */}
+                  {progress?.level_progress && (
+                    <div className="flex items-center gap-2 mt-2">
+                      <span className="text-xs text-gray-500">Nivel: </span>
+                      {progress.level_progress.A1.completed > 0 && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full bg-green-100 dark:bg-green-900/20">
+                          <Brain className="w-3 h-3" /> A1
+                        </span>
+                      )}
+                      {progress.level_progress.A2.completed > 0 && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full bg-blue-100 dark:bg-blue-900/20">
+                          <GraduationCap className="w-3 h-3" /> A2
+                        </span>
+                      )}
+                      {progress.level_progress.B1.completed > 0 && (
+                        <span className="inline-flex items-center gap-1 px-2 py-0.5 text-xs rounded-full bg-purple-100 dark:bg-purple-900/20">
+                          <Award className="w-3 h-3" /> B1
+                        </span>
+                      )}
+                    </div>
+                  )}
                 </div>
                 <div className="grid grid-cols-3 gap-4 text-center">
                   <div>
-                    <p className="text-2xl font-bold text-primary">{totalPoints}</p>
+                    <p className="text-2xl font-bold text-primary">{total_points}</p>
                     <p className="text-xs text-gray-500">Puntos</p>
                   </div>
                   <div>
@@ -224,7 +243,7 @@ export default function ProfilePage() {
                     <p className="text-xs text-gray-500">Racha</p>
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-blue-500">{gamesPlayed}</p>
+                    <p className="text-2xl font-bold text-blue-500">{games_played}</p>
                     <p className="text-xs text-gray-500">Juegos</p>
                   </div>
                 </div>
@@ -326,9 +345,9 @@ export default function ProfilePage() {
               {/* Stats Cards */}
               <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                 {[
-                  { icon: Star, value: totalPoints, label: "Puntos totales", gradient: "from-yellow-400 to-amber-500" },
+                  { icon: Star, value: total_points, label: "Puntos totales", gradient: "from-yellow-400 to-amber-500" },
                   { icon: Zap, value: streak, label: "Días seguidos", gradient: "from-orange-400 to-red-500" },
-                  { icon: Gamepad2, value: gamesPlayed, label: "Juegos jugados", gradient: "from-blue-400 to-cyan-500" },
+                  { icon: Gamepad2, value: games_played, label: "Juegos jugados", gradient: "from-blue-400 to-cyan-500" },
                   { icon: Award, value: achievements.length, label: "Logros", gradient: "from-purple-400 to-pink-500" },
                 ].map(({ icon: Icon, value, label, gradient }, index) => (
                   <motion.div

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useCourses } from "@/hooks/useCourses";
+import { useProgress } from "@/hooks/useProgress";
 import { Card, Button } from "@/components/ui";
 import type { Course, Module } from "@/types";
 
@@ -40,15 +41,17 @@ export default function CoursesPage() {
   const [courseProgress, setCourseProgress] = useState<Record<string, number>>({});
   const [animatedProgress, setAnimatedProgress] = useState<Record<string, number>>({});
 
-  useEffect(() => {
-    fetchCourses();
-  }, [fetchCourses]);
+   const { progress } = useProgress();
 
-  useEffect(() => {
-    if (selectedCourse) {
-      fetchModules(selectedCourse.id);
-    }
-  }, [selectedCourse, fetchModules]);
+   useEffect(() => {
+     fetchCourses();
+   }, [fetchCourses]);
+
+   useEffect(() => {
+     if (selectedCourse) {
+       fetchModules(selectedCourse.id);
+     }
+   }, [selectedCourse, fetchModules]);
 
   useEffect(() => {
     courses.forEach(async (course) => {
@@ -97,28 +100,51 @@ export default function CoursesPage() {
     );
   }
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6">
-      <div className="max-w-6xl mx-auto">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
-        >
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-4">
-            <GraduationCap className="w-5 h-5 text-primary" />
-            <span className="text-sm font-medium text-primary">Ruta de Aprendizaje</span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-            {selectedCourse ? selectedCourse.title : "Elige tu Nivel"}
-          </h1>
-          <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-            {selectedCourse 
-              ? "Selecciona un módulo para comenzar a aprender" 
-              : "Comienza tu viaje para dominar el inglés con nuestra ruta estructurada"}
-          </p>
-        </motion.div>
+   // Determine user's highest completed level
+   const getUserMaxLevel = () => {
+     if (!progress?.levelProgress) return "A1"; // Default to A1
+     
+     const lp = progress.levelProgress;
+     // Check if B1 has any progress
+     if (lp.B1.completed > 0) return "B1";
+     // Check if A2 has any progress
+     if (lp.A2.completed > 0) return "A2";
+     // Otherwise A1 (always accessible)
+     return "A1";
+   };
+
+   const userMaxLevel = getUserMaxLevel();
+   
+   // Filter courses to only show up to user's max level
+   const filteredCourses = courses.filter(course => {
+     const levelOrder = { A1: 1, A2: 2, B1: 3 };
+     const courseLevel = course.level as keyof typeof levelOrder;
+     const maxLevel = userMaxLevel as keyof typeof levelOrder;
+     return levelOrder[courseLevel] <= levelOrder[maxLevel];
+   });
+
+   return (
+     <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-100 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 py-12 px-4 sm:px-6">
+       <div className="max-w-6xl mx-auto">
+         {/* Header */}
+         <motion.div
+           initial={{ opacity: 0, y: -20 }}
+           animate={{ opacity: 1, y: 0 }}
+           className="text-center mb-12"
+         >
+           <div className="inline-flex items-center gap-2 px-4 py-2 bg-primary/10 rounded-full mb-4">
+             <GraduationCap className="w-5 h-5 text-primary" />
+             <span className="text-sm font-medium text-primary">Ruta de Aprendizaje</span>
+           </div>
+           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
+             {selectedCourse ? selectedCourse.title : "Elige tu Nivel"}
+           </h1>
+           <p className="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+             {selectedCourse 
+               ? "Selecciona un módulo para comenzar a aprender" 
+               : `Comienza tu viaje para dominar el inglés con nuestra ruta estructurada (Nivel máximo disponible: ${userMaxLevel})`}
+           </p>
+         </motion.div>
 
         {/* Error */}
         {error && (
@@ -132,16 +158,16 @@ export default function CoursesPage() {
         )}
 
         <AnimatePresence mode="wait">
-          {!selectedCourse ? (
-            /* Level Selection */
-            <motion.div
-              key="levels"
-              variants={containerVariants}
-              initial="hidden"
-              animate="visible"
-              className="grid md:grid-cols-3 gap-6"
-            >
-              {courses.map((course, index) => {
+           {!selectedCourse ? (
+             /* Level Selection */
+             <motion.div
+               key="levels"
+               variants={containerVariants}
+               initial="hidden"
+               animate="visible"
+               className="grid md:grid-cols-3 gap-6"
+             >
+               {filteredCourses.map((course, index) => {
                 const colors = levelColors[course.level as keyof typeof levelColors];
                 const info = levelInfo[course.level as keyof typeof levelInfo];
                 const Icon = info.icon;
