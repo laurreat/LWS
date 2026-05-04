@@ -37,6 +37,7 @@ export interface LevelProgress {
   completed: number;
   total: number;
   points: number;
+  unlocked?: boolean;
 }
 
 export interface GameStats {

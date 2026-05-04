@@ -383,9 +383,11 @@ export default function ProfilePage() {
                       </div>
                       <div>
                         <p className="font-medium">Nivel Detectado</p>
-                        {progress.level_progress.A1?.unlocked && <LevelBadge level="A1" size="sm" />}
-                        {progress.level_progress.A2?.unlocked && <LevelBadge level="A2" size="sm" />}
-                        {progress.level_progress.B1?.unlocked && <LevelBadge level="B1" size="sm" />}
+                        <div className="flex items-center gap-2 mt-1">
+                          <LevelBadge level="A1" size="sm" />
+                          {progress.level_progress.A2?.completed > 0 && <LevelBadge level="A2" size="sm" />}
+                          {progress.level_progress.B1?.completed > 0 && <LevelBadge level="B1" size="sm" />}
+                        </div>
                       </div>
                     </div>
                   </div>
