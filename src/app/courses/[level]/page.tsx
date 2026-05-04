@@ -76,6 +76,9 @@ export default function LevelPage() {
   const meta   = levelMeta[level] ?? levelMeta["A1"];
   const Icon   = meta.icon;
   const course = courses.find(c => c.level?.toUpperCase() === level);
+  
+  // Get progress from useAuth for lock check
+  const { progress } = useAuth();
 
   if (loading && modules.length === 0) {
     return (
@@ -88,9 +91,34 @@ export default function LevelPage() {
     );
   }
 
+  // Check if this level is unlocked
+  const unlocked = (() => {
+    if (!progress?.level_progress) return level === "A1"; // A1 always unlocked
+    const lp = progress.level_progress;
+    if (level === "A1") return true; // A1 always unlocked
+    if (level === "A2") {
+      // A2 needs >= 67% of A1 completed
+      const a1Progress = lp.A1.total > 0 ? (lp.A1.completed / lp.A1.total) * 100 : 0;
+      return a1Progress >= 67;
+    }
+    if (level === "B1") {
+      // B1 needs >= 60% of A2 completed
+      const a2Progress = lp.A2.total > 0 ? (lp.A2.completed / lp.A2.total) * 100 : 0;
+      return a2Progress >= 60;
+    }
+    return false;
+  })();
+
+  // Get prerequisite level info
+  const prereq = (() => {
+    if (level === "A2") return { level: "A1", pct: 67 };
+    if (level === "B1") return { level: "A2", pct: 60 };
+    return null;
+  })();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800">
-
+      
       {/* Header hero */}
       <div className={`bg-gradient-to-r ${meta.gradient} py-12 px-4`}>
         <div className="max-w-4xl mx-auto">
@@ -103,108 +131,153 @@ export default function LevelPage() {
           </Link>
 
           <div className="flex items-center gap-4">
-            <div className="w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center">
-              <Icon className="w-8 h-8 text-white" />
+            <div className={`w-14 h-14 rounded-2xl bg-white/20 backdrop-blur-sm flex items-center justify-center ${!unlocked ? "opacity-50" : ""}`}>
+              {!unlocked ? <Lock className="w-8 h-8 text-white/50" /> : <Icon className="w-8 h-8 text-white" />}
             </div>
             <div>
               <div className="flex items-center gap-2 mb-1">
-                <span className="bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm">
+                <span className={`bg-white/20 text-white text-xs font-bold px-3 py-1 rounded-full backdrop-blur-sm ${!unlocked ? "opacity-50" : ""}`}>
                   {level}
                 </span>
-                <span className="text-white/80 text-sm">{meta.label}</span>
+                <span className={`text-white/80 text-sm ${!unlocked ? "opacity-50" : ""}`}>{meta.label}</span>
               </div>
-              <h1 className="text-3xl font-bold text-white">
+              <h1 className={`text-3xl font-bold ${!unlocked ? "text-white/50" : "text-white"}`}>
                 Inglés {meta.label}
               </h1>
             </div>
           </div>
 
-          <p className="text-white/80 mt-3 max-w-2xl text-sm leading-relaxed">
+          <p className={`mt-3 max-w-2xl text-sm leading-relaxed ${!unlocked ? "text-white/50" : "text-white/80"}`}>
             {meta.description}
           </p>
 
-          <div className="flex items-center gap-6 mt-5">
-            <div className="flex items-center gap-2 text-white/80 text-sm">
-              <BookOpen className="w-4 h-4" />
-              <span>{modules.length} módulos</span>
+          {!unlocked && prereq && (
+            <div className="flex items-center gap-6 mt-5 p-4 bg-white/10 backdrop-blur-sm rounded-xl">
+              <Lock className="w-8 h-8 text-white/50 flex-shrink-0" />
+              <div>
+                <p className="text-white font-medium">Nivel Bloqueado</p>
+                <p className="text-white/70 text-sm mt-1">
+                  Necesitas completar el {prereq.pct}% de{" "}
+                  <Link href={`/courses/${prereq.level.toLowerCase()}`} className="underline font-medium hover:text-white">
+                    curso {prereq.level}
+                  </Link>
+                  {" "}para desbloquear este nivel.
+                </p>
+              </div>
             </div>
-            <div className="flex items-center gap-2 text-white/80 text-sm">
-              <Clock className="w-4 h-4" />
-              <span>{modules.length * 2} lecciones</span>
+          )}
+
+          {unlocked && (
+            <div className="flex items-center gap-6 mt-5">
+              <div className="flex items-center gap-2 text-white/80 text-sm">
+                <BookOpen className="w-4 h-4" />
+                <span>{modules.length} módulos</span>
+              </div>
+              <div className="flex items-center gap-2 text-white/80 text-sm">
+                <Clock className="w-4 h-4" />
+                <span>{modules.length * 2} lecciones</span>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
 
-      {/* Module list */}
-      <div className="max-w-4xl mx-auto px-4 py-10">
-        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
-          Módulos del curso
-        </h2>
+      {/* Module list - only show if unlocked */}
+      {unlocked ? (
+        <div className="max-w-4xl mx-auto px-4 py-10">
+          <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6">
+            Módulos del curso
+          </h2>
 
-        {modules.length === 0 ? (
-          <div className="text-center py-20 text-gray-400">
-            <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-40" />
-            <p>No hay módulos disponibles aún.</p>
-          </div>
-        ) : (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            animate="visible"
-            className="space-y-3"
-          >
-            {modules.map((module, index) => (
-              <motion.div key={module.id} variants={itemVariants}>
-                <Link href={`/courses/${level.toLowerCase()}/${module.id}`}>
-                  <Card className="group p-5 hover:shadow-md transition-all duration-200 cursor-pointer border border-transparent hover:border-primary/20">
-                    <div className="flex items-center gap-4">
-                      {/* Order number */}
-                      <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0 bg-gradient-to-br ${meta.gradient} text-white`}>
-                        {(module.order_num ?? index + 1).toString().padStart(2, "0")}
-                      </div>
-
-                      {/* Content */}
-                      <div className="flex-1 min-w-0">
-                        <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
-                          {module.title}
-                        </h3>
-                        {module.description && (
-                          <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 truncate">
-                            {module.description}
-                          </p>
-                        )}
-                      </div>
-
-                      {/* Arrow */}
-                      <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
-                    </div>
-                  </Card>
-                </Link>
-              </motion.div>
-            ))}
-          </motion.div>
-        )}
-
-        {/* CTA */}
-        {modules.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.5 }}
-            className="mt-8 text-center"
-          >
-            <Button
-              variant="primary"
-              onClick={() => router.push(`/courses/${level.toLowerCase()}/${modules[0].id}`)}
-              className="px-8"
+          {modules.length === 0 ? (
+            <div className="text-center py-20 text-gray-400">
+              <BookOpen className="w-12 h-12 mx-auto mb-3 opacity-40" />
+              <p>No hay módulos disponibles aún.</p>
+            </div>
+          ) : (
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+              className="space-y-3"
             >
-              <Play className="w-4 h-4 mr-2" />
-              Comenzar desde el primer módulo
-            </Button>
-          </motion.div>
-        )}
-      </div>
+              {modules.map((module, index) => (
+                <motion.div key={module.id} variants={itemVariants}>
+                  <Link href={`/courses/${level.toLowerCase()}/${module.id}`}>
+                    <Card className="group p-5 hover:shadow-md transition-all duration-200 cursor-pointer border border-transparent hover:border-primary/20">
+                      <div className="flex items-center gap-4">
+                        {/* Order number */}
+                        <div className={`w-10 h-10 rounded-xl flex items-center justify-center text-sm font-bold flex-shrink-0 bg-gradient-to-br ${meta.gradient} text-white`}>
+                          {(module.order_num ?? index + 1).toString().padStart(2, "0")}
+                        </div>
+                        
+                        {/* Content */}
+                        <div className="flex-1 min-w-0">
+                          <h3 className="font-semibold text-gray-900 dark:text-white group-hover:text-primary transition-colors truncate">
+                            {module.title}
+                          </h3>
+                          {module.description && (
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-0.5 truncate">
+                              {module.description}
+                            </p>
+                          )}
+                        </div>
+                        
+                        {/* Arrow */}
+                        <ChevronRight className="w-5 h-5 text-gray-400 group-hover:text-primary group-hover:translate-x-1 transition-all flex-shrink-0" />
+                      </div>
+                    </Card>
+                  </Link>
+                </motion.div>
+              ))}
+            </motion.div>
+          )}
+
+          {/* CTA */}
+          {modules.length > 0 && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="mt-8 text-center"
+            >
+              <Button
+                variant="primary"
+                onClick={() => router.push(`/courses/${level.toLowerCase()}/${modules[0].id}`)}
+                className="px-8"
+              >
+                <Play className="w-4 h-4 mr-2" />
+                Comenzar desde el primer módulo
+              </Button>
+            </motion.div>
+          )}
+        </div>
+      ) : (
+        // Locked state - show message
+        <div className="max-w-4xl mx-auto px-4 py-20 text-center">
+          <div className="max-w-md mx-auto">
+            <div className="w-24 h-24 mx-auto mb-6 bg-gray-100 dark:bg-gray-800 rounded-full flex items-center justify-center">
+              <Lock className="w-12 h-12 text-gray-400" />
+            </div>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+              Nivel Bloqueado
+            </h2>
+            <p className="text-gray-600 dark:text-gray-400 mb-6">
+              Necesitas completar el <strong>{prereq?.pct}%</strong> de{" "}
+              <Link href={`/courses/${prereq?.level.toLowerCase()}`} className="text-primary hover:underline">
+                curso {prereq?.level}
+              </Link>
+              {" "}para desbloquear el nivel <strong>{level}</strong>.
+            </p>
+            <Link href="/courses">
+              <Button variant="outline">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Volver a todos los cursos
+              </Button>
+            </Link>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
